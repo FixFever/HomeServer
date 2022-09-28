@@ -1,0 +1,1 @@
+powershell Compress-Archive -LiteralPath "C:\Users\FixFever\AppData\LocalLow\IronGate\Valheim" -DestinationPath "C:\Users\FixFever\Documents\ValheimBackups\$(Get-Date -Format 'MMddyyyyHHmm').zip"
