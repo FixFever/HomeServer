@@ -57,6 +57,7 @@ services:
     volumes:
       - C:\\docker-volumes\nextcloud:/var/www/html
       - C:\\docker-volumes\nextcloud\php:/usr/local/etc/php
+      - C:\\docker-caches\nextcloud\preview:/var/www/html/data/appdata_ocah283m7og5/preview
       - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
       - M:\\nextcloud\Elya:/var/www/html/data/Elya/files
       - M:\\nextcloud\Boris:/var/www/html/data/Boris/files
@@ -121,10 +122,7 @@ services:
     container_name: photoprism
     depends_on:
       - mariadb
-    ## Don't enable automatic restarts until PhotoPrism has been properly configured and tested!
-    ## If the service gets stuck in a restart loop, this points to a memory, filesystem, network, or database issue:
-    ## https://docs.photoprism.app/getting-started/troubleshooting/#fatal-server-errors
-    # restart: unless-stopped
+    
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
@@ -167,28 +165,18 @@ services:
       # PHOTOPRISM_UID: 1000
       # PHOTOPRISM_GID: 1000
       # PHOTOPRISM_UMASK: 0000
-    ## Start as non-root user before initialization (supported: 0, 33, 50-99, 500-600, and 900-1200):
-    # user: "1000:1000"
-    ## Share hardware devices with FFmpeg and TensorFlow (optional):
-    # devices:
-    #  - "/dev/dri:/dev/dri"                         # Intel QSV
-    #  - "/dev/nvidia0:/dev/nvidia0"                 # Nvidia CUDA
-    #  - "/dev/nvidiactl:/dev/nvidiactl"
-    #  - "/dev/nvidia-modeset:/dev/nvidia-modeset"
-    #  - "/dev/nvidia-nvswitchctl:/dev/nvidia-nvswitchctl"
-    #  - "/dev/nvidia-uvm:/dev/nvidia-uvm"
-    #  - "/dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools"
-    #  - "/dev/video11:/dev/video11"                 # Video4Linux Video Encode Device (h264_v4l2m2m)
     working_dir: "/photoprism" # do not change or remove
-    ## Storage Folders: "~" is a shortcut for your home directory, "." for the current directory
     volumes:
       - C:\\docker-volumes\photoprism:/photoprism
+      - C:\\docker-caches\photoprism\cache:/photoprism/storage/cache
+      - C:\\docker-caches\photoprism\sidecar:/photoprism/storage/sidecar
       - M:\\nextcloud\FixFever\Фото:/photoprism/originals
       # "/host/folder:/photoprism/folder"                # Example
       #- "~/Pictures:/photoprism/originals"               # Original media files (DO NOT REMOVE)
       # - "/example/family:/photoprism/originals/family" # *Additional* media folders can be mounted like this
       # - "~/Import:/photoprism/import"                  # *Optional* base folder from which files can be imported to originals
       #- "./storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
+    restart: unless-stopped
 
   mariadb:
     image: mariadb:10.8
