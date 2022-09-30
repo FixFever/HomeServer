@@ -87,13 +87,8 @@ services:
   nextcloud_cron:
     image: nextcloud
     container_name: nextcloud_cron
-    volumes:
-      - C:\\docker-volumes\nextcloud:/var/www/html
-      - C:\\docker-volumes\nextcloud\php:/usr/local/etc/php
-      - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
-      - M:\\nextcloud\Elya:/var/www/html/data/Elya/files
-      - M:\\nextcloud\Boris:/var/www/html/data/Boris/files
-      - M:\\nextcloud\Marina:/var/www/html/data/Marina/files
+    volumes_from:
+      - nextcloud:rw
     entrypoint: /cron.sh
     user: 0:0
     depends_on:
