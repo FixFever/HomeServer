@@ -1,3 +1,6 @@
+# script for scheduler:
+# powershell -file "C:\git\server\Backup.ps1"
+
 try{
 	
 	docker-compose stop
