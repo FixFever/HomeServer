@@ -7,6 +7,8 @@ try{
 	
 	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "C:\Users\FixFever\Documents\docker-volumes.zip"
 	
+	docker-compose up -d
+	
 	$logs = "C:\Users\FixFever\Documents\WinSCP.log";
 	
     winscp /log=$logs /ini=nul `
@@ -36,5 +38,5 @@ catch {
 	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed: " + $_)
 }
 finally{
-	docker-compose up -d
+	
 }
