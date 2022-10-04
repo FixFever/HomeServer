@@ -31,6 +31,7 @@
 * [Photoprism](https://photoprism.app/)
 * [Valheim](https://www.valheimgame.com/ru/) server
 * [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
+* [QuakeJS](https://github.com/treyyoder/quakejs-docker) server
 
 In progress:
 * Monitoring by Prometheus + Grafana
