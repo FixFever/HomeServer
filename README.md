@@ -29,7 +29,7 @@
   * [Search plugins](https://github.com/qbittorrent/search-plugins/wiki/Unofficial-search-plugins)
 * [Nextcloud](https://nextcloud.com/)
 * [Photoprism](https://photoprism.app/)
-* [Valheim](https://www.valheimgame.com/ru/) server
+* [Valheim](https://github.com/lloesche/valheim-server-docker) server
 * [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
 * [QuakeJS](https://github.com/treyyoder/quakejs-docker) server
 

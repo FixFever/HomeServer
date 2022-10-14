@@ -15,7 +15,6 @@ try{
         /command `
     "open ftp://${Env:FTP_USER}:${Env:FTP_PASSWORD}@${Env:FTP_HOST}/ -rawsettings ProxyPort=0" `
 	    "synchronize remote M:\\nextcloud Backup/Backup/nextcloud -delete -criteria=size" `
-		"synchronize remote C:\Users\FixFever\Documents\ValheimBackups Backup/Backup/valheim/backup -delete -criteria=size" `
 		"put C:\Users\FixFever\Documents\docker-volumes.zip Backup/Backup/ -delete" `
         "exit"
 
