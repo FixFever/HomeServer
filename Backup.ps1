@@ -5,10 +5,18 @@ try{
 	
 	docker-compose stop
 	
-	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "C:\Users\FixFever\Documents\docker-volumes.zip"
-	
+	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "C:\Users\FixFever\Documents\docker-volumes.zip" -Force
+}
+catch {
+    Write-Host $_
+	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Create zip volumes failed: " + $_)
+	return;
+}
+finally{
 	docker-compose up -d
-	
+}
+
+try{	
 	$logs = "C:\Users\FixFever\Documents\WinSCP.log";
 	
     winscp /log=$logs /ini=nul `
@@ -37,5 +45,5 @@ catch {
 	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed: " + $_)
 }
 finally{
-	
+
 }

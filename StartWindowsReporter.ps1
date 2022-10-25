@@ -1,0 +1,1 @@
+msiexec /i "C:\docker-volumes\prometheus\windows_exporter.msi" ENABLED_COLLECTORS=cpu,cs,container,logical_disk,memory,net,os,service,system

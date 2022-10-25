@@ -200,12 +200,47 @@ services:
     container_name: valheim
     cap_add:
       - sys_nice
-    volumes: 
-      - C:\docker-volumes\valheim:/config
     ports: 
       - "2456-2457:2456-2457/udp"
       - "9001:9001/tcp"
+    volumes: 
+      - C:\docker-volumes\valheim:/config
     env_file:
       - C:\docker-volumes\valheim\valheim.env
     stop_grace_period: 2m
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    volumes:
+      - C:\docker-volumes\prometheus:/etc/prometheus
+      - C:\docker-volumes\prometheus\data:/prometheus
+    environment:
+      TZ: "Europe/Moscow"
+    networks:
+      - default
+    restart: unless-stopped
+    
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    volumes:
+      - C:\docker-volumes\grafana:/var/lib/grafana
+      - C:\docker-volumes\grafana\provisioning/:/etc/grafana/provisioning/
+    environment:
+      TZ: "Europe/Moscow"
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: false
+    networks:
+      - default
     restart: unless-stopped

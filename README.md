@@ -32,6 +32,7 @@
 * [Valheim](https://github.com/lloesche/valheim-server-docker) server
 * [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
 * [QuakeJS](https://github.com/treyyoder/quakejs-docker) server
-
-In progress:
-* Monitoring by Prometheus + Grafana
+* Monitoring 
+  * [Prometheus](https://github.com/prometheus/prometheus)
+    * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
+  * [Grafana](https://github.com/grafana/grafana)
