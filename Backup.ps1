@@ -6,7 +6,7 @@ try{
 	
 	docker-compose stop
 	
-	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "C:\Users\FixFever\Documents\docker-volumes.zip" -Force
+	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "C:\backups\docker-volumes.zip" -Force
 }
 catch {
     Write-Host $_
@@ -19,7 +19,7 @@ finally{
 
 # Download keenetic running-config
 try{
-	wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh "$Env:KEENETIC_LOGIN@192.168.1.1" 'show running-config' > "C:\Users\FixFever\Documents\keenetic_running_config"
+	wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh "$Env:KEENETIC_LOGIN@192.168.1.1" 'show running-config' > "C:\backups\keenetic_running_config"
 }
 catch {
     Write-Host $_
@@ -28,7 +28,7 @@ catch {
 }
 
 # Export env vars
-regedit /e "C:\Users\FixFever\Documents\env_vars.reg" "HKEY_CURRENT_USER\Environment"
+regedit /e "C:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
 
 # Upload to backup storage
 try{	
@@ -38,9 +38,7 @@ try{
         /command `
     "open ftp://${Env:FTP_USER}:${Env:FTP_PASSWORD}@${Env:FTP_HOST}/ -rawsettings ProxyPort=0" `
 	    "synchronize remote M:\\nextcloud Backup/Backup/nextcloud -delete -criteria=size" `
-		"put C:\Users\FixFever\Documents\docker-volumes.zip Backup/Backup/ -delete" `
-		"put C:\Users\FixFever\Documents\keenetic_running_config Backup/Backup/ -delete" `
-		"put C:\Users\FixFever\Documents\env_vars.reg Backup/Backup/ -delete" `
+		"synchronize remote C:\\backups Backup/Backup/backups -delete -criteria=size" `
         "exit"
 
     $winscpResult = $LastExitCode
