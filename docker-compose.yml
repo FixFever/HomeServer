@@ -17,7 +17,7 @@ version: '3.5'
 services:
 
   postgres:
-    image: postgres
+    image: postgres:14
     container_name: postgres
     ports:
       - 5432:5432
@@ -39,7 +39,7 @@ services:
     restart: unless-stopped
 
   nextcloud:
-    image: nextcloud
+    image: nextcloud:25
     container_name: nextcloud
     ports:
       - 5000:80
@@ -55,7 +55,7 @@ services:
       - postgres
       - redis
     volumes:
-      - C:\\docker-volumes\nextcloud:/var/www/html
+      - C:\\docker-volumes\nextcloud\html:/var/www/html
       - C:\\docker-volumes\nextcloud\php:/usr/local/etc/php
       - C:\\docker-caches\nextcloud\preview:/var/www/html/data/appdata_ocah283m7og5/preview
       - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
@@ -85,7 +85,7 @@ services:
       # - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
 
   nextcloud_cron:
-    image: nextcloud
+    image: nextcloud:25
     container_name: nextcloud_cron
     volumes_from:
       - nextcloud:rw
