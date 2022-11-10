@@ -12,8 +12,7 @@
 * PSU: [be quiet! SFX POWER 3 450W](https://www.bequiet.com/ru/powersupply/2309)
 * Router: [Keenetic Giga](https://keenetic.ru/ru/keenetic-giga)
   * [DDNS](https://help.keenetic.com/hc/ru/articles/360000400919-%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D0%B5%D0%BD-KeenDNS)
-  * [VPN-сервер L2TP/IPsec](https://help.keenetic.com/hc/ru/articles/360000684919?utm_source=webhelp&utm_campaign=3.08.C.5.0-1&utm_medium=ui_notes&utm_content=controlpanel/apps.l2tp)
-  * [Selective blocking bypass through Tor](https://habr.com/ru/post/428992/)
+  * Selective blocking bypass through VPN(VPS by (Virmach)[https://virmach.com/]) using [Bird4Static](https://github.com/DennoN-RUS/Bird4Static)
 * Storages:
   * SSD: [Samsung 860 EVO 250GB](https://www.samsung.com/ru/memory-storage/sata-ssd/ssd-860-evo-sata-3-2-5-inch-250gb-mz-76e250bw/) - System
   * 1x 4TB [Seagate Barracuda ST4000DM000-1F2168](https://www.seagate.com/www-content/product-content/desktop-hdd-fam/en-us/docs/100710254f.pdf) - Plex libraries: movies, series, torrents
