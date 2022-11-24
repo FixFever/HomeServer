@@ -1,1 +1,0 @@
-tasklist /nh /fi "imagename eq Plex Media Server.exe" | find /i "Plex Media Server.exe" > nul || (start C:\Program Files (x86)\Plex\Plex Media Server\Plex Media Server.exe)
