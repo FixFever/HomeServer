@@ -51,6 +51,7 @@ services:
       - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
       - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
       - REDIS_HOST=redis
+      - PHP_MEMORY_LIMIT=3072M
     depends_on:
       - postgres
       - redis
@@ -134,7 +135,7 @@ services:
       PHOTOPRISM_EXPERIMENTAL: "false"               # enables experimental features
       PHOTOPRISM_DISABLE_CHOWN: "false"              # disables updating storage permissions via chmod and chown on startup
       PHOTOPRISM_DISABLE_WEBDAV: "true"              # disables built-in WebDAV server
-      PHOTOPRISM_DISABLE_SETTINGS: "true"            # disables settings UI and API
+      PHOTOPRISM_DISABLE_SETTINGS: "false"            # disables settings UI and API
       PHOTOPRISM_DISABLE_TENSORFLOW: "false"         # disables all features depending on TensorFlow
       PHOTOPRISM_DISABLE_FACES: "false"              # disables face detection and recognition (requires TensorFlow)
       PHOTOPRISM_DISABLE_CLASSIFICATION: "false"     # disables image classification (requires TensorFlow)
