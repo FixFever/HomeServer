@@ -24,8 +24,7 @@
 * System: Windows 10 Pro
 * [Plex](https://www.plex.tv/) with PlexPass lifetime
 * [qBittorrent](https://www.qbittorrent.org/)
-  * Web UI
-  * [Search plugins](https://github.com/qbittorrent/search-plugins/wiki/Unofficial-search-plugins)
+  * Web UI by [qbit-matUI](https://github.com/bill-ahmed/qbit-matUI)
 * [Nextcloud](https://nextcloud.com/)
 * [Photoprism](https://photoprism.app/)
 * [Valheim](https://github.com/lloesche/valheim-server-docker) server
