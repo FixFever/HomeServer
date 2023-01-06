@@ -39,7 +39,10 @@ services:
     restart: unless-stopped
 
   nextcloud:
-    image: nextcloud:25
+    build:
+      context: ./nextcloud/
+      args:
+        NEXTCLOUD_IMAGE: nextcloud:25
     container_name: nextcloud
     ports:
       - 5000:80
@@ -118,7 +121,6 @@ services:
     container_name: photoprism
     depends_on:
       - mariadb
-    
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
