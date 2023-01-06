@@ -1,6 +1,10 @@
 # script for scheduler:
 # powershell -file "C:\git\server\Backup.ps1"
 
+skipZip = false;
+
+if (!skipZip){
+	
 # Zip docker volumes
 try{
 	
@@ -60,6 +64,8 @@ catch {
     Write-Host $_
 	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup keenetic config failed: " + $_)
 	return;
+}
+
 }
 
 # Export env vars
