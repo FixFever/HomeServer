@@ -12,12 +12,11 @@
 * PSU: [be quiet! SFX POWER 3 450W](https://www.bequiet.com/ru/powersupply/2309)
 * Router: [Keenetic Giga](https://keenetic.ru/ru/keenetic-giga)
   * [DDNS](https://help.keenetic.com/hc/ru/articles/360000400919-%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D0%B5%D0%BD-KeenDNS)
-  * Selective blocking bypass through VPN(VPS in Amsterdam by [Virmach](https://virmach.com/)) using [Bird4Static](https://github.com/DennoN-RUS/Bird4Static)
+  * Selective blocking bypass through WireGuard VPN using [Bird4Static](https://github.com/DennoN-RUS/Bird4Static)
 * Storages:
   * NVMe M.2 SSD: [Samsung 970 EVO Plus 500GB](https://www.samsung.com/ru/memory-storage/nvme-ssd/970-evo-plus-500gb-mz-v7s500bw/) - System
   * 1x 16TB [Seagate Exos X18 ST16000NM000J](https://www.seagate.com/content/dam/seagate/migrated-assets/www-content/datasheets/pdfs/exos-x18-channel-DS2045-4-2106US-en_US.pdf) - Plex libraries: movies, series, torrents
   * RAID 1: 2x 4TB [WD Blue WD40EZAZ-00SF3B0](https://www.westerndigital.com/ru-ru/products/internal-drives/wd-blue-desktop-sata-hdd#WD5000AZLX) - Cloud: photo, docs, etc.
-  * Remote storage, FTP access by Asus RT-N66U with DDNS: 4TB [Seagate Skyhawk ST4000VX013](https://www.seagate.com/files/www-content/datasheets/pdfs/skyhawk-ai-DS1960-14C-2204RU-ru_RU.pdf) - Backups
 
 ### Software
 
@@ -34,3 +33,14 @@
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
   * [Grafana](https://github.com/grafana/grafana)
+  
+### Remote backup storage
+* Router: Asus RT-N66U
+  * DDNS
+  * FTP
+* Storages:
+  * 4TB [Seagate Skyhawk ST4000VX013](https://www.seagate.com/files/www-content/datasheets/pdfs/skyhawk-ai-DS1960-14C-2204RU-ru_RU.pdf)
+  
+### VPS
+* VPS in Amsterdam by [Virmach](https://virmach.com/)
+* [WireGuard](https://www.wireguard.com/) VPN server (installer by [angristan](https://github.com/angristan/wireguard-install))
