@@ -248,3 +248,16 @@ services:
     networks:
       - default
     restart: unless-stopped
+
+  secret:
+    image: ghcr.io/tethik/burn-after-reading/burn-after-reading:1.5.1
+    container_name: secret
+    ports:
+      - 5035:80
+    volumes:
+      - C:\docker-volumes\secret:/opt/data
+    environment:     
+      - MAX_CONTENT_LENGTH=134217728
+      - BURN_DATA_PATH=/opt/data/
+      - BURN_MAX_STORAGE=1024
+    restart: unless-stopped
