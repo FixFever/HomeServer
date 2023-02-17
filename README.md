@@ -25,6 +25,8 @@
 * [qBittorrent](https://www.qbittorrent.org/)
   * Web UI by [qbit-matUI](https://github.com/bill-ahmed/qbit-matUI)
 * [Nextcloud](https://nextcloud.com/)
+  * [previewgenerator](https://github.com/nextcloud/previewgenerator)
+  * [memories](https://github.com/pulsejet/memories)
 * [Photoprism](https://photoprism.app/)
 * [Valheim](https://github.com/lloesche/valheim-server-docker) server
 * [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
