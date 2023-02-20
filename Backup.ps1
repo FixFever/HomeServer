@@ -11,6 +11,7 @@ try{
 	docker-compose stop
 	
 	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "C:\backups\docker-volumes.zip" -Force
+	Compress-Archive -LiteralPath "H:\docker-volumes" -DestinationPath "H:\backups\docker-volumes.zip" -Force
 }
 catch {
     Write-Host $_
@@ -79,7 +80,8 @@ try{
         /command `
     "open ftp://${Env:FTP_USER}:${Env:FTP_PASSWORD}@${Env:FTP_HOST}/ -rawsettings ProxyPort=0" `
 	    "synchronize remote M:\\nextcloud Backup/Backup/nextcloud -delete -criteria=size" `
-		"synchronize remote C:\\backups Backup/Backup/backups -delete -criteria=size" `
+		"synchronize remote C:\\backups Backup/Backup/backups_ssd -delete -criteria=size" `
+		"synchronize remote H:\\backups Backup/Backup/backups_hdd -delete -criteria=size" `
         "exit"
 
     $winscpResult = $LastExitCode

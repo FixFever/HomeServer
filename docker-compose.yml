@@ -219,11 +219,12 @@ services:
     container_name: prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
+      - '--storage.tsdb.retention.time=3y'
     ports:
       - 9090:9090
     volumes:
       - C:\docker-volumes\prometheus:/etc/prometheus
-      - C:\docker-volumes\prometheus\data:/prometheus
+      - H:\docker-volumes\prometheus:/prometheus
     environment:
       TZ: "Europe/Moscow"
     networks:
@@ -260,4 +261,3 @@ services:
       - MAX_CONTENT_LENGTH=134217728
       - BURN_DATA_PATH=/opt/data/
       - BURN_MAX_STORAGE=1024
-    restart: unless-stopped
