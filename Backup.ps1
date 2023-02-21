@@ -59,7 +59,7 @@ finally{
 
 # Download keenetic running-config
 try{
-	wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh "$Env:KEENETIC_LOGIN@192.168.1.1" 'show running-config' > "C:\backups\keenetic_running_config"
+	wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh $Env:KEENETIC_LOGIN@192.168.1.1 -p $Env:KEENETIC_PORT 'show running-config' > "C:\backups\keenetic_running_config"
 }
 catch {
     Write-Host $_
