@@ -30,7 +30,8 @@
 * [Valheim](https://github.com/lloesche/valheim-server-docker) server
 * [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
 * [QuakeJS](https://github.com/treyyoder/quakejs-docker) server
-* [burn-after-reading](https://github.com/Tethik/burn-after-reading) service
+* [burn-after-reading](https://github.com/Tethik/burn-after-reading)
+* [I hate money](https://github.com/spiral-project/ihatemoney)
 * Monitoring 
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)

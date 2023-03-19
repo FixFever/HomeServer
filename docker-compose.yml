@@ -261,3 +261,22 @@ services:
       - MAX_CONTENT_LENGTH=134217728
       - BURN_DATA_PATH=/opt/data/
       - BURN_MAX_STORAGE=1024
+    restart: unless-stopped
+
+  ihatemoney:
+    image: ihatemoney/ihatemoney:latest
+    container_name: ihatemoney
+    ports:
+      - "8000:8000"
+    volumes:
+      - C:\docker-volumes\ihatemoney\database:/database
+      - C:\docker-volumes\ihatemoney\config:/etc/ihatemoney
+    environment:
+      - ACTIVATE_ADMIN_DASHBOARD=True
+      - ACTIVATE_DEMO_PROJECT=False
+      - ADMIN_PASSWORD=${IHATEMONEY_ADMIN_PASSWORD}
+      - ALLOW_PUBLIC_PROJECT_CREATION=True
+      - BABEL_DEFAULT_TIMEZONE='Europe/Moscow'
+      - SECRET_KEY=somekey
+      - PORT=8000
+    restart: "unless-stopped"
