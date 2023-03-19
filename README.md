@@ -32,6 +32,7 @@
 * [QuakeJS](https://github.com/treyyoder/quakejs-docker) server
 * [burn-after-reading](https://github.com/Tethik/burn-after-reading)
 * [I hate money](https://github.com/spiral-project/ihatemoney)
+* [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
 * Monitoring 
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)

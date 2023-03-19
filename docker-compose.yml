@@ -280,3 +280,19 @@ services:
       - SECRET_KEY=somekey
       - PORT=8000
     restart: "unless-stopped"
+    
+  vault:
+    image: vaultwarden/server:1.27.0-alpine
+    container_name: vault
+    ports:
+      - "3012:3012"
+      - "8282:80"
+    volumes:
+      - C:\docker-volumes\vault:/data
+    environment:
+      - WEBSOCKET_ENABLED=true
+      - LOG_FILE=/data/logs.txt
+      - ADMIN_TOKEN=${VAULT_ADMIN_TOKEN}
+      - DOMAIN=https://vault.fixfever.keenetic.pro
+      - SIGNUPS_ALLOWED=true
+    restart: unless-stopped
