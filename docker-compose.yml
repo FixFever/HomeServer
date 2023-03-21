@@ -66,6 +66,10 @@ services:
       - M:\\nextcloud\Elya:/var/www/html/data/Elya/files
       - M:\\nextcloud\Boris:/var/www/html/data/Boris/files
       - M:\\nextcloud\Marina:/var/www/html/data/Marina/files
+      - M:\\nextcloud\trashbin\FixFever:/var/www/html/data/FixFever/files_trashbin/files
+      - M:\\nextcloud\trashbin\Elya:/var/www/html/data/Elya/files_trashbin/files
+      - M:\\nextcloud\trashbin\Boris:/var/www/html/data/Boris/files_trashbin/files
+      - M:\\nextcloud\trashbin\Marina:/var/www/html/data/Marina/files_trashbin/files
     restart: unless-stopped
     
   # nextcloud2:
