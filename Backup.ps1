@@ -1,9 +1,9 @@
 # script for scheduler:
 # powershell -file "C:\git\server\Backup.ps1"
 
-skipZip = false;
+$skipZip = $false;
 
-if (!skipZip){
+if (!$skipZip){
 	
 # Zip docker volumes
 try{
@@ -57,6 +57,8 @@ finally{
 	Remove-Item -Path C:\backups\appdata-local-plex-media-server -Recurse -Force
 }
 
+}
+
 # Download keenetic running-config
 try{
 	wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh $Env:KEENETIC_LOGIN@192.168.1.1 -p $Env:KEENETIC_PORT 'show running-config' > "C:\backups\keenetic_running_config"
@@ -67,10 +69,9 @@ catch {
 	return;
 }
 
-}
-
 # Export env vars
 regedit /e "C:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
+
 
 # Upload to storage
 try{	
