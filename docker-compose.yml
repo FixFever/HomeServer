@@ -296,3 +296,13 @@ services:
       - DOMAIN=https://vault.fixfever.keenetic.pro
       - SIGNUPS_ALLOWED=true
     restart: unless-stopped
+    
+  proxy:
+    image: dwaaan/php-proxy:latest
+    # alternative: download https://github.com/ryanmab/CensorDodge and run "docker build . -t censordodge"
+    # image: censordodge 
+    container_name: proxy
+    restart: always
+    ports:
+      - 3434:80
+    restart: unless-stopped

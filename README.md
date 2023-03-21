@@ -33,6 +33,7 @@
 * [burn-after-reading](https://github.com/Tethik/burn-after-reading)
 * [I hate money](https://github.com/spiral-project/ihatemoney)
 * [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
+* [PHP-Proxy](https://github.com/dwaaan/PHP-Proxy-Docker)
 * Monitoring 
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
