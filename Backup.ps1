@@ -10,8 +10,8 @@ try{
 	
 	docker-compose stop
 	
-	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "C:\backups\docker-volumes.zip" -Force
-	Compress-Archive -LiteralPath "H:\docker-volumes" -DestinationPath "H:\backups\docker-volumes.zip" -Force
+	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "H:\backups\docker-volumes.zip" -Force
+	Compress-Archive -LiteralPath "H:\docker-volumes" -DestinationPath "H:\backups\docker-volumes_hdd.zip" -Force
 }
 catch {
     Write-Host $_
@@ -24,11 +24,11 @@ finally{
 
 # Zip qbittorrent data
 try{
-	Copy-Item -Path "$env:LOCALAPPDATA\qBittorrent" -Destination "C:\backups\appdata-local-qbittorrent" -Recurse -Force
-	Copy-Item -Path "$env:APPDATA\qBittorrent" -Destination "C:\backups\appdata-roaming-qbittorrent" -Recurse -Force
+	Copy-Item -Path "$env:LOCALAPPDATA\qBittorrent" -Destination "H:\backups\appdata-local-qbittorrent" -Recurse -Force
+	Copy-Item -Path "$env:APPDATA\qBittorrent" -Destination "H:\backups\appdata-roaming-qbittorrent" -Recurse -Force
 	
-	Compress-Archive -LiteralPath "C:\backups\appdata-local-qbittorrent" -DestinationPath "C:\backups\appdata-local-qbittorrent.zip" -Force
-	Compress-Archive -LiteralPath "C:\backups\appdata-roaming-qbittorrent" -DestinationPath "C:\backups\appdata-roaming-qbittorrent.zip" -Force
+	Compress-Archive -LiteralPath "H:\backups\appdata-local-qbittorrent" -DestinationPath "H:\backups\appdata-local-qbittorrent.zip" -Force
+	Compress-Archive -LiteralPath "H:\backups\appdata-roaming-qbittorrent" -DestinationPath "H:\backups\appdata-roaming-qbittorrent.zip" -Force
 }
 catch {
     Write-Host $_
@@ -36,17 +36,17 @@ catch {
 	return;
 }
 finally{
-	Remove-Item -Path C:\backups\appdata-local-qbittorrent -Recurse -Force
-	Remove-Item -Path C:\backups\appdata-roaming-qbittorrent -Recurse -Force
+	Remove-Item -Path H:\backups\appdata-local-qbittorrent -Recurse -Force
+	Remove-Item -Path H:\backups\appdata-roaming-qbittorrent -Recurse -Force
 }
 
 # Export plex options
-regedit /e "C:\backups\plex_settings.reg" "HKEY_CURRENT_USER\Software\Plex, Inc.\Plex Media Server"
+regedit /e "H:\backups\plex_settings.reg" "HKEY_CURRENT_USER\Software\Plex, Inc.\Plex Media Server"
 
 # Zip plex data
 try{
-	Copy-Item -Path "$env:LOCALAPPDATA\Plex Media Server" -Destination "C:\backups\appdata-local-plex-media-server" -Recurse -Force
-	Compress-Archive -LiteralPath "C:\backups\appdata-local-plex-media-server" -DestinationPath "C:\backups\appdata-local-plex-media-server.zip" -Force
+	Copy-Item -Path "$env:LOCALAPPDATA\Plex Media Server" -Destination "H:\backups\appdata-local-plex-media-server" -Recurse -Force
+	Compress-Archive -LiteralPath "H:\backups\appdata-local-plex-media-server" -DestinationPath "H:\backups\appdata-local-plex-media-server.zip" -Force
 }
 catch {
     Write-Host $_
@@ -54,14 +54,14 @@ catch {
 	return;
 }
 finally{
-	Remove-Item -Path C:\backups\appdata-local-plex-media-server -Recurse -Force
+	Remove-Item -Path H:\backups\appdata-local-plex-media-server -Recurse -Force
 }
 
 }
 
 # Download keenetic running-config
 try{
-	wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh $Env:KEENETIC_LOGIN@192.168.1.1 -p $Env:KEENETIC_PORT 'show running-config' > "C:\backups\keenetic_running_config"
+	wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh $Env:KEENETIC_LOGIN@192.168.1.1 -p $Env:KEENETIC_PORT 'show running-config' > "H:\backups\keenetic_running_config"
 }
 catch {
     Write-Host $_
@@ -70,7 +70,7 @@ catch {
 }
 
 # Export env vars
-regedit /e "C:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
+regedit /e "H:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
 
 
 # Upload to storage
@@ -81,8 +81,7 @@ try{
         /command `
     "open ftp://${Env:FTP_USER}:${Env:FTP_PASSWORD}@${Env:FTP_HOST}/ -rawsettings ProxyPort=0" `
 	    "synchronize remote M:\\nextcloud Backup/Backup/nextcloud -delete -criteria=size" `
-		"synchronize remote C:\\backups Backup/Backup/backups_ssd -delete -criteria=size" `
-		"synchronize remote H:\\backups Backup/Backup/backups_hdd -delete -criteria=size" `
+		"synchronize remote H:\\backups Backup/Backup/backups -delete -criteria=size" `
         "exit"
 
     $winscpResult = $LastExitCode

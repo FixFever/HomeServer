@@ -212,7 +212,7 @@ services:
       - "9001:9001/tcp"
     volumes: 
       - C:\docker-volumes\valheim:/config
-      - C:\backups\valheim:/config/backups
+      - H:\backups\valheim:/config/backups
     env_file:
       - C:\docker-volumes\valheim\valheim.env
     stop_grace_period: 2m
