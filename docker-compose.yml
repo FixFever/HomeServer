@@ -72,26 +72,6 @@ services:
       - M:\\nextcloud\trashbin\Marina:/var/www/html/data/Marina/files_trashbin/files
     restart: unless-stopped
     
-  # nextcloud2:
-    # image: nextcloud
-    # container_name: nextcloud2
-    # ports:
-      # - 5001:80
-    # environment:
-      # - POSTGRES_HOST=host.docker.internal:5432
-      # - POSTGRES_DB=${NEXTCLOUD_POSTGRES_DB}2
-      # - POSTGRES_USER=${POSTGRES_USER}
-      # - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      # - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
-      # - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
-      # - REDIS_HOST=redis
-    # depends_on:
-      # - postgres
-      # - redis
-    # volumes:
-      # - C:\\docker-volumes\nextcloud2:/var/www/html
-      # - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
-
   nextcloud_cron:
     image: nextcloud:latest
     container_name: nextcloud_cron
