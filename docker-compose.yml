@@ -15,6 +15,18 @@ version: '3.5'
 # Import   | docker-compose exec photoprism photoprism import
 
 services:
+    
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    ports:
+      - 3535:80
+      - 3536:443
+    volumes:
+      - C:\docker-volumes\heimdall:/config # change into www/.env APP_URL=your.domain.com
+    environment:
+      - TZ=Europe/Moscow
+    restart: unless-stopped
 
   postgres:
     image: postgres:14

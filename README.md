@@ -20,6 +20,7 @@
 ### Software
 
 * System: Windows 10 Pro
+* [Heimdall](https://github.com/linuxserver/Heimdall) application dashboard
 * [Plex](https://www.plex.tv/) with PlexPass lifetime
 * [Tautulli](https://github.com/Tautulli/Tautulli)
 * [qBittorrent](https://www.qbittorrent.org/)
