@@ -278,7 +278,7 @@ services:
       - LOG_FILE=/data/logs.txt
       - ADMIN_TOKEN=${VAULT_ADMIN_TOKEN}
       - DOMAIN=https://vault.fixfever.keenetic.pro
-      - SIGNUPS_ALLOWED=true
+      - SIGNUPS_ALLOWED=false
     restart: unless-stopped
     
   proxy:
