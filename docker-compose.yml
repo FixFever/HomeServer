@@ -289,4 +289,14 @@ services:
     ports:
       - 3434:80
     restart: unless-stopped
+
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    ports:
+      - 8181:8181
+    environment:
+      - TZ=Europe/Moscow
+    volumes:
+      - C:\docker-volumes\tautulli:/config
     restart: unless-stopped

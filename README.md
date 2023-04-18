@@ -21,6 +21,7 @@
 
 * System: Windows 10 Pro
 * [Plex](https://www.plex.tv/) with PlexPass lifetime
+* [Tautulli](https://github.com/Tautulli/Tautulli)
 * [qBittorrent](https://www.qbittorrent.org/)
   * Web UI by [qbit-matUI](https://github.com/bill-ahmed/qbit-matUI)
 * [Nextcloud](https://nextcloud.com/)
