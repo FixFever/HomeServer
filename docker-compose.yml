@@ -42,7 +42,7 @@ services:
     build:
       context: ./nextcloud/
       args:
-        NEXTCLOUD_IMAGE: nextcloud:25
+        NEXTCLOUD_IMAGE: nextcloud:latest
     container_name: nextcloud
     ports:
       - 5000:80
@@ -93,7 +93,7 @@ services:
       # - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
 
   nextcloud_cron:
-    image: nextcloud:25
+    image: nextcloud:latest
     container_name: nextcloud_cron
     volumes_from:
       - nextcloud:rw
@@ -191,7 +191,7 @@ services:
     restart: unless-stopped
     
   quake:
-    image: 'treyyoder/quakejs:latest'
+    image: treyyoder/quakejs:latest
     container_name: quake
     ports:
       - '8081:80'
@@ -203,7 +203,7 @@ services:
     restart: unless-stopped 
     
   valheim: 
-    image: 'ghcr.io/lloesche/valheim-server:latest'
+    image: ghcr.io/lloesche/valheim-server:latest
     container_name: valheim
     cap_add:
       - sys_nice
@@ -236,7 +236,7 @@ services:
     restart: unless-stopped
     
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:latest
     container_name: grafana
     ports:
       - 3000:3000
@@ -286,7 +286,7 @@ services:
     restart: "unless-stopped"
     
   vault:
-    image: vaultwarden/server:1.27.0-alpine
+    image: vaultwarden/server:latest
     container_name: vault
     ports:
       - "3012:3012"
@@ -306,7 +306,7 @@ services:
     # alternative: download https://github.com/ryanmab/CensorDodge and run "docker build . -t censordodge"
     # image: censordodge 
     container_name: proxy
-    restart: always
     ports:
       - 3434:80
+    restart: unless-stopped
     restart: unless-stopped
