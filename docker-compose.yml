@@ -312,3 +312,13 @@ services:
     volumes:
       - C:\docker-volumes\tautulli:/config
     restart: unless-stopped
+    
+  gokapi:
+    image: f0rc3/gokapi:latest
+    container_name: gokapi
+    ports:
+      - 53842:53842
+    volumes:
+      - C:\docker-volumes\gokapi\config:/app/config
+      - C:\docker-volumes\gokapi\data:/app/data
+    restart: unless-stopped
