@@ -57,6 +57,20 @@ finally{
 	Remove-Item -Path H:\backups\appdata-local-plex-media-server -Recurse -Force
 }
 
+# Zip documents
+try{
+	Copy-Item -Path "C:\Users\FixFever\Documents" -Destination "H:\backups\Documents" -Recurse -Force
+	Compress-Archive -LiteralPath "H:\backups\Documents" -DestinationPath "H:\backups\Documents.zip" -Force
+}
+catch {
+    Write-Host $_
+	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Create zip documents failed: " + $_)
+	return;
+}
+finally{
+	Remove-Item -Path H:\backups\Documents -Recurse -Force
+}
+
 }
 
 # Download keenetic running-config
