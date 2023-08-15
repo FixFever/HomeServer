@@ -50,11 +50,12 @@ services:
       - C:\\docker-volumes\redis:/data
     restart: unless-stopped
 
+# For update nextcloud delete images and pull
   nextcloud:
     build:
       context: ./nextcloud/
       args:
-        NEXTCLOUD_IMAGE: nextcloud:latest
+        NEXTCLOUD_IMAGE: nextcloud:27
     container_name: nextcloud
     ports:
       - 5000:80
@@ -85,7 +86,7 @@ services:
     restart: unless-stopped
     
   nextcloud_cron:
-    image: nextcloud:latest
+    image: nextcloud:27
     container_name: nextcloud_cron
     volumes_from:
       - nextcloud:rw
