@@ -21,6 +21,7 @@
 ### Software
 
 * System: Windows 10 Pro
+* [caddy-gen](https://github.com/wemake-services/caddy-gen) reverse proxy
 * [Heimdall](https://github.com/linuxserver/Heimdall) application dashboard
 * [Plex](https://www.plex.tv/) with PlexPass lifetime
 * [Tautulli](https://github.com/Tautulli/Tautulli)
@@ -36,7 +37,6 @@
 * [burn-after-reading](https://github.com/Tethik/burn-after-reading)
 * [I hate money](https://github.com/spiral-project/ihatemoney)
 * [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
-* [PHP-Proxy](https://github.com/dwaaan/PHP-Proxy-Docker)
 * [Gokapi](https://github.com/Forceu/Gokapi)
 * Monitoring 
   * [Prometheus](https://github.com/prometheus/prometheus)

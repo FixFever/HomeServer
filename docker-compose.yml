@@ -27,6 +27,24 @@ services:
     environment:
       - TZ=Europe/Moscow
     restart: unless-stopped
+    labels:
+      virtual.host: ${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
+    
+  caddy_gen:
+    container_name: caddy_gen
+    image: "wemakeservices/caddy-gen:latest"
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      CADDY_SNIPPET: /etc/caddy/caddy.snippet
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
+      - C:\docker-volumes\caddy\data:/data/caddy
+      - C:\docker-volumes\caddy\etc:/etc/caddy
+    restart: unless-stopped
 
   postgres:
     image: postgres:14
@@ -84,6 +102,10 @@ services:
       - M:\\nextcloud\trashbin\Boris:/var/www/html/data/Boris/files_trashbin/files
       - M:\\nextcloud\trashbin\Marina:/var/www/html/data/Marina/files_trashbin/files
     restart: unless-stopped
+    labels:
+      virtual.host: nextcloud.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
     
   nextcloud_cron:
     image: nextcloud:27
@@ -112,6 +134,10 @@ services:
     volumes:
       - C:\\docker-volumes\pgAdmin:/var/lib/pgadmin
     restart: unless-stopped
+    labels:
+      virtual.host: pgadmin.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
     
   photoprism:
     image: photoprism/photoprism:latest
@@ -164,7 +190,11 @@ services:
       # - "~/Import:/photoprism/import"                  # *Optional* base folder from which files can be imported to originals
       #- "./storage:/photoprism/storage"                  # *Writable* storage folder for cache, database, and sidecar files (DO NOT REMOVE)
     restart: unless-stopped
-
+    labels:
+      virtual.host: photoprism.${DOMAIN}
+      virtual.port: 2342
+      virtual.tls-email: ${TLS_EMAIL}
+      
   mariadb:
     image: mariadb:10.8
     container_name: mariadb
@@ -227,7 +257,11 @@ services:
     networks:
       - default
     restart: unless-stopped
-    
+    labels:
+      virtual.host: prometheus.${DOMAIN}
+      virtual.port: 9090
+      virtual.tls-email: ${TLS_EMAIL}
+      
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -246,7 +280,11 @@ services:
     networks:
       - default
     restart: unless-stopped
-
+    labels:
+      virtual.host: grafana.${DOMAIN}
+      virtual.port: 3000
+      virtual.tls-email: ${TLS_EMAIL}
+      
   secret:
     image: ghcr.io/tethik/burn-after-reading/burn-after-reading:1.5.1
     container_name: secret
@@ -259,12 +297,16 @@ services:
       - BURN_DATA_PATH=/opt/data/
       - BURN_MAX_STORAGE=1024
     restart: unless-stopped
-
+    labels:
+      virtual.host: secret.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
+      
   ihatemoney:
     image: ihatemoney/ihatemoney:latest
     container_name: ihatemoney
     ports:
-      - "8000:8000"
+      - 8000:8000
     volumes:
       - C:\docker-volumes\ihatemoney\database:/database
       - C:\docker-volumes\ihatemoney\config:/etc/ihatemoney
@@ -276,8 +318,12 @@ services:
       - BABEL_DEFAULT_TIMEZONE='Europe/Moscow'
       - SECRET_KEY=somekey
       - PORT=8000
-    restart: "unless-stopped"
-    
+    restart: unless-stopped
+    labels:
+      virtual.host: ihatemoney.${DOMAIN}
+      virtual.port: 8000
+      virtual.tls-email: ${TLS_EMAIL}
+      
   vault:
     image: vaultwarden/server:latest
     container_name: vault
@@ -293,16 +339,11 @@ services:
       - DOMAIN=https://vault.fixfever.keenetic.pro
       - SIGNUPS_ALLOWED=false
     restart: unless-stopped
-    
-  proxy:
-    image: dwaaan/php-proxy:latest
-    # alternative: download https://github.com/ryanmab/CensorDodge and run "docker build . -t censordodge"
-    # image: censordodge 
-    container_name: proxy
-    ports:
-      - 3434:80
-    restart: unless-stopped
-
+    labels:
+      virtual.host: vault.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
+      
   tautulli:
     image: lscr.io/linuxserver/tautulli:latest
     container_name: tautulli
@@ -313,7 +354,11 @@ services:
     volumes:
       - C:\docker-volumes\tautulli:/config
     restart: unless-stopped
-    
+    labels:
+      virtual.host: tautulli.${DOMAIN}
+      virtual.port: 8181
+      virtual.tls-email: ${TLS_EMAIL}
+      
   gokapi:
     image: f0rc3/gokapi:latest
     container_name: gokapi
@@ -323,3 +368,7 @@ services:
       - C:\docker-volumes\gokapi\config:/app/config
       - C:\docker-volumes\gokapi\data:/app/data
     restart: unless-stopped
+    labels:
+      virtual.host: gokapi.${DOMAIN}
+      virtual.port: 53842
+      virtual.tls-email: ${TLS_EMAIL}
