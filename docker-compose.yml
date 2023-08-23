@@ -337,7 +337,7 @@ services:
       - LOG_FILE=/data/logs.txt
       - ADMIN_TOKEN=${VAULT_ADMIN_TOKEN}
       - DOMAIN=https://vault.fixfever.keenetic.pro
-      - SIGNUPS_ALLOWED=false
+      - SIGNUPS_ALLOWED=true
     restart: unless-stopped
     labels:
       virtual.host: vault.${DOMAIN}
