@@ -57,6 +57,20 @@ finally{
 	Remove-Item -Path H:\backups\appdata-local-plex-media-server -Recurse -Force
 }
 
+# Zip tautulli data
+try{
+	Copy-Item -Path "$env:LOCALAPPDATA\Tautulli" -Destination "H:\backups\appdata-local-tautulli" -Recurse -Force
+	Compress-Archive -LiteralPath "H:\backups\appdata-local-tautulli" -DestinationPath "H:\backups\appdata-local-tautulli.zip" -Force
+}
+catch {
+    Write-Host $_
+	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Create zip tautulli failed: " + $_)
+	return;
+}
+finally{
+	Remove-Item -Path H:\backups\appdata-local-tautulli -Recurse -Force
+}
+
 # Zip documents
 try{
 	Copy-Item -Path "C:\Users\FixFever\Documents" -Destination "H:\backups\Documents" -Recurse -Force

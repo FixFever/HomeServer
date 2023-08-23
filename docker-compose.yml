@@ -343,22 +343,7 @@ services:
       virtual.host: vault.${DOMAIN}
       virtual.port: 80
       virtual.tls-email: ${TLS_EMAIL}
-      
-  tautulli:
-    image: lscr.io/linuxserver/tautulli:latest
-    container_name: tautulli
-    ports:
-      - 8181:8181
-    environment:
-      - TZ=Europe/Moscow
-    volumes:
-      - C:\docker-volumes\tautulli:/config
-    restart: unless-stopped
-    labels:
-      virtual.host: tautulli.${DOMAIN}
-      virtual.port: 8181
-      virtual.tls-email: ${TLS_EMAIL}
-      
+
   gokapi:
     image: f0rc3/gokapi:latest
     container_name: gokapi
