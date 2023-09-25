@@ -1,9 +1,11 @@
 # script for scheduler:
 # powershell -file "C:\git\server\Backup.ps1"
 
-$skipZip = $false;
+param(
+	[switch]$SkipZip = $false
+)
 
-if (!$skipZip){
+if (!$SkipZip){
 	
 # Zip docker volumes
 try{
