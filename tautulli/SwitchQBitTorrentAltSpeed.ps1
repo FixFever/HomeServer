@@ -1,0 +1,1 @@
+qbt global limit alternative --set $args[0] --username $Env:QBITTORRENT_USER --password $Env:QBITTORRENT_PASSWORD --url http://localhost:8080/
