@@ -1,0 +1,1 @@
+Get-ChildItem -Path M:\nextcloud -Include -*.* -Recurse -Force
