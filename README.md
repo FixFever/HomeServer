@@ -26,13 +26,12 @@
 * [Plex](https://www.plex.tv/) with PlexPass lifetime
 * [Tautulli](https://github.com/Tautulli/Tautulli)
 * [qBittorrent](https://www.qbittorrent.org/)
-  * Web UI by [qbit-matUI](https://github.com/bill-ahmed/qbit-matUI)
 * [Nextcloud](https://nextcloud.com/)
   * [previewgenerator](https://github.com/nextcloud/previewgenerator)
   * [memories](https://github.com/pulsejet/memories)
 * [Photoprism](https://photoprism.app/)
 * [Valheim](https://github.com/lloesche/valheim-server-docker) server
-* [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
+* [Minecraft](https://github.com/itzg/docker-minecraft-server) server
 * [QuakeJS](https://github.com/treyyoder/quakejs-docker) server
 * [burn-after-reading](https://github.com/Tethik/burn-after-reading)
 * [I hate money](https://github.com/spiral-project/ihatemoney)
@@ -42,6 +41,7 @@
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
   * [Grafana](https://github.com/grafana/grafana)
+* [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
   
 ### Remote backup storage
 * Router: Asus RT-N66U

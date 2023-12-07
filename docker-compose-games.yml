@@ -32,3 +32,21 @@ services:
       - C:\docker-volumes\valheim\valheim.env
     stop_grace_period: 2m
     restart: unless-stopped
+    
+  minecraft:
+    image: itzg/minecraft-server
+    container_name: minecraft
+    tty: true
+    stdin_open: true
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      ENABLE_AUTOPAUSE: "TRUE"
+      MAX_MEMORY: 3G
+    volumes:
+      - C:\docker-volumes\minecraft:/data
+    restart: unless-stopped
+    labels:
+      virtual.host: minecraft.${DOMAIN}
+      virtual.port: 25565
