@@ -16,6 +16,31 @@ version: '3.5'
 
 services:
     
+  caddy_gen:
+    container_name: caddy_gen
+    image: "wemakeservices/caddy-gen:latest"
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      CADDY_SNIPPET: /etc/caddy/caddy.snippet
+    depends_on:
+      - heimdall
+      - nextcloud
+      - pgadmin
+      - photoprism
+      - prometheus
+      - grafana
+      - secret
+      - ihatemoney
+      - vault
+      - gokapi
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
+      - C:\docker-volumes\caddy\data:/data/caddy
+      - C:\docker-volumes\caddy\etc:/etc/caddy
+    restart: unless-stopped
+    
   heimdall:
     image: lscr.io/linuxserver/heimdall:latest
     container_name: heimdall
@@ -32,42 +57,6 @@ services:
       virtual.port: 80
       virtual.tls-email: ${TLS_EMAIL}
     
-  caddy_gen:
-    container_name: caddy_gen
-    image: "wemakeservices/caddy-gen:latest"
-    ports:
-      - 80:80
-      - 443:443
-    environment:
-      CADDY_SNIPPET: /etc/caddy/caddy.snippet
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
-      - C:\docker-volumes\caddy\data:/data/caddy
-      - C:\docker-volumes\caddy\etc:/etc/caddy
-    restart: unless-stopped
-
-  postgres:
-    image: postgres:14
-    container_name: postgres
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_DB=${NEXTCLOUD_POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    volumes:
-      - C:\\docker-volumes\postgres:/var/lib/postgresql/data
-    restart: unless-stopped
-
-  redis:
-    image: redis:alpine
-    container_name: redis
-    ports:
-      - 6379:6379
-    volumes:
-      - C:\\docker-volumes\redis:/data
-    restart: unless-stopped
-
 # For update nextcloud delete images and pull
   nextcloud:
     build:
@@ -106,6 +95,28 @@ services:
       virtual.host: nextcloud.${DOMAIN}
       virtual.port: 80
       virtual.tls-email: ${TLS_EMAIL}
+      
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=${NEXTCLOUD_POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - C:\\docker-volumes\postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - C:\\docker-volumes\redis:/data
+    restart: unless-stopped
     
   nextcloud_cron:
     image: nextcloud:27
@@ -213,34 +224,6 @@ services:
       MARIADB_ROOT_PASSWORD: ${MARIADB_PASSWORD}
     restart: unless-stopped
     
-  quake:
-    image: treyyoder/quakejs:latest
-    container_name: quake
-    ports:
-      - '8081:80'
-      - '27960:27960'
-    environment:
-      - HTTP_PORT=8081
-    volumes:
-      - C:\\docker-volumes\quake:/quakejs/base
-    restart: unless-stopped 
-    
-  valheim: 
-    image: ghcr.io/lloesche/valheim-server:latest
-    container_name: valheim
-    cap_add:
-      - sys_nice
-    ports: 
-      - "2456-2457:2456-2457/udp"
-      - "9001:9001/tcp"
-    volumes: 
-      - C:\docker-volumes\valheim:/config
-      - H:\backups\valheim:/config/backups
-    env_file:
-      - C:\docker-volumes\valheim\valheim.env
-    stop_grace_period: 2m
-    restart: unless-stopped
-
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
