@@ -62,7 +62,7 @@ services:
     build:
       context: ./nextcloud/
       args:
-        NEXTCLOUD_IMAGE: nextcloud:27
+        NEXTCLOUD_IMAGE: nextcloud:28
     container_name: nextcloud
     ports:
       - 5000:80
@@ -119,7 +119,7 @@ services:
     restart: unless-stopped
     
   nextcloud_cron:
-    image: nextcloud:27
+    image: nextcloud:28
     container_name: nextcloud_cron
     volumes_from:
       - nextcloud:rw
