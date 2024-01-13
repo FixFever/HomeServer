@@ -2,6 +2,7 @@
 
 ### Hardware
 * Case: [Jonsbo N1](https://www.jonsbo.com/en/products/N1.html)
+  * HDD fan replaced to [be quiet! SILENT WINGS 4 140mm PWM high-speed](https://www.bequiet.com/ru/casefans/3704) 
 * Motherboard: [Asrock B660M ITX/AC](https://www.asrock.com/MB/Intel/B660M-ITXac/index.ru.asp)
   * with installed [PCI-E 1x to 2 SATA ports expansion card](https://aliexpress.ru/item/1005003346314019.html)
 * CPU: [Intel Core i5-12400](https://ark.intel.com/content/www/ru/ru/ark/products/134586/intel-core-i512400-processor-18m-cache-up-to-4-40-ghz.html)
