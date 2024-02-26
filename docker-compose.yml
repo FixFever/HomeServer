@@ -79,8 +79,8 @@ services:
       - postgres
       - redis
     volumes:
-      - C:\\docker-volumes\nextcloud\html:/var/www/html
-      - C:\\docker-volumes\nextcloud\php:/usr/local/etc/php
+      - nextcloud_html:/var/www/html
+      - nextcloud_php:/usr/local/etc/php
       - C:\\docker-caches\nextcloud\preview:/var/www/html/data/appdata_ocah283m7og5/preview
       - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
       - M:\\nextcloud\Elya:/var/www/html/data/Elya/files
@@ -358,3 +358,9 @@ services:
     labels:
       virtual.host: minecraft.${DOMAIN}
       virtual.port: 25565
+      
+volumes:
+  nextcloud_html:
+    external: true
+  nextcloud_php:
+    external: true
