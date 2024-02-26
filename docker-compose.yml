@@ -37,8 +37,9 @@ services:
       - gokapi
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
-      - C:\docker-volumes\caddy\data:/data/caddy
+      - C:\docker-volumes\caddy\data:/data
       - C:\docker-volumes\caddy\etc:/etc/caddy
+      - C:\docker-volumes\caddy\config:/config
     restart: unless-stopped
     
   heimdall:
