@@ -11,9 +11,8 @@ if (!$SkipZip){
 try{
 	docker-compose stop
 	
-	Compress-Archive -LiteralPath "C:\docker-volumes" -DestinationPath "H:\backups\docker-volumes.zip" -Force
-	Compress-Archive -LiteralPath "H:\docker-volumes" -DestinationPath "H:\backups\docker-volumes_hdd.zip" -Force
 	Get-ChildItem -Path \\wsl$\docker-desktop-data\data\docker\volumes -Directory | Foreach-Object { Compress-Archive -LiteralPath $_.FullName -DestinationPath "H:\backups\docker-volumes\$_.zip" -Force }
+	Get-ChildItem -Path "H:\docker-volumes" -Directory | Foreach-Object { Compress-Archive -LiteralPath $_.FullName -DestinationPath "H:\backups\docker-volumes-hdd\$_.zip" -Force }
 }
 catch {
     Write-Host $_

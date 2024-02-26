@@ -4,7 +4,7 @@
 try{
 	
 docker-compose stop minecraft
-Compress-Archive -LiteralPath "C:\docker-volumes\minecraft" -DestinationPath "H:\minecraft_backups\$(Get-Date -Format 'MMddyyyyHHmm').zip"
+Compress-Archive -LiteralPath \\wsl$\docker-desktop-data\data\docker\volumes\minecraft -DestinationPath "H:\minecraft_backups\$(Get-Date -Format 'MMddyyyyHHmm').zip"
 Get-ChildItem -Recurse -Path "H:\minecraft_backups" | Where-Object -Property CreationTime -lt (Get-Date).AddDays(-30) | Remove-Item
 
 }
