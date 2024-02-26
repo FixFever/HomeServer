@@ -37,9 +37,9 @@ services:
       - gokapi
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
-      - C:\docker-volumes\caddy\data:/data
-      - C:\docker-volumes\caddy\etc:/etc/caddy
-      - C:\docker-volumes\caddy\config:/config
+      - caddy_data:/data
+      - caddy_etc:/etc/caddy
+      - caddy_config:/config
     restart: unless-stopped
     
   heimdall:
@@ -49,7 +49,7 @@ services:
       - 3535:80
       - 3536:443
     volumes:
-      - C:\docker-volumes\heimdall:/config # change into www/.env APP_URL=your.domain.com
+      - heimdall:/config # change into www/.env APP_URL=your.domain.com
     environment:
       - TZ=Europe/Moscow
     restart: unless-stopped
@@ -107,7 +107,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
-      - C:\\docker-volumes\postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
 
   redis:
@@ -116,7 +116,7 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - C:\\docker-volumes\redis:/data
+      - redis_data:/data
     restart: unless-stopped
     
   nextcloud_cron:
@@ -144,7 +144,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - C:\\docker-volumes\pgAdmin:/var/lib/pgadmin
+      - pgadmin:/var/lib/pgadmin
     restart: unless-stopped
     labels:
       virtual.host: pgadmin.${DOMAIN}
@@ -192,7 +192,7 @@ services:
       PHOTOPRISM_WORKERS: 6                          # maximum NUMBER of indexing workers, default depends on the number of physical cores
     working_dir: "/photoprism" # do not change or remove
     volumes:
-      - C:\\docker-volumes\photoprism:/photoprism
+      - photoprism:/photoprism
       - C:\\docker-caches\photoprism\cache:/photoprism/storage/cache
       - C:\\docker-caches\photoprism\sidecar:/photoprism/storage/sidecar
       - M:\\nextcloud\FixFever\Фото:/photoprism/originals
@@ -215,7 +215,7 @@ services:
       - apparmor:unconfined
     command: mysqld --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
     volumes:
-      - C:\\docker-volumes\mariadb:/var/lib/mysql
+      - mariadb:/var/lib/mysql
     environment:
       MARIADB_AUTO_UPGRADE: "1"
       MARIADB_INITDB_SKIP_TZINFO: "1"
@@ -234,7 +234,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - C:\docker-volumes\prometheus:/etc/prometheus
+      - prometheus_etc:/etc/prometheus
       - H:\docker-volumes\prometheus:/prometheus
     environment:
       TZ: "Europe/Moscow"
@@ -254,8 +254,8 @@ services:
     depends_on:
       - prometheus
     volumes:
-      - C:\docker-volumes\grafana\var-lib-grafana:/var/lib/grafana
-      - C:\docker-volumes\grafana\provisioning:/etc/grafana/provisioning/
+      - grafana_lib:/var/lib/grafana
+      - grafana_provisioning:/etc/grafana/provisioning/
     environment:
       TZ: "Europe/Moscow"
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
@@ -275,7 +275,7 @@ services:
     ports:
       - 5035:80
     volumes:
-      - C:\docker-volumes\secret:/opt/data
+      - secret:/opt/data
     environment:     
       - MAX_CONTENT_LENGTH=134217728
       - BURN_DATA_PATH=/opt/data/
@@ -292,8 +292,8 @@ services:
     ports:
       - 8000:8000
     volumes:
-      - C:\docker-volumes\ihatemoney\database:/database
-      - C:\docker-volumes\ihatemoney\config:/etc/ihatemoney
+      - ihatemoney_database:/database
+      - ihatemoney_etc:/etc/ihatemoney
     environment:
       - ACTIVATE_ADMIN_DASHBOARD=True
       - ACTIVATE_DEMO_PROJECT=False
@@ -315,7 +315,7 @@ services:
       - "3012:3012"
       - "8282:80"
     volumes:
-      - C:\docker-volumes\vault:/data
+      - vault:/data
     environment:
       - WEBSOCKET_ENABLED=true
       - LOG_FILE=/data/logs.txt
@@ -334,8 +334,8 @@ services:
     ports:
       - 53842:53842
     volumes:
-      - C:\docker-volumes\gokapi\config:/app/config
-      - C:\docker-volumes\gokapi\data:/app/data
+      - gokapi_config:/app/config
+      - gokapi_data:/app/data
     restart: unless-stopped
     labels:
       virtual.host: gokapi.${DOMAIN}
@@ -343,7 +343,59 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
 
 volumes:
+
+  caddy_config:
+    external: true
+  caddy_data:
+    external: true
+  caddy_etc:
+    external: true
+    
+  heimdall:
+    external: true
+ 
   nextcloud_html:
     external: true
   nextcloud_php:
+    external: true
+    
+  postgres_data:
+    external: true
+    
+  redis_data:
+    external: true
+    
+  pgadmin:
+    external: true
+    
+  photoprism:
+    external: true
+    
+  mariadb:
+    external: true
+    
+  prometheus_etc:
+    external: true
+    
+  grafana_lib:
+    external: true
+  grafana_provisioning:
+    external: true
+    
+  secret:
+    external: true
+    
+  ihatemoney_database:
+    external: true
+    
+  ihatemoney_etc:
+    external: true
+    
+  vault:
+    external: true
+    
+  gokapi_config:
+    external: true
+  gokapi_data:
+    external: true
     external: true

@@ -11,7 +11,7 @@ services:
     environment:
       - HTTP_PORT=8081
     volumes:
-      - C:\docker-volumes\quake:/quakejs/base
+      - quake:/quakejs/base
     restart: unless-stopped 
     labels:
       virtual.host: quake.${DOMAIN}
@@ -26,10 +26,10 @@ services:
       - "2456-2457:2456-2457/udp"
       - "9001:9001/tcp"
     volumes: 
-      - C:\docker-volumes\valheim:/config
+      - valheim:/config
       - H:\backups\valheim:/config/backups
     env_file:
-      - C:\docker-volumes\valheim\valheim.env
+      - C:\Users\FixFever\Documents\valheim.env
     stop_grace_period: 2m
     restart: unless-stopped
     
@@ -45,8 +45,19 @@ services:
       ENABLE_AUTOPAUSE: "TRUE"
       MAX_MEMORY: 3G
     volumes:
-      - C:\docker-volumes\minecraft:/data
+      - minecraft:/data
     restart: unless-stopped
     labels:
       virtual.host: minecraft.${DOMAIN}
       virtual.port: 25565
+ 
+volumes:
+ 
+  quake:
+    external: true
+    
+  valheim:
+    external: true
+    
+  minecraft:
+    external: true
