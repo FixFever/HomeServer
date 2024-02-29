@@ -17,6 +17,7 @@
 * Router: [Keenetic Giga](https://keenetic.ru/ru/keenetic-giga)
   * [DDNS](https://help.keenetic.com/hc/ru/articles/360000400919-%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D0%B5%D0%BD-KeenDNS)
   * Selective blocking bypass through WireGuard VPN using [Bird4Static](https://github.com/DennoN-RUS/Bird4Static)
+* IP-Camera: [TP-Link Tapo C225](https://www.tp-link.com/ru/home-networking/cloud-camera/tapo-c225/)
 * UPS: [CyberPower CP1300EPFCLCD](https://www.cyberpower.com/ru/ru/product/sku/cp1300epfclcd)
 
 ### Software
@@ -38,6 +39,8 @@
 * [I hate money](https://github.com/spiral-project/ihatemoney)
 * [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
 * [Gokapi](https://github.com/Forceu/Gokapi)
+* [Kerberos Agent](https://kerberos.io/product/agent/)
+* [Restereamer](https://datarhei.github.io/restreamer/)
 * Monitoring 
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)

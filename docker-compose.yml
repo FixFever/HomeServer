@@ -35,6 +35,8 @@ services:
       - ihatemoney
       - vault
       - gokapi
+      - kerberos
+      - restreamer
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
       - caddy_data:/data
@@ -342,6 +344,37 @@ services:
       virtual.port: 53842
       virtual.tls-email: ${TLS_EMAIL}
 
+  kerberos:
+    image: kerberos/agent:latest
+    container_name: kerberos
+    ports:
+      - 8082:80
+    environment:
+      AGENT_USERNAME: ${KERBEROS_USERNAME}
+      AGENT_PASSWORD: ${KERBEROS_PASSWORD}
+    volumes:
+      - kerberos_config:/home/agent/data/config
+      - H:\kerberos:/home/agent/data/recordings
+    restart: unless-stopped
+    labels:
+      virtual.host: kerberos.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
+      
+  restreamer:
+    image: datarhei/restreamer:latest
+    container_name: restreamer
+    ports:
+      - 8084:8080
+    volumes:
+      - restreamer_config:/core/config
+      - restreamer_data:/core/data
+    restart: unless-stopped
+    labels:
+      virtual.host: restreamer.${DOMAIN}
+      virtual.port: 8080
+      virtual.tls-email: ${TLS_EMAIL}
+
 volumes:
 
   caddy_config:
@@ -398,4 +431,11 @@ volumes:
     external: true
   gokapi_data:
     external: true
+    
+  kerberos_config:
+    external: true
+    
+  restreamer_config:
+    external: true
+  restreamer_data:
     external: true
