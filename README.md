@@ -17,6 +17,7 @@
 * Router: [Keenetic Ultra KN-1811](https://keenetic.ru/ru/keenetic-ultra-kn-1811)
   * [OPKG Entware](https://help.keenetic.com/hc/ru/articles/360000948719-OPKG)
   * Selective blocking bypass through WireGuard VPN using [Bird4Static](https://github.com/DennoN-RUS/Bird4Static)
+  * [DDNS](https://help.keenetic.com/hc/ru/articles/360000400919-%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D0%B5%D0%BD-KeenDNS)
 * IP-Camera: [TP-Link Tapo C225](https://www.tp-link.com/ru/home-networking/cloud-camera/tapo-c225/)
 * UPS: [CyberPower CP1300EPFCLCD](https://www.cyberpower.com/ru/ru/product/sku/cp1300epfclcd)
 
@@ -56,4 +57,4 @@
   
 ### VPS
 * VPS in Amsterdam by [Virmach](https://virmach.com/)
-* [WireGuard](https://www.wireguard.com/) VPN server (installer by [angristan](https://github.com/angristan/wireguard-install))
+* [WireGuard](https://www.wireguard.com/) VPN server
