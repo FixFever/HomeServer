@@ -46,12 +46,12 @@
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
   * [Grafana](https://github.com/grafana/grafana)
-* [WinSCP](https://winscp.net/eng/index.php) - for backups by FTP
+* [WinSCP](https://winscp.net/eng/index.php) - for backups by WebDAV
   
 ### Remote backup storage
-* Router: Asus RT-N66U
-  * DDNS
-  * FTP
+* Router: [Keenetic Giga KN-1010](https://keenetic.ru/ru/keenetic-giga-kn-1010)
+  * WebDAV
+  * [DDNS](https://help.keenetic.com/hc/ru/articles/360000400919-%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D0%B5%D0%BD-KeenDNS)
 * Storages:
   * 4TB [Seagate Skyhawk ST4000VX013](https://www.seagate.com/files/www-content/datasheets/pdfs/skyhawk-ai-DS1960-14C-2204RU-ru_RU.pdf)
   

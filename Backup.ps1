@@ -108,9 +108,9 @@ try{
 	
     winscp /log=$logs /ini=nul `
         /command `
-    "open ftp://${Env:FTP_USER}:${Env:FTP_PASSWORD}@${Env:FTP_HOST}/ -rawsettings ProxyPort=0" `
-	    "synchronize remote M:\\nextcloud Backup/Backup/nextcloud -delete -criteria=size" `
-		"synchronize remote H:\\backups Backup/Backup/backups -delete -criteria=size" `
+    "open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -rawsettings ProxyPort=0" `
+	    "synchronize remote M:\\nextcloud nextcloud -delete -criteria=size" `
+		"synchronize remote H:\\backups backups -delete -criteria=size" `
         "exit"
 
     $winscpResult = $LastExitCode
