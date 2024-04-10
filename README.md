@@ -42,6 +42,7 @@
 * [Gokapi](https://github.com/Forceu/Gokapi)
 * [Kerberos Agent](https://kerberos.io/product/agent/)
 * [Restereamer](https://datarhei.github.io/restreamer/)
+* [Chromium with NoVNC](https://github.com/foshboi/chromenovnc)
 * Monitoring 
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
