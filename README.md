@@ -14,6 +14,7 @@
   * NVMe M.2 SSD: [Samsung 970 EVO Plus 500GB](https://www.samsung.com/ru/memory-storage/nvme-ssd/970-evo-plus-500gb-mz-v7s500bw/) - System
   * 1x 16TB [Seagate Exos X18 ST16000NM000J](https://www.seagate.com/content/dam/seagate/migrated-assets/www-content/datasheets/pdfs/exos-x18-channel-DS2045-4-2106US-en_US.pdf) - Plex libraries: movies, series, torrents
   * RAID 1: 2x 4TB [WD Blue WD40EZAZ-00SF3B0](https://www.westerndigital.com/ru-ru/products/internal-drives/wd-blue-desktop-sata-hdd#WD5000AZLX) - Cloud: photo, docs, etc.
+  * 1х 1TB [Seagate Barracuda 7200.12](https://www.seagate.com/docs/pdf/ru-RU/datasheet/disc/barracuda-7200-12-ds1668-6-1101ru.pdf) - backups, prometheus data
 * Router: [Keenetic Ultra KN-1811](https://keenetic.ru/ru/keenetic-ultra-kn-1811)
   * [OPKG Entware](https://help.keenetic.com/hc/ru/articles/360000948719-OPKG)
   * Selective blocking bypass through WireGuard VPN using [Bird4Static](https://github.com/DennoN-RUS/Bird4Static)
