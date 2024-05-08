@@ -389,6 +389,79 @@ services:
       virtual.port: 9870
       virtual.tls-email: ${TLS_EMAIL}
 
+  notes:
+    image: standardnotes/web
+    container_name: notes
+    depends_on:
+      - notes_backend
+    ports:
+      - 3003:80
+    restart: unless-stopped
+    labels:
+      virtual.host: notes.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
+      
+  notes_backend:
+    image: standardnotes/server
+    container_name: notes_backend
+    depends_on:
+      - localstack
+      - mysql
+    ports:
+      - 3002:3000
+      - 3125:3104
+    environment:
+      - DB_HOST=host.docker.internal
+      - DB_PORT=3306
+      - DB_USERNAME=${NOTES_DB_USERNAME}
+      - DB_PASSWORD=${NOTES_DB_PASSWORD}
+      - DB_DATABASE=${NOTES_DB_NAME}
+      - DB_TYPE=mysql
+      - REDIS_PORT=6379
+      - REDIS_HOST=host.docker.internal
+      - CACHE_TYPE=redis
+      - AUTH_JWT_SECRET=${NOTES_AUTH_JWT_SECRET}
+      - AUTH_SERVER_ENCRYPTION_SERVER_KEY=${NOTES_AUTH_SERVER_ENCRYPTION_SERVER_KEY}
+      - VALET_TOKEN_SECRET=${NOTES_VALET_TOKEN_SECRET}
+      - DISABLE_USER_REGISTRATION=true
+    volumes:
+      - notes_logs:/var/lib/server/logs
+      - notes_uploads:/opt/server/packages/files/dist/uploads
+    restart: unless-stopped
+    labels:
+      virtual.host: backend.notes.${DOMAIN}
+      virtual.port: 3000
+      virtual.tls-email: ${TLS_EMAIL}
+
+  localstack:
+    image: localstack/localstack:3.0
+    container_name: localstack
+    expose:
+      - 4566
+    environment:
+      - SERVICES=sns,sqs
+      - HOSTNAME_EXTERNAL=localstack
+      - LS_LOG=warn
+    restart: unless-stopped
+    volumes:
+      - localstack:/var/lib/localstack
+      - localstack_etc:/etc/localstack/init/ready.d # chmod +x /etc/localstack/init/ready.d/localstack_bootstrap.sh
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      - MYSQL_DATABASE=${NOTES_DB_NAME}
+      - MYSQL_USER=${NOTES_DB_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${NOTES_DB_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    restart: unless-stopped
+      
 volumes:
 
   caddy_config:
@@ -452,4 +525,17 @@ volumes:
   restreamer_config:
     external: true
   restreamer_data:
+    external: true
+    
+  notes_logs:
+    external: true
+  notes_uploads:
+    external: true
+  localstack:
+    external: true
+  localstack_etc:
+    external: true
+  mysql:
+    external: true
+  mysql_import:
     external: true
