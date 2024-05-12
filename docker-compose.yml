@@ -393,7 +393,7 @@ services:
     image: standardnotes/web
     container_name: notes
     depends_on:
-      - notes_backend
+      - notes_api
     ports:
       - 3003:80
     restart: unless-stopped
@@ -402,9 +402,9 @@ services:
       virtual.port: 80
       virtual.tls-email: ${TLS_EMAIL}
       
-  notes_backend:
+  notes_api:
     image: standardnotes/server
-    container_name: notes_backend
+    container_name: notes_api
     depends_on:
       - localstack
       - mysql
@@ -430,7 +430,7 @@ services:
       - notes_uploads:/opt/server/packages/files/dist/uploads
     restart: unless-stopped
     labels:
-      virtual.host: backend.notes.${DOMAIN}
+      virtual.host: api.notes.${DOMAIN}
       virtual.port: 3000
       virtual.tls-email: ${TLS_EMAIL}
 
