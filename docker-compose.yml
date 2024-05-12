@@ -1,5 +1,3 @@
-version: '3.5'
-
 # Start    | docker-compose up -d
 # Stop     | docker-compose stop
 # Update   | docker-compose pull
@@ -396,6 +394,13 @@ services:
       - notes_api
     ports:
       - 3003:80
+    volumes:
+      - notes_html:/usr/share/nginx/html # Env var DEFAULT_SYNC_SERVER is not supported in web app docker image.
+                                         # To change default url of standard notes api, in /usr/share/nginx/html/app.js:
+                                         # replace
+                                         # function(e){e.Api="https://api.standardnotes.com"
+                                         # to
+                                         # function(e){e.Api="https://api.notes.fixfever.ru"
     restart: unless-stopped
     labels:
       virtual.host: notes.${DOMAIN}
@@ -527,6 +532,8 @@ volumes:
   restreamer_data:
     external: true
     
+  notes_html:
+    external: true
   notes_logs:
     external: true
   notes_uploads:
