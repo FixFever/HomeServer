@@ -11,7 +11,7 @@ if (!$SkipZip){
 	try{
 		docker-compose stop
 		
-		Get-ChildItem -Path \\wsl$\docker-desktop-data\data\docker\volumes -Directory | Foreach-Object { Compress-Archive -LiteralPath $_.FullName -DestinationPath "H:\backups\docker-volumes\$_.zip" -Force }
+		Get-ChildItem -Path \\wsl$\docker-desktop-data\data\docker\volumes -Directory | Foreach-Object { docker run --rm -v "${_}:/data" -v "H:\backups\docker-volumes:/docker-volumes" ubuntu tar cvzf "/docker-volumes/${_}.tar.gz" /data }
 	}
 	catch {
 		Write-Host $_
