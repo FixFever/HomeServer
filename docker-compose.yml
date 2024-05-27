@@ -466,6 +466,22 @@ services:
     volumes:
       - mysql:/var/lib/mysql
     restart: unless-stopped
+    
+  valheim:
+    image: ghcr.io/lloesche/valheim-server:latest
+    container_name: valheim
+    cap_add:
+      - sys_nice
+    ports: 
+      - "2458-2459:2458-2459/udp" # default ports 2456-2457
+      - "9001:9001/tcp"
+    volumes: 
+      - valheim:/config
+      - H:\backups\valheim:/config/backups
+    env_file:
+      - C:\Users\FixFever\Documents\valheim.env
+    stop_grace_period: 2m
+    restart: unless-stopped
       
 volumes:
 
@@ -545,4 +561,7 @@ volumes:
   mysql:
     external: true
   mysql_import:
+    external: true
+        
+  valheim:
     external: true

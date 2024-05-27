@@ -16,22 +16,6 @@ services:
     labels:
       virtual.host: quake.${DOMAIN}
       virtual.port: 80
-      
-  valheim: 
-    image: ghcr.io/lloesche/valheim-server:latest
-    container_name: valheim
-    cap_add:
-      - sys_nice
-    ports: 
-      - "2456-2457:2456-2457/udp"
-      - "9001:9001/tcp"
-    volumes: 
-      - valheim:/config
-      - H:\backups\valheim:/config/backups
-    env_file:
-      - C:\Users\FixFever\Documents\valheim.env
-    stop_grace_period: 2m
-    restart: unless-stopped
     
   minecraft:
     image: itzg/minecraft-server
@@ -54,9 +38,6 @@ services:
 volumes:
  
   quake:
-    external: true
-    
-  valheim:
     external: true
     
   minecraft:
