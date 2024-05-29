@@ -245,6 +245,8 @@ services:
       virtual.host: prometheus.${DOMAIN}
       virtual.port: 9090
       virtual.tls-email: ${TLS_EMAIL}
+      virtual.auth.username: ${PROMETHEUS_USERNAME}
+      virtual.auth.password: ${PROMETHEUS_PASSWORD}
       
   grafana:
     image: grafana/grafana:latest
