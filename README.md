@@ -26,6 +26,7 @@
 
 * System: Windows 10 Pro
 * [caddy-gen](https://github.com/wemake-services/caddy-gen) reverse proxy
+* [homepage](https://github.com/gethomepage/homepage)
 * [Heimdall](https://github.com/linuxserver/Heimdall) application dashboard
 * [Plex](https://www.plex.tv/) with PlexPass lifetime
 * [Tautulli](https://github.com/Tautulli/Tautulli)
