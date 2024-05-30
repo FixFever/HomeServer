@@ -63,6 +63,9 @@ services:
       - homepage_images:/app/public/images
       - homepage_icons:/app/public/icons
       - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
+      - H:\docker-volume:/disk/H
+      - M:\docker-volume:/disk/M
+      - P:\docker-volume:/disk/P
     restart: unless-stopped
     labels:
       virtual.host: ${DOMAIN}
