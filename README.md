@@ -44,7 +44,7 @@
 * [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
 * [Gokapi](https://github.com/Forceu/Gokapi)
 * [Kerberos Agent](https://kerberos.io/product/agent/)
-* [Restereamer](https://datarhei.github.io/restreamer/)
+* [Restreamer](https://datarhei.github.io/restreamer/)
 * [Chromium with NoVNC](https://github.com/foshboi/chromenovnc)
 * [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app)
 * Monitoring 
