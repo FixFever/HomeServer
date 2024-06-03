@@ -358,10 +358,10 @@ services:
       homepage.icon: grafana.png
       homepage.href: https://grafana.${DOMAIN}
       homepage.description: Data visualization & Monitoring
-      homepage.widget.type: grafana
-      homepage.widget.url: http://host.docker.internal:3000
-      homepage.widget.username: ${GRAFANA_ADMIN_USER}
-      homepage.widget.password: ${GRAFANA_ADMIN_PASSWORD}
+      # homepage.widget.type: grafana
+      # homepage.widget.url: http://host.docker.internal:3000
+      # homepage.widget.username: ${GRAFANA_ADMIN_USER}
+      # homepage.widget.password: ${GRAFANA_ADMIN_PASSWORD}
       
   secret:
     image: ghcr.io/tethik/burn-after-reading/burn-after-reading:1.5.1
