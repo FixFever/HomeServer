@@ -38,8 +38,6 @@
   * [memories](https://github.com/pulsejet/memories)
 * [Photoprism](https://photoprism.app/)
 * [Valheim](https://github.com/lloesche/valheim-server-docker) server
-* [Minecraft](https://github.com/itzg/docker-minecraft-server) server
-* [QuakeJS](https://github.com/treyyoder/quakejs-docker) server
 * [burn-after-reading](https://github.com/Tethik/burn-after-reading)
 * [I hate money](https://github.com/spiral-project/ihatemoney)
 * [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
@@ -52,6 +50,7 @@
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
   * [Grafana](https://github.com/grafana/grafana)
+  * [Glances](https://github.com/nicolargo/glances)
 * [WinSCP](https://winscp.net/eng/index.php) - for backups by WebDAV
   
 ### Remote backup storage
