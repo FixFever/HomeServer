@@ -675,6 +675,24 @@ services:
       homepage.href: https://cobalt.${DOMAIN}
       homepage.description: Media downloader
       
+  speedtest:
+    image: ghcr.io/librespeed/speedtest:latest
+    container_name: speedtest
+    ports:
+      - 5444:80
+    environment:
+      - MODE=standalone
+    restart: unless-stopped
+    labels:
+      virtual.host: speedtest.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Utilities
+      homepage.name: LibreSpeed
+      homepage.icon: librespeed.png
+      homepage.href: https://speedtest.${DOMAIN}
+      homepage.description: Speed test
+      
 volumes:
 
   caddy_config:

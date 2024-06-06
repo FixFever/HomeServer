@@ -47,6 +47,7 @@
 * [Chromium with NoVNC](https://github.com/foshboi/chromenovnc)
 * [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app)
 * [Cobalt](https://github.com/imputnet/cobalt)
+* [LibreSpeed](https://github.com/librespeed/speedtest)
 * Monitoring 
   * [Prometheus](https://github.com/prometheus/prometheus)
     * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
