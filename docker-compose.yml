@@ -639,7 +639,42 @@ services:
       homepage.widget.mappings[1].field: player_count
       homepage.widget.mappings[1].label: Players online
       homepage.widget.mappings[1].format: text
-
+      
+  cobalt_api:
+    image: ghcr.io/imputnet/cobalt:latest
+    container_name: cobalt_api
+    ports:
+      - 9002:9000/tcp
+    environment:
+      - API_URL=https://api.cobalt.${DOMAIN}/
+    restart: unless-stopped
+    labels:
+      virtual.host: api.cobalt.${DOMAIN}
+      virtual.port: 9000
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Containers
+      homepage.name: Cobalt api
+      homepage.icon: https://cobalt.${DOMAIN}/icons/favicon.ico
+      
+  cobalt:
+    image: ghcr.io/imputnet/cobalt:latest
+    container_name: cobalt
+    ports:
+      - 9003:9001/tcp
+    environment:
+      - WEB_URL=https://cobalt.${DOMAIN}/
+      - API_URL=https://api.cobalt.${DOMAIN}/
+    restart: unless-stopped
+    labels:
+      virtual.host: cobalt.${DOMAIN}
+      virtual.port: 9001
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Utilities
+      homepage.name: Cobalt
+      homepage.icon: https://cobalt.${DOMAIN}/icons/favicon.ico
+      homepage.href: https://cobalt.${DOMAIN}
+      homepage.description: Media downloader
+      
 volumes:
 
   caddy_config:
