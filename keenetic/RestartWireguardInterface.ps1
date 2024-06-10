@@ -1,5 +1,5 @@
 # script for scheduler:
-# powershell -WindowStyle hidden -file "C:\git\server\keenetic\RestartWireguardInterface.ps1"
+# pwsh -WindowStyle hidden -file "C:\git\server\keenetic\RestartWireguardInterface.ps1"
 
 $wireguardState = wsl sshpass -p "$Env:KEENETIC_PASSWORD" ssh $Env:KEENETIC_LOGIN@192.168.1.1 -p $Env:KEENETIC_PORT 'show interface Wireguard0'
 

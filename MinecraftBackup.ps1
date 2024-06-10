@@ -1,5 +1,5 @@
 # script for scheduler:
-# powershell -file "C:\git\server\MinecraftBackup.ps1"
+# pwsh -file "C:\git\server\MinecraftBackup.ps1"
 
 try{
 	

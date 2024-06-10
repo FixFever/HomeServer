@@ -1,5 +1,5 @@
 # script for scheduler:
-# powershell -file "C:\git\server\Backup.ps1"
+# pwsh -file "C:\git\server\Backup.ps1"
 
 param(
 	[switch]$SkipZip = $false

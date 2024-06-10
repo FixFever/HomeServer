@@ -1,1 +1,1 @@
-powershell -file "C:\git\server\Backup.ps1" -SkipZip
+pwsh -file "C:\git\server\Backup.ps1" -SkipZip
