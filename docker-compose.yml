@@ -232,7 +232,7 @@ services:
       PHOTOPRISM_AUTH_MODE: "password"               
       PHOTOPRISM_SESSION_MAXAGE: -1
       PHOTOPRISM_SESSION_TIMEOUT: -1
-      PHOTOPRISM_SITE_URL: "https://photoprism.fixfever.keenetic.pro/"  # public server URL incl http:// or https:// and /path, :port is optional
+      PHOTOPRISM_SITE_URL: https://photoprism.${DOMAIN}  # public server URL incl http:// or https:// and /path, :port is optional
       PHOTOPRISM_ORIGINALS_LIMIT: 5000               # file size limit for originals in MB (increase for high-res video)
       PHOTOPRISM_HTTP_COMPRESSION: "gzip"            # improves transfer speed and bandwidth utilization (none or gzip)
       PHOTOPRISM_LOG_LEVEL: "info"                   # log level: trace, debug, info, warning, error, fatal, or panic
