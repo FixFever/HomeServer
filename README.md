@@ -44,7 +44,7 @@
 * [Gokapi](https://github.com/Forceu/Gokapi)
 * [Kerberos Agent](https://kerberos.io/product/agent/)
 * [Restreamer](https://datarhei.github.io/restreamer/)
-* [Chromium with NoVNC](https://github.com/foshboi/chromenovnc)
+* [Chromium with NoVNC](https://github.com/vital987/chrome-novnc)
 * [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app)
 * [Cobalt](https://github.com/imputnet/cobalt)
 * [LibreSpeed](https://github.com/librespeed/speedtest)

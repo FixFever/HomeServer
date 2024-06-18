@@ -1,17 +1,3 @@
-# Start    | docker-compose up -d
-# Stop     | docker-compose stop
-# Update   | docker-compose pull
-# Logs     | docker-compose logs --tail=25 -f
-# Terminal | docker-compose exec photoprism bash
-# Help     | docker-compose exec photoprism photoprism help
-# Config   | docker-compose exec photoprism photoprism config
-# Reset    | docker-compose exec photoprism photoprism reset
-# Backup   | docker-compose exec photoprism photoprism backup -a -i
-# Restore  | docker-compose exec photoprism photoprism restore -a -i
-# Index    | docker-compose exec photoprism photoprism index
-# Reindex  | docker-compose exec photoprism photoprism index -f
-# Import   | docker-compose exec photoprism photoprism import
-
 services:
     
   caddy_gen:
@@ -62,13 +48,10 @@ services:
     ports:
       - 3005:3000
     volumes:
-      - homepage:/app/config # Make sure your local config directory exists
+      - homepage:/app/config
       - homepage_images:/app/public/images
       - homepage_icons:/app/public/icons
-      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
-      - H:\docker-volume:/disk/H
-      - M:\docker-volume:/disk/M
-      - P:\docker-volume:/disk/P
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
     labels:
       virtual.host: ${DOMAIN}
@@ -215,7 +198,16 @@ services:
       homepage.icon: pgadmin.png
       homepage.href: https://pgadmin.${DOMAIN}
       homepage.description: PostgreSQL management tool
-    
+      
+# Terminal | docker-compose exec photoprism bash
+# Help     | docker-compose exec photoprism photoprism help
+# Config   | docker-compose exec photoprism photoprism config
+# Reset    | docker-compose exec photoprism photoprism reset
+# Backup   | docker-compose exec photoprism photoprism backup -a -i
+# Restore  | docker-compose exec photoprism photoprism restore -a -i
+# Index    | docker-compose exec photoprism photoprism index
+# Reindex  | docker-compose exec photoprism photoprism index -f
+# Import   | docker-compose exec photoprism photoprism import
   photoprism:
     image: photoprism/photoprism:latest
     container_name: photoprism
@@ -532,7 +524,7 @@ services:
                                          # replace
                                          # function(e){e.Api="https://api.standardnotes.com"
                                          # to
-                                         # function(e){e.Api="https://api.notes.${DOMAIN}"
+                                         # function(e){e.Api="https://your.notes.api.domain.com"
     restart: unless-stopped
     labels:
       virtual.host: notes.${DOMAIN}
