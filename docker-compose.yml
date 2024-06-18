@@ -40,6 +40,9 @@ services:
       - chrome
       - notes
       - notes_api
+      - cobalt
+      - cobalt_api
+      - speedtest
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
       - caddy_data:/data
