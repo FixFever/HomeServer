@@ -85,7 +85,7 @@ services:
     build:
       context: ./nextcloud/
       args:
-        NEXTCLOUD_IMAGE: nextcloud:28
+        NEXTCLOUD_IMAGE: nextcloud:29
     container_name: nextcloud
     ports:
       - 5000:80
@@ -159,7 +159,7 @@ services:
       homepage.icon: redis.png
     
   nextcloud_cron:
-    image: nextcloud:28
+    image: nextcloud:29
     container_name: nextcloud_cron
     volumes_from:
       - nextcloud:rw
