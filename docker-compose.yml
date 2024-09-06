@@ -541,7 +541,7 @@ services:
       homepage.description: Note-taking app
       
   notes_api:
-    image: standardnotes/server
+    image: standardnotes/server:5c02435ee478b893747d3f9e41062aae12d7ff10
     container_name: notes_api
     depends_on:
       - localstack
