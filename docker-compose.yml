@@ -646,6 +646,9 @@ services:
       - 9002:9000/tcp
     environment:
       - API_URL=https://api.cobalt.${DOMAIN}/
+      - RATELIMIT_WINDOW=21600
+      - RATELIMIT_MAX=1000
+      - DURATION_LIMIT=21600
     restart: unless-stopped
     labels:
       virtual.host: api.cobalt.${DOMAIN}
