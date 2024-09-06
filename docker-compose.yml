@@ -324,7 +324,7 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
       virtual.auth.username: ${PROMETHEUS_USERNAME}
       virtual.auth.password: ${PROMETHEUS_PASSWORD}
-      homepage.group: Utilities
+      homepage.group: Monitoring
       homepage.name: Prometheus
       homepage.icon: prometheus.png
       homepage.href: https://prometheus.${DOMAIN}
@@ -352,7 +352,7 @@ services:
       virtual.host: grafana.${DOMAIN}
       virtual.port: 3000
       virtual.tls-email: ${TLS_EMAIL}
-      homepage.group: Utilities
+      homepage.group: Monitoring
       homepage.name: Grafana
       homepage.icon: grafana.png
       homepage.href: https://grafana.${DOMAIN}
@@ -471,7 +471,7 @@ services:
       virtual.host: kerberos.${DOMAIN}
       virtual.port: 80
       virtual.tls-email: ${TLS_EMAIL}
-      homepage.group: Utilities
+      homepage.group: CCTV
       homepage.name: Kerberos agent
       homepage.icon: kerberos.png
       homepage.href: https://kerberos.${DOMAIN}
@@ -490,7 +490,7 @@ services:
       virtual.host: restreamer.${DOMAIN}
       virtual.port: 8080
       virtual.tls-email: ${TLS_EMAIL}
-      homepage.group: Utilities
+      homepage.group: CCTV
       homepage.name: Resteamer
       homepage.icon: /icons/restreamer.svg
       homepage.href: https://restreamer.${DOMAIN}/ui
