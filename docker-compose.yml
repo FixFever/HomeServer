@@ -440,7 +440,7 @@ services:
     image: f0rc3/gokapi:latest
     container_name: gokapi
     ports:
-      - 53842:53842
+      - 8083:53842
     volumes:
       - gokapi_config:/app/config
       - gokapi_data:/app/data
