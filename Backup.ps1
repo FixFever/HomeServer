@@ -101,7 +101,7 @@ regedit /e "H:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
 
 # Upload to storage
 try{	
-	$logs = "C:\Users\FixFever\Documents\WinSCP.log";
+	$logs = "C:\Users\FixFever\WinSCP.log";
 	
     winscp /log=$logs /ini=nul `
         /command `
