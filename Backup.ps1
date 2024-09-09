@@ -100,35 +100,40 @@ catch {
 regedit /e "H:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
 
 # Upload to storage
-try{	
-	$logs = "C:\Users\FixFever\WinSCP.log";
+$logs = "C:\Users\FixFever\WinSCP.log";
 	
-    winscp /log=$logs /ini=nul `
-        /command `
-    "open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -rawsettings ProxyPort=0" `
-	    "synchronize remote M:\\nextcloud nextcloud -delete -criteria=size" `
+$winscpResult;
+
+for($i=1;$i -le 5;$i++)
+{
+	winscp /log=$logs /ini=nul `
+	    /command `
+		"open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -rawsettings ProxyPort=0" `
+		"synchronize remote M:\\nextcloud nextcloud -delete -criteria=size" `
 		"synchronize remote H:\\backups backups -delete -criteria=size" `
 		"synchronize remote H:\\docker-volumes\\prometheus prometheus -delete -criteria=size" `
-        "exit"
-
-    $winscpResult = $LastExitCode
-    if ($winscpResult -eq 0)
-    {
-        Write-Host "Success"
-		Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup completed successfully")
-    }
-    else
-    {
-        Write-Host "Error"
-		Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed. See " + $logs)
-    }
-
-    exit $winscpResult
+	    "exit"
+	
+	$winscpResult = $LastExitCode
+	if ($winscpResult -eq 0)
+	{
+		break;
+	}
+	else
+	{
+		Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed, attempt "+ $i + ". See " + $logs)
+	}
 }
-catch {
-    Write-Host $_
-	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed: " + $_)
-}
-finally{
 
+if ($winscpResult -eq 0)
+{
+	Write-Host "Success"
+	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup completed successfully")
+	break;
 }
+else
+{
+	Write-Host "Error"
+	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed after "+ $i +" attempts. See " + $logs)
+}
+
