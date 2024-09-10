@@ -620,7 +620,7 @@ services:
       homepage.widget.mappings[1].format: text
       
   cobalt_api:
-    image: ghcr.io/imputnet/cobalt:latest
+    image: ghcr.io/imputnet/cobalt:7
     container_name: cobalt_api
     ports:
       - 9002:9000/tcp
@@ -639,7 +639,7 @@ services:
       homepage.icon: https://cobalt.${DOMAIN}/icons/favicon.ico
       
   cobalt:
-    image: ghcr.io/imputnet/cobalt:latest
+    image: ghcr.io/imputnet/cobalt:7
     container_name: cobalt
     ports:
       - 9003:9001/tcp
