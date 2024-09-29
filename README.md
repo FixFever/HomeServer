@@ -29,10 +29,10 @@
 * System: Windows 10 Pro
 * [caddy-gen](https://github.com/wemake-services/caddy-gen) reverse proxy
 * [homepage](https://github.com/gethomepage/homepage)
-* [Heimdall](https://github.com/linuxserver/Heimdall) application dashboard
 * [Plex](https://www.plex.tv/) with PlexPass lifetime
 * [Tautulli](https://github.com/Tautulli/Tautulli)
 * [qBittorrent](https://www.qbittorrent.org/)
+* [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client.
 * [Nextcloud](https://nextcloud.com/)
   * [previewgenerator](https://github.com/nextcloud/previewgenerator)
   * [memories](https://github.com/pulsejet/memories)

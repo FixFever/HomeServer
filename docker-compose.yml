@@ -675,6 +675,16 @@ services:
       homepage.href: https://speedtest.${DOMAIN}
       homepage.description: Speed test
       
+  torrupd:
+    image: ghcr.io/konkere/torrupd:latest
+    container_name: torrupd
+    volumes:
+      - torrupd:/config
+    labels:
+      homepage.group: Containers
+      homepage.name: TorrUpd
+      homepage.icon: /icons/torrupd.png
+      
 volumes:
 
   caddy_config:
@@ -760,4 +770,7 @@ volumes:
     external: true
         
   valheim:
+    external: true
+  
+  torrupd:
     external: true
