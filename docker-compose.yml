@@ -28,6 +28,7 @@ services:
       - cobalt
       - cobalt_api
       - speedtest
+      - it-tools
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
       - caddy_data:/data
@@ -675,6 +676,22 @@ services:
       homepage.href: https://speedtest.${DOMAIN}
       homepage.description: Speed test
       
+  it-tools:
+    image: corentinth/it-tools:latest
+    container_name: it-tools
+    ports:
+      - 5445:80
+    restart: unless-stopped
+    labels:
+      virtual.host: it-tools.${DOMAIN}
+      virtual.port: 80
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Utilities
+      homepage.name: IT-tools
+      homepage.icon: it-tools.png
+      homepage.href: https://it-tools.${DOMAIN}
+      homepage.description: Useful tools for developer and people working in IT
+
   torrupd:
     image: ghcr.io/konkere/torrupd:latest
     container_name: torrupd
