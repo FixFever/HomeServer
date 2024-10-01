@@ -28,34 +28,34 @@
 ### Software
 
 * System: Windows 10 Pro
-* [caddy-gen](https://github.com/wemake-services/caddy-gen) reverse proxy
-* [homepage](https://github.com/gethomepage/homepage)
-* [Plex](https://www.plex.tv/) with PlexPass lifetime
-* [Tautulli](https://github.com/Tautulli/Tautulli)
-* [qBittorrent](https://www.qbittorrent.org/)
-* [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client.
-* [Nextcloud](https://nextcloud.com/)
-  * [previewgenerator](https://github.com/nextcloud/previewgenerator)
-  * [memories](https://github.com/pulsejet/memories)
-* [Photoprism](https://photoprism.app/)
-* [Valheim](https://github.com/lloesche/valheim-server-docker) server
-* [burn-after-reading](https://github.com/Tethik/burn-after-reading)
-* [I hate money](https://github.com/spiral-project/ihatemoney)
-* [Vaultwarden](https://github.com/dani-garcia/vaultwarden)
-* [Gokapi](https://github.com/Forceu/Gokapi)
-* [Kerberos Agent](https://kerberos.io/product/agent/)
-* [Restreamer](https://datarhei.github.io/restreamer/)
-* [Chromium with NoVNC](https://github.com/vital987/chrome-novnc)
-* [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app)
-* [Cobalt](https://github.com/imputnet/cobalt)
-* [LibreSpeed](https://github.com/librespeed/speedtest)
-* [IT-Tools](https://github.com/CorentinTh/it-tools) - useful tools for developer and people working in IT
-* Monitoring 
-  * [Prometheus](https://github.com/prometheus/prometheus)
-    * [Windows reporter](https://github.com/prometheus-community/windows_exporter)
-  * [Grafana](https://github.com/grafana/grafana)
-  * [Glances](https://github.com/nicolargo/glances)
-* [WinSCP](https://winscp.net/eng/index.php) - for backups by WebDAV
+* [Plex](https://www.plex.tv/) with PlexPass lifetime -  streaming media service
+* [Tautulli](https://github.com/Tautulli/Tautulli) - monitoring, analytics and notifications for Plex
+* [qBittorrent](https://www.qbittorrent.org/) - bittorrent client
+* [Windows reporter](https://github.com/prometheus-community/windows_exporter) - a Prometheus exporter for Windows machines.
+* [Glances](https://github.com/nicolargo/glances) - system monitoring tool
+* [WinSCP](https://winscp.net/eng/index.php) - FTP, FTPS, SCP, SFTP, WebDAV client for Windows
+* Docker Desktop
+  * [caddy-gen](https://github.com/wemake-services/caddy-gen) - reverse proxy
+  * [homepage](https://github.com/gethomepage/homepage) - application dashboard
+  * [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client
+  * [Nextcloud](https://nextcloud.com/) - file storage
+    * [previewgenerator](https://github.com/nextcloud/previewgenerator)
+    * [memories](https://github.com/pulsejet/memories)
+  * [Photoprism](https://photoprism.app/) - AI-Powered Photos App
+  * [Valheim](https://github.com/lloesche/valheim-server-docker) server
+  * [burn-after-reading](https://github.com/Tethik/burn-after-reading) - share short term messages stored in memory
+  * [I hate money](https://github.com/spiral-project/ihatemoney) - budget management
+  * [Vaultwarden](https://github.com/dani-garcia/vaultwarden) - password management
+  * [Gokapi](https://github.com/Forceu/Gokapi) - share files
+  * [Kerberos Agent](https://kerberos.io/product/agent/) - video management
+  * [Restreamer](https://datarhei.github.io/restreamer/) - live video streaming
+  * [Chromium with NoVNC](https://github.com/vital987/chrome-novnc) - Chrome in browser
+  * [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app) - note-taking app
+  * [Cobalt](https://github.com/imputnet/cobalt) - media downloader
+  * [LibreSpeed](https://github.com/librespeed/speedtest) - speedtest
+  * [IT-Tools](https://github.com/CorentinTh/it-tools) - useful tools for developer and people working in IT
+  * [Prometheus](https://github.com/prometheus/prometheus) - monitoring
+  * [Grafana](https://github.com/grafana/grafana) - data visualization & Monitoring
   
 ### Remote backup storage
 * Router: [Keenetic Giga KN-1010](https://keenetic.ru/ru/keenetic-giga-kn-1010)
