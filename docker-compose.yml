@@ -625,11 +625,24 @@ services:
     container_name: cobalt_api
     ports:
       - 9002:9000/tcp
+    volumes: 
+      # youtube download fix: 
+      # Add cookie to the youtube_oauth array in cookies.json file
+      # cd cobalt
+      # npm install
+      # npm run token:youtube
+      # And fix /app/src/modules/processing/services/youtube.js:
+      # change `info = await yt.getBasicInfo(o.id, yt.session.logged_in ? 'ANDROID' : 'IOS');`
+      # to     `info = await yt.getBasicInfo(o.id, 'ANDROID');`
+      # I dont know why, but it works
+      - cobalt_api_cookies:/cookies
+      - cobalt_api_services:/app/src/modules/processing/services 
     environment:
       - API_URL=https://api.cobalt.${DOMAIN}/
       - RATELIMIT_WINDOW=21600
       - RATELIMIT_MAX=1000
       - DURATION_LIMIT=21600
+      - COOKIE_PATH="/cookies/cookies.json"
     restart: unless-stopped
     labels:
       virtual.host: api.cobalt.${DOMAIN}
@@ -751,7 +764,6 @@ volumes:
     
   ihatemoney_database:
     external: true
-    
   ihatemoney_etc:
     external: true
     
@@ -787,6 +799,11 @@ volumes:
     external: true
         
   valheim:
+    external: true
+    
+  cobalt_api_cookies:
+    external: true
+  cobalt_api_services:
     external: true
   
   torrupd:
