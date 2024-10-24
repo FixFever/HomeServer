@@ -44,7 +44,6 @@
   * [Photoprism](https://photoprism.app/) - AI-Powered Photos App
   * [Valheim](https://github.com/lloesche/valheim-server-docker) server
   * [burn-after-reading](https://github.com/Tethik/burn-after-reading) - share short term messages stored in memory
-  * [I hate money](https://github.com/spiral-project/ihatemoney) - budget management
   * [Vaultwarden](https://github.com/dani-garcia/vaultwarden) - password management
   * [Gokapi](https://github.com/Forceu/Gokapi) - share files
   * [Kerberos Agent](https://kerberos.io/product/agent/) - video management

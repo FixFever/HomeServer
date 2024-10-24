@@ -17,7 +17,6 @@ services:
       - prometheus
       - grafana
       - secret
-      - ihatemoney
       - vault
       - gokapi
       - kerberos
@@ -365,33 +364,6 @@ services:
       homepage.href: https://secret.${DOMAIN}
       homepage.description: Share short term messages stored in memory
       
-  ihatemoney:
-    image: ihatemoney/ihatemoney:latest
-    container_name: ihatemoney
-    ports:
-      - 8000:8000
-    volumes:
-      - ihatemoney_database:/database
-      - ihatemoney_etc:/etc/ihatemoney
-    environment:
-      - ACTIVATE_ADMIN_DASHBOARD=True
-      - ACTIVATE_DEMO_PROJECT=False
-      - ADMIN_PASSWORD=${IHATEMONEY_ADMIN_PASSWORD}
-      - ALLOW_PUBLIC_PROJECT_CREATION=True
-      - BABEL_DEFAULT_TIMEZONE='Europe/Moscow'
-      - SECRET_KEY=somekey
-      - PORT=8000
-    restart: unless-stopped
-    labels:
-      virtual.host: ihatemoney.${DOMAIN}
-      virtual.port: 8000
-      virtual.tls-email: ${TLS_EMAIL}
-      homepage.group: Utilities
-      homepage.name: I hate money
-      homepage.icon: ihatemoney.png
-      homepage.href: https://ihatemoney.${DOMAIN}
-      homepage.description: Budget management
-
   vault:
     image: vaultwarden/server:latest
     container_name: vault
@@ -760,11 +732,6 @@ volumes:
     external: true
     
   secret:
-    external: true
-    
-  ihatemoney_database:
-    external: true
-  ihatemoney_etc:
     external: true
     
   vault:
