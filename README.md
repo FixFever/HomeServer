@@ -65,5 +65,5 @@
   * 4TB [Seagate Skyhawk ST4000VX013](https://www.seagate.com/files/www-content/datasheets/pdfs/skyhawk-ai-DS1960-14C-2204RU-ru_RU.pdf)
   
 ### VPS
-* VPS in Amsterdam by [Virmach](https://virmach.com/)
-* [WireGuard](https://www.wireguard.com/) VPN server
+* VPS in NL by [VDSka](https://vdska.ru/)
+* [Amnezia VPN](https://amnezia.org/)
