@@ -469,7 +469,7 @@ services:
       homepage.description: Chrome noVNC
 
   notes:
-    image: standardnotes/web
+    image: standardnotes/web:latest
     container_name: notes
     depends_on:
       - notes_api
@@ -494,7 +494,7 @@ services:
       homepage.description: Note-taking app
       
   notes_api:
-    image: standardnotes/server:5c02435ee478b893747d3f9e41062aae12d7ff10
+    image: standardnotes/server:latest
     container_name: notes_api
     depends_on:
       - localstack
@@ -516,6 +516,7 @@ services:
       - AUTH_SERVER_ENCRYPTION_SERVER_KEY=${NOTES_AUTH_SERVER_ENCRYPTION_SERVER_KEY}
       - VALET_TOKEN_SECRET=${NOTES_VALET_TOKEN_SECRET}
       - DISABLE_USER_REGISTRATION=true
+      - COOKIE_DOMAIN=api.notes.${DOMAIN}
     volumes:
       - notes_logs:/var/lib/server/logs
       - notes_uploads:/opt/server/packages/files/dist/uploads
