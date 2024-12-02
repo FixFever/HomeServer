@@ -594,7 +594,7 @@ services:
       homepage.widget.mappings[1].format: text
       
   cobalt_api:
-    image: ghcr.io/imputnet/cobalt:7
+    image: ghcr.io/imputnet/cobalt:latest
     container_name: cobalt_api
     ports:
       - 9002:9000/tcp
@@ -608,6 +608,7 @@ services:
       # change `info = await yt.getBasicInfo(o.id, yt.session.logged_in ? 'ANDROID' : 'IOS');`
       # to     `info = await yt.getBasicInfo(o.id, 'ANDROID');`
       # I dont know why, but it works
+      # manual: https://github.com/imputnet/cobalt/blob/main/docs/configure-for-youtube.md
       - cobalt_api_cookies:/cookies
       - cobalt_api_services:/app/src/modules/processing/services 
     environment:
@@ -615,7 +616,7 @@ services:
       - RATELIMIT_WINDOW=21600
       - RATELIMIT_MAX=1000
       - DURATION_LIMIT=21600
-      - COOKIE_PATH="/cookies/cookies.json"
+      - COOKIE_PATH=cookies/cookies.json
     restart: unless-stopped
     labels:
       virtual.host: api.cobalt.${DOMAIN}
@@ -623,24 +624,26 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Containers
       homepage.name: Cobalt api
-      homepage.icon: https://cobalt.${DOMAIN}/icons/favicon.ico
+      homepage.icon: https://cobalt.${DOMAIN}/favicon.png
       
   cobalt:
-    image: ghcr.io/imputnet/cobalt:7
     container_name: cobalt
+    build:
+      context: /..
+      dockerfile: server/cobalt/Dockerfile
+      args:
+        - WEB_URL=https://cobalt.${DOMAIN}/
+        - WEB_DEFAULT_API=https://api.cobalt.${DOMAIN}
     ports:
-      - 9003:9001/tcp
-    environment:
-      - WEB_URL=https://cobalt.${DOMAIN}/
-      - API_URL=https://api.cobalt.${DOMAIN}/
+      - 9003:8080/tcp
     restart: unless-stopped
     labels:
       virtual.host: cobalt.${DOMAIN}
-      virtual.port: 9001
+      virtual.port: 8080
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Utilities
       homepage.name: Cobalt
-      homepage.icon: https://cobalt.${DOMAIN}/icons/favicon.ico
+      homepage.icon: https://cobalt.${DOMAIN}/favicon.png
       homepage.href: https://cobalt.${DOMAIN}
       homepage.description: Media downloader
       
