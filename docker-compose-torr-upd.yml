@@ -1,0 +1,10 @@
+services:
+  torrupd:
+    image: ghcr.io/konkere/torrupd:latest
+    container_name: torrupd
+    volumes:
+      - torrupd:/config
+      
+volumes:
+  torrupd:
+    external: true

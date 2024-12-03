@@ -681,16 +681,6 @@ services:
       homepage.href: https://it-tools.${DOMAIN}
       homepage.description: Useful tools for developer and people working in IT
 
-  torrupd:
-    image: ghcr.io/konkere/torrupd:latest
-    container_name: torrupd
-    volumes:
-      - torrupd:/config
-    labels:
-      homepage.group: Containers
-      homepage.name: TorrUpd
-      homepage.icon: /icons/torrupd.png
-      
 volumes:
 
   caddy_config:
@@ -775,7 +765,4 @@ volumes:
   cobalt_api_cookies:
     external: true
   cobalt_api_services:
-    external: true
-  
-  torrupd:
     external: true
