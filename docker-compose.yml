@@ -41,6 +41,16 @@ services:
       homepage.widget.type: caddy
       homepage.widget.url: http://host.docker.internal:2019
       
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      homepage.group: Containers
+      homepage.name: Watchtower
+      homepage.icon: watchtower.png
+      
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage

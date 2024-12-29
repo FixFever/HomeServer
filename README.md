@@ -36,15 +36,16 @@
 * [Glances](https://github.com/nicolargo/glances) - system monitoring tool
 * [WinSCP](https://winscp.net/eng/index.php) - FTP, FTPS, SCP, SFTP, WebDAV client for Windows
 * Docker Desktop
-  * [caddy-gen](https://github.com/wemake-services/caddy-gen) - reverse proxy
-  * [homepage](https://github.com/gethomepage/homepage) - application dashboard
+  * [Caddy-gen](https://github.com/wemake-services/caddy-gen) - reverse proxy
+  * [Watchtower](https://github.com/containrrr/watchtower) - a process for automating Docker container base image updates.
+  * [Homepage](https://github.com/gethomepage/homepage) - application dashboard
   * [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client
   * [Nextcloud](https://nextcloud.com/) - file storage
-    * [previewgenerator](https://github.com/nextcloud/previewgenerator)
-    * [memories](https://github.com/pulsejet/memories)
+    * [Preview generator](https://github.com/nextcloud/previewgenerator)
+    * [Memories](https://github.com/pulsejet/memories)
   * [Photoprism](https://photoprism.app/) - AI-Powered Photos App
   * [Valheim](https://github.com/lloesche/valheim-server-docker) server
-  * [burn-after-reading](https://github.com/Tethik/burn-after-reading) - share short term messages stored in memory
+  * [Burn-after-reading](https://github.com/Tethik/burn-after-reading) - share short term messages stored in memory
   * [Vaultwarden](https://github.com/dani-garcia/vaultwarden) - password management
   * [Gokapi](https://github.com/Forceu/Gokapi) - share files
   * [Kerberos Agent](https://kerberos.io/product/agent/) - video management
