@@ -46,6 +46,8 @@ services:
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup
+    restart: unless-stopped
     labels:
       homepage.group: Containers
       homepage.name: Watchtower
@@ -70,7 +72,7 @@ services:
       homepage.name: Homepage
       homepage.icon: homepage.png
       
-# For update nextcloud delete images and pull
+# For update: docker-compose build nextcloud
   nextcloud:
     build:
       context: ./nextcloud/
