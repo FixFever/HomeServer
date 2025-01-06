@@ -2,11 +2,8 @@ services:
     
   caddy_gen:
     container_name: caddy_gen
-    image: "wemakeservices/caddy-gen:latest"
-    ports:
-      - 80:80
-      - 443:443
-      - 2019:2019
+    image: wemakeservices/caddy-gen:latest
+    network_mode: host
     environment:
       CADDY_SNIPPET: /etc/caddy/caddy.snippet
     depends_on:
@@ -42,7 +39,7 @@ services:
       homepage.widget.url: http://host.docker.internal:2019
       
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     container_name: watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
