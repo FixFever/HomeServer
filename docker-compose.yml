@@ -635,7 +635,7 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Containers
       homepage.name: Cobalt api
-      homepage.icon: https://cobalt.${DOMAIN}/favicon.png
+      homepage.icon: https://cobalt.tools/favicon.png
       
   cobalt:
     container_name: cobalt
@@ -662,13 +662,13 @@ services:
     image: ghcr.io/librespeed/speedtest:latest
     container_name: speedtest
     ports:
-      - 5444:80
+      - 5444:8080
     environment:
       - MODE=standalone
     restart: unless-stopped
     labels:
       virtual.host: speedtest.${DOMAIN}
-      virtual.port: 80
+      virtual.port: 8080
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Utilities
       homepage.name: LibreSpeed
