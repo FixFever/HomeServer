@@ -1,0 +1,35 @@
+services:
+    
+  valheim:
+    image: ghcr.io/lloesche/valheim-server:latest
+    container_name: valheim
+    cap_add:
+      - sys_nice
+    ports: 
+      - "2458-2459:2458-2459/udp" # default ports 2456-2457
+      - "9001:9001/tcp"
+    volumes: 
+      - valheim:/config
+      - H:\backups\valheim:/config/backups
+    env_file:
+      - C:\Users\FixFever\Documents\valheim.env
+    stop_grace_period: 2m
+    restart: unless-stopped
+    labels:
+      homepage.group: Containers
+      homepage.name: Valheim
+      homepage.icon: https://valheimgame.com/favicon.ico
+      homepage.widget.type: customapi
+      homepage.widget.url: http://host.docker.internal:9001/status.json
+      homepage.widget.mappings[0].field: server_name
+      homepage.widget.mappings[0].label: Server name
+      homepage.widget.mappings[0].format: text
+      homepage.widget.mappings[1].field: player_count
+      homepage.widget.mappings[1].label: Players online
+      homepage.widget.mappings[1].format: text
+
+volumes:
+
+  valheim:
+    external: true
+    
