@@ -99,8 +99,10 @@ catch {
 # Export env vars
 regedit /e "H:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
 
+$logsPath = "%TEMP%";
+
 # Upload to storage
-$logs = "C:\Users\FixFever\WinSCP.log";
+$logs = $logsPath + "/WinSCP_" + (Get-Date).ToString("yyyyMMdd_HHmmss") + ".log";
 	
 $winscpResult;
 
@@ -136,4 +138,3 @@ else
 	Write-Host "Error"
 	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed after "+ $i +" attempts. See " + $logs)
 }
-
