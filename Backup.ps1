@@ -9,7 +9,10 @@ if (!$SkipZip){
 	
 	# Zip docker volumes
 	try{
-		docker-compose stop
+		$containers = docker ps -q
+		foreach ($container in $containers) {
+			docker pause $container
+		}
 		
 		Get-ChildItem -Path \\wsl$\docker-desktop\mnt\docker-desktop-disk\data\docker\volumes -Directory | Foreach-Object { docker run --rm -v "${_}:/data" -v "H:\backups\docker-volumes:/docker-volumes" ubuntu tar cvzf "/docker-volumes/${_}.tar.gz" /data }
 	}
@@ -19,7 +22,9 @@ if (!$SkipZip){
 		return;
 	}
 	finally{
-		docker-compose up -d
+		foreach ($container in $containers) {
+			docker unpause $container
+		}
 	}
 
 	# Zip qbittorrent data
