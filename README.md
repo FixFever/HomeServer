@@ -55,6 +55,7 @@
   * [Cobalt](https://github.com/imputnet/cobalt) - media downloader
   * [LibreSpeed](https://github.com/librespeed/speedtest) - speedtest
   * [IT-Tools](https://github.com/CorentinTh/it-tools) - useful tools for developer and people working in IT
+  * [R2-HTML-DB](https://github.com/Aksel911/R2-HTML-DB) - R2 online wiki
   * [Prometheus](https://github.com/prometheus/prometheus) - monitoring
   * [Grafana](https://github.com/grafana/grafana) - data visualization & Monitoring
   

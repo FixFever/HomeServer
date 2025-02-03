@@ -1,0 +1,85 @@
+services:
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: mssql
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: ${MSSQL_PASSWORD}
+      MSSQL_PID: Developer
+    volumes:
+      - mssql:/var/opt/mssql
+    restart: unless-stopped
+    networks:
+      db_net:
+        ipv4_address: 172.26.0.2
+    labels:
+      homepage.group: Containers
+      homepage.name: MSSQL
+      homepage.icon: /icons/mssql.png
+
+  # uncomment to restore
+  
+  # mssql_restore:
+    # image: mcr.microsoft.com/mssql-tools:latest
+    # container_name: mssql_restore
+    # volumes:
+      # - mssql:/mssql
+    # command: >
+      # bash -c '
+      # echo "Waiting for SQL Server to start..." &&
+      # /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "${MSSQL_PASSWORD}" -i /mssql/restore.sql'
+    # depends_on:
+      # - mssql
+    # networks:
+      # db_net:
+        # ipv4_address: 172.26.0.3
+        
+  r2wiki:
+    build: ../../R2-HTML-DB-WIKI/.
+    container_name: r2wiki
+    ports:
+      - 5008:5000
+    environment:
+      DB_DRIVER: ODBC Driver 17 for SQL Server
+      DB_SERVER: mssql
+      DB_NAME: FNLParm
+      DB_USER: sa
+      DB_PASSWORD: ${MSSQL_PASSWORD}
+      GITHUB_URL: https://raw.githubusercontent.com/Aksel911/R2-HTML-DB/main/static/
+      PYTHONPATH: /app
+    command: >
+      bash -c '
+      echo "Waiting for db_restore to finish..." &&
+      sleep 10 &&
+      python -m flask run --host=0.0.0.0'
+    depends_on:
+      - mssql
+    restart: unless-stopped
+    networks:
+      db_net:
+        ipv4_address: 172.26.0.4
+    labels:
+      virtual.host: r2wiki.${DOMAIN}
+      virtual.port: 5000
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Utilities
+      homepage.name: R2Wiki
+      homepage.icon: /icons/r2wiki.png
+      homepage.href: https://r2wiki.${DOMAIN}
+      homepage.description: R2 Online wiki
+      
+networks:
+  db_net:
+    name: db_net
+    driver: bridge
+    external: true
+    ipam:
+      config:
+        - subnet: 172.26.0.0/24
+        
+volumes:
+  mssql:
+    external: true
