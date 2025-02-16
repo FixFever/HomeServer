@@ -25,6 +25,7 @@
   * [DDNS](https://help.keenetic.com/hc/ru/articles/360000400919-%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D0%B5%D0%BD-KeenDNS)
 * IP-Camera: [TP-Link Tapo C225](https://www.tp-link.com/ru/home-networking/cloud-camera/tapo-c225/)
 * UPS: [CyberPower CP1300EPFCLCD](https://www.cyberpower.com/ru/ru/product/sku/cp1300epfclcd)
+* CO2-meter: [ZyAura ZGm053U](https://www.zyaura.com/product-detail/zgm053u/)
 
 ### Software
 
@@ -58,6 +59,7 @@
   * [R2-HTML-DB](https://github.com/Aksel911/R2-HTML-DB) - R2 online wiki
   * [Prometheus](https://github.com/prometheus/prometheus) - monitoring
   * [Grafana](https://github.com/grafana/grafana) - data visualization & Monitoring
+  * [Air-co2-exporter](https://github.com/huhamhire/air-co2-exporter) - Prometheus exporter for CO2 meter.
   
 ### Remote backup storage
 * Router: [Keenetic Giga KN-1010](https://keenetic.ru/ru/keenetic-giga-kn-1010)

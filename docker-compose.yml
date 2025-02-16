@@ -663,6 +663,19 @@ services:
       homepage.icon: it-tools.png
       homepage.href: https://it-tools.${DOMAIN}
       homepage.description: Useful tools for developer and people working in IT
+      
+  # https://learn.microsoft.com/ru-ru/windows/wsl/connect-usb#attach-a-usb-device
+  co2-exporter:
+    image: huhamhire/air-co2-exporter:latest
+    container_name: co2-exporter
+    ports:
+      - 9110:9110
+    privileged: true
+    restart: unless-stopped
+    labels:
+      homepage.group: Containers
+      homepage.name: CO2 meter exporter
+      homepage.icon: docker
 
 volumes:
 

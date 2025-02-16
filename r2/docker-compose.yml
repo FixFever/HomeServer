@@ -66,10 +66,10 @@ services:
       virtual.port: 5000
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Utilities
-      homepage.name: R2Wiki
+      homepage.name: R2 Online Wiki
       homepage.icon: /icons/r2wiki.png
       homepage.href: https://r2wiki.${DOMAIN}
-      homepage.description: R2 Online wiki
+      homepage.description: Modern wiki for R2 Online with advanced functionality
       
 networks:
   db_net:
