@@ -49,8 +49,7 @@
   * [Burn-after-reading](https://github.com/Tethik/burn-after-reading) - share short term messages stored in memory
   * [Vaultwarden](https://github.com/dani-garcia/vaultwarden) - password management
   * [Gokapi](https://github.com/Forceu/Gokapi) - share files
-  * [Kerberos Agent](https://kerberos.io/product/agent/) - video management
-  * [Restreamer](https://datarhei.github.io/restreamer/) - live video streaming
+  * [Shinobi](https://www.shinobi.video/) - NVR and CCTV
   * [Chromium with NoVNC](https://github.com/vital987/chrome-novnc) - Chrome in browser
   * [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app) - note-taking app
   * [Cobalt](https://github.com/imputnet/cobalt) - media downloader

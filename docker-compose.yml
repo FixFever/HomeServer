@@ -16,8 +16,6 @@ services:
       - secret
       - vault
       - gokapi
-      - kerberos
-      - restreamer
       - chrome
       - notes
       - notes_api
@@ -419,47 +417,6 @@ services:
       homepage.href: https://gokapi.${DOMAIN}
       homepage.description: Share files
       
-  kerberos:
-    image: kerberos/agent:latest
-    container_name: kerberos
-    ports:
-      - 8082:80
-    environment:
-      AGENT_USERNAME: ${KERBEROS_USERNAME}
-      AGENT_PASSWORD: ${KERBEROS_PASSWORD}
-    volumes:
-      - kerberos_config:/home/agent/data/config
-      - H:\kerberos:/home/agent/data/recordings
-    restart: unless-stopped
-    labels:
-      virtual.host: kerberos.${DOMAIN}
-      virtual.port: 80
-      virtual.tls-email: ${TLS_EMAIL}
-      homepage.group: CCTV
-      homepage.name: Kerberos agent
-      homepage.icon: kerberos.png
-      homepage.href: https://kerberos.${DOMAIN}
-      homepage.description: Video management
-      
-  restreamer:
-    image: datarhei/restreamer:latest
-    container_name: restreamer
-    ports:
-      - 8084:8080
-    volumes:
-      - restreamer_config:/core/config
-      - restreamer_data:/core/data
-    restart: unless-stopped
-    labels:
-      virtual.host: restreamer.${DOMAIN}
-      virtual.port: 8080
-      virtual.tls-email: ${TLS_EMAIL}
-      homepage.group: CCTV
-      homepage.name: Resteamer
-      homepage.icon: /icons/restreamer.svg
-      homepage.href: https://restreamer.${DOMAIN}/ui
-      homepage.description: Stream service
-      
   chrome:
     image: vital987/chrome-novnc:latest
     container_name: chrome
@@ -676,7 +633,29 @@ services:
       homepage.group: Containers
       homepage.name: CO2 meter exporter
       homepage.icon: docker
-
+      
+  shinobi:
+    image: shinobisystems/shinobi:latest
+    container_name: shinobi
+    ports:
+      - 5009:8080
+    environment:
+      - TZ=Europe/Moscow
+    volumes:
+      - shinobi:/home/Shinobi
+      - shinobi_database:/var/lib/mysql
+      - H:\shinobi:/home/Shinobi/videos/hPxvnASOUn/home    
+    restart: unless-stopped
+    labels:
+      virtual.host: shinobi.${DOMAIN}
+      virtual.port: 8080
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Utilities
+      homepage.name: Shinobi
+      homepage.icon: shinobi
+      homepage.href: https://shinobi.${DOMAIN}
+      homepage.description: CCTV and NVR
+      
 volumes:
 
   caddy_config:
@@ -732,14 +711,6 @@ volumes:
   gokapi_data:
     external: true
     
-  kerberos_config:
-    external: true
-    
-  restreamer_config:
-    external: true
-  restreamer_data:
-    external: true
-    
   notes_html:
     external: true
   notes_logs:
@@ -758,4 +729,9 @@ volumes:
   cobalt_api_cookies:
     external: true
   cobalt_api_services:
+    external: true
+
+  shinobi:
+    external: true
+  shinobi_database:
     external: true
