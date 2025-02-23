@@ -40,11 +40,12 @@
   * [Caddy-gen](https://github.com/wemake-services/caddy-gen) - reverse proxy
   * [Watchtower](https://github.com/containrrr/watchtower) - a process for automating Docker container base image updates.
   * [Homepage](https://github.com/gethomepage/homepage) - application dashboard
-  * [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client
   * [Nextcloud](https://nextcloud.com/) - file storage
     * [Preview generator](https://github.com/nextcloud/previewgenerator)
     * [Memories](https://github.com/pulsejet/memories)
   * [Photoprism](https://photoprism.app/) - AI-Powered Photos App
+  * [Home assistant](https://www.home-assistant.io/) - Home automation service
+    * [Home Assistant Community Store](https://www.hacs.xyz/)
   * [Valheim](https://github.com/lloesche/valheim-server-docker) server
   * [Burn-after-reading](https://github.com/Tethik/burn-after-reading) - share short term messages stored in memory
   * [Vaultwarden](https://github.com/dani-garcia/vaultwarden) - password management
@@ -59,7 +60,8 @@
   * [Prometheus](https://github.com/prometheus/prometheus) - monitoring
   * [Grafana](https://github.com/grafana/grafana) - data visualization & Monitoring
   * [Air-co2-exporter](https://github.com/huhamhire/air-co2-exporter) - Prometheus exporter for CO2 meter.
-  
+  * [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client
+
 ### Remote backup storage
 * Router: [Keenetic Giga KN-1010](https://keenetic.ru/ru/keenetic-giga-kn-1010)
   * WebDAV server

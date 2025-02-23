@@ -23,6 +23,8 @@ services:
       - cobalt_api
       - speedtest
       - it-tools
+      - shinobi
+      - homeassistant
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
       - caddy_data:/data
@@ -655,7 +657,24 @@ services:
       homepage.icon: shinobi
       homepage.href: https://shinobi.${DOMAIN}
       homepage.description: CCTV and NVR
-      
+
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:latest
+    network_mode: host
+    volumes:
+      - homeassistant:/config
+      - C:/git/server/homeassistant:/server
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Europe/Moscow
+    command: "/server/start_with_hacs.sh"
+    restart: unless-stopped
+    labels:
+      virtual.host: homeassistant.${DOMAIN}
+      virtual.port: 8123
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Utilities
 volumes:
 
   caddy_config:
@@ -734,4 +753,3 @@ volumes:
   shinobi:
     external: true
   shinobi_database:
-    external: true
