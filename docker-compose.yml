@@ -19,7 +19,6 @@ services:
       - chrome
       - notes
       - notes_api
-      - cobalt
       - cobalt_api
       - speedtest
       - it-tools
@@ -567,28 +566,7 @@ services:
       homepage.group: Containers
       homepage.name: Cobalt api
       homepage.icon: https://cobalt.tools/favicon.png
-      
-  cobalt:
-    container_name: cobalt
-    build:
-      context: /..
-      dockerfile: server/cobalt/Dockerfile
-      args:
-        - WEB_URL=https://cobalt.${DOMAIN}/
-        - WEB_DEFAULT_API=https://api.cobalt.${DOMAIN}
-    ports:
-      - 9003:8080/tcp
-    restart: unless-stopped
-    labels:
-      virtual.host: cobalt.${DOMAIN}
-      virtual.port: 8080
-      virtual.tls-email: ${TLS_EMAIL}
-      homepage.group: Utilities
-      homepage.name: Cobalt
-      homepage.icon: https://cobalt.${DOMAIN}/favicon.png
-      homepage.href: https://cobalt.${DOMAIN}
-      homepage.description: Media downloader
-      
+
   speedtest:
     image: ghcr.io/librespeed/speedtest:latest
     container_name: speedtest
@@ -675,6 +653,11 @@ services:
       virtual.port: 8123
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Utilities
+      homepage.name: Home assistant
+      homepage.icon: home-assistant
+      homepage.href: https://homeassistant.${DOMAIN}
+      homepage.description: Home automation service
+    
 volumes:
 
   caddy_config:
@@ -753,3 +736,8 @@ volumes:
   shinobi:
     external: true
   shinobi_database:
+    external: true
+    
+  homeassistant:
+    external: true
+  
