@@ -53,7 +53,9 @@ services:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     ports:
-      - 3005:3000
+      - 3005:3000    
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: ${DOMAIN},localhost:3005
     volumes:
       - homepage:/app/config
       - homepage_images:/app/public/images
