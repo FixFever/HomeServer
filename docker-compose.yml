@@ -2,7 +2,7 @@ services:
     
   caddy_gen:
     container_name: caddy_gen
-    image: wemakeservices/caddy-gen:latest
+    image: wemakeservices/caddy-gen:master
     network_mode: host
     environment:
       CADDY_SNIPPET: /etc/caddy/caddy.snippet
