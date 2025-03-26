@@ -24,6 +24,7 @@ services:
       - it-tools
       - shinobi
       - homeassistant
+      - opentracker
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
       - caddy_data:/data
@@ -660,6 +661,21 @@ services:
       homepage.href: https://homeassistant.${DOMAIN}
       homepage.description: Home automation service
     
+  opentracker:
+    container_name: opentracker
+    image: lednerb/opentracker-docker
+    ports:
+      - 6969:6969
+      - 6969:6969/udp
+    restart: unless-stopped
+    labels:
+      virtual.host: tracker.${DOMAIN}
+      virtual.port: 6969
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Containers
+      homepage.name: Open tracker
+      homepage.icon: opentracker.png
+      
 volumes:
 
   caddy_config:
@@ -741,5 +757,8 @@ volumes:
     external: true
     
   homeassistant:
+    external: true
+    
+  joplin:
     external: true
   
