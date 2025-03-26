@@ -373,7 +373,7 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Utilities
       homepage.name: Burn after reading
-      homepage.icon: https://secret.${DOMAIN}/static/flame.png
+      homepage.icon: /icons/secret.png
       homepage.href: https://secret.${DOMAIN}
       homepage.description: Share short term messages stored in memory
       
@@ -461,7 +461,7 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Cloud
       homepage.name: Standard notes
-      homepage.icon: https://notes.${DOMAIN}/favicon/apple-touch-icon.png
+      homepage.icon: /icons/notes.png
       homepage.href: https://notes.${DOMAIN}
       homepage.description: Note-taking app
       
@@ -568,7 +568,7 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Containers
       homepage.name: Cobalt api
-      homepage.icon: https://cobalt.tools/favicon.png
+      homepage.icon: /icons/cobalt.png
 
   speedtest:
     image: ghcr.io/librespeed/speedtest:latest
@@ -674,7 +674,7 @@ services:
       virtual.tls-email: ${TLS_EMAIL}
       homepage.group: Containers
       homepage.name: Open tracker
-      homepage.icon: opentracker.png
+      homepage.icon: /icons/opentracker.png
       
 volumes:
 

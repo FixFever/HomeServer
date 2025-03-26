@@ -57,12 +57,13 @@
   * [Cobalt](https://github.com/imputnet/cobalt) - media downloader
   * [LibreSpeed](https://github.com/librespeed/speedtest) - speedtest
   * [IT-Tools](https://github.com/CorentinTh/it-tools) - useful tools for developer and people working in IT
+  * [OpenTracker](https://github.com/Lednerb/opentracker-docker) - BitTorrent tracker
   * [R2-HTML-DB](https://github.com/Aksel911/R2-HTML-DB) - R2 online wiki
   * [Prometheus](https://github.com/prometheus/prometheus) - monitoring
   * [Grafana](https://github.com/grafana/grafana) - data visualization & Monitoring
   * [Air-co2-exporter](https://github.com/huhamhire/air-co2-exporter) - Prometheus exporter for CO2 meter
   * [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client
-  * [OpenTracker](https://github.com/Lednerb/opentracker-docker) - BitTorrent tracker
+
 
 ### Remote backup storage
 * Router: [Keenetic Giga KN-1010](https://keenetic.ru/ru/keenetic-giga-kn-1010)
