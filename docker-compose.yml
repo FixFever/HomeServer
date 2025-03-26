@@ -98,6 +98,7 @@ services:
       - nextcloud_php:/usr/local/etc/php
       - C:\\docker-caches\nextcloud\preview:/var/www/html/data/appdata_ocah283m7og5/preview
       - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
+      - M:\\Sleeplessness:/var/www/html/data/FixFever/files/Видео/Sleeplessness
       - M:\\nextcloud\Elya:/var/www/html/data/Elya/files
       - M:\\nextcloud\Boris:/var/www/html/data/Boris/files
       - M:\\nextcloud\Marina:/var/www/html/data/Marina/files
