@@ -8,6 +8,7 @@
   * with installed [PCI-E 1x to 2 SATA ports expansion card](https://aliexpress.ru/item/1005003346314019.html)
 * CPU: [Intel Core i5-12400](https://ark.intel.com/content/www/ru/ru/ark/products/134586/intel-core-i512400-processor-18m-cache-up-to-4-40-ghz.html)
 * CPU cooler: [Noctua NH-L9i-17xx chromax.black](https://noctua.at/en/nh-l9i-17xx-chromax-black)
+  * fan replaced to [Noctua NF-A9x14 PWM NF-A9X14](https://noctua.at/en/products/fan/nf-a9x14-pwm)
   * with installed [Noctua NA-FD1](https://noctua.at/en/na-fd1)
 * RAM: 2x [16Gb DDR4 3200MHz Kingston Fury Beast KF432C16BBK2/32](https://www.kingston.com/dataSheets/KF432C16BBK2_32.pdf)
 * PSU: [be quiet! SFX POWER 3 450W](https://www.bequiet.com/ru/powersupply/2309)
