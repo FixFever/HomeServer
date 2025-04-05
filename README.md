@@ -28,6 +28,7 @@
 * IP-Camera: [TP-Link Tapo C225](https://www.tp-link.com/ru/home-networking/cloud-camera/tapo-c225/)
 * UPS: [CyberPower CP1300EPFCLCD](https://www.cyberpower.com/ru/ru/product/sku/cp1300epfclcd)
 * CO2-meter: [ZyAura ZGm053U](https://www.zyaura.com/product-detail/zgm053u/)
+* [Usb-mini-monitor](https://www.ozon.ru/product/1888369081)
 
 ### Software
 
