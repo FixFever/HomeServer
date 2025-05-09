@@ -115,7 +115,7 @@ for($i=1;$i -le 5;$i++)
 {
 	winscp /log=$logs /ini=nul `
 	    /command `
-		"open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -rawsettings ProxyPort=0" `
+		"open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -timeout=60" `
 		"synchronize remote M:\\nextcloud nextcloud -delete -criteria=size" `
 		"synchronize remote M:\\Sleeplessness Sleeplessness -delete -criteria=size" `
 		"synchronize remote H:\\backups backups -delete -criteria=size" `
