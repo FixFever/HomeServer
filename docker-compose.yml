@@ -126,12 +126,11 @@ services:
       homepage.widget.password: ${NEXTCLOUD_ADMIN_PASSWORD}
 
   postgres:
-    image: postgres:14
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
     container_name: postgres
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_DB=${NEXTCLOUD_POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
@@ -294,6 +293,55 @@ services:
       homepage.group: Containers
       homepage.name: MariaDB
       homepage.icon: mariadb.png
+      
+  immich:
+    container_name: immich
+    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    ports:
+      - 2283:2283
+    extends:
+       file: hwaccel.transcoding.yml
+       service: cpu #vaapi-wsl
+    volumes:
+      - immich:/data
+      - C:\\docker-caches\immich\encoded-video:/data/encoded-video
+      - C:\\docker-caches\immich\thumbs:/data/thumbs
+      - M:\\immich:/data/library/admin
+     # - M:\nextcloud\FixFever\Фото:/mnt/media
+      - /etc/localtime:/etc/localtime:ro
+    env_file:
+      - C:\Users\FixFever\Documents\immich.env
+    depends_on:
+      - redis
+      - postgres
+    restart: unless-stopped
+    labels:
+      virtual.host: immich.${DOMAIN}
+      virtual.port: 2283
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Cloud
+      homepage.name: Immich
+      homepage.icon: immich.png
+      homepage.href: https://immich.${DOMAIN}
+      homepage.description: Photo and video management solution      
+      homepage.widget.type: immich
+      homepage.widget.url: http://host.docker.internal:2283
+      homepage.widget.version: 2
+      homepage.widget.key: ${IMMICH_API_KEY}
+
+  immich-machine-learning:
+    container_name: immich_machine_learning
+    # For hardware acceleration, add one of -[armnn, cuda, rocm, openvino, rknn] to the image tag.
+    # Example tag: ${IMMICH_VERSION:-release}-cuda
+    image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
+    # extends: # uncomment this section for hardware acceleration - see https://immich.app/docs/features/ml-hardware-acceleration
+    #   file: hwaccel.ml.yml
+    #   service: cpu # set to one of [armnn, cuda, rocm, openvino, openvino-wsl, rknn] for accelerated inference - use the `-wsl` version for WSL2 where applicable
+    volumes:
+      - immich-model-cache:/cache
+    env_file:
+      - C:\Users\FixFever\Documents\immich.env
+    restart: unless-stopped
       
   prometheus:
     image: prom/prometheus:latest
@@ -758,4 +806,9 @@ volumes:
     external: true
     
   homeassistant:
+    external: true
+    
+  immich:
+    external: true
+  immich-model-cache:
     external: true
