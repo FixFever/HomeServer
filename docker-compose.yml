@@ -296,21 +296,23 @@ services:
       
   immich:
     container_name: immich
-    image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
+    image: ghcr.io/immich-app/immich-server:release
     ports:
       - 2283:2283
     extends:
        file: hwaccel.transcoding.yml
        service: cpu #vaapi-wsl
     volumes:
-      - immich:/data
+      - M:\\immich:/data
       - C:\\docker-caches\immich\encoded-video:/data/encoded-video
       - C:\\docker-caches\immich\thumbs:/data/thumbs
-      - M:\\immich:/data/library/admin
-     # - M:\nextcloud\FixFever\Фото:/mnt/media
       - /etc/localtime:/etc/localtime:ro
-    env_file:
-      - C:\Users\FixFever\Documents\immich.env
+    environment:
+      TZ: Europe/Moscow
+      DB_HOSTNAME: postgres
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_DATABASE_NAME: immich
     depends_on:
       - redis
       - postgres
