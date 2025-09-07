@@ -47,7 +47,6 @@
     * [Preview generator](https://github.com/nextcloud/previewgenerator)
     * [Memories](https://github.com/pulsejet/memories)
   * [Immich](https://immich.app) - photo and video management solution
-  * [Photoprism](https://photoprism.app/) - AI-Powered Photos App
   * [Home assistant](https://www.home-assistant.io/) - Home automation service
     * [Home Assistant Community Store](https://www.hacs.xyz/)
   * [Valheim](https://github.com/lloesche/valheim-server-docker) server
