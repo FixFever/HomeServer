@@ -576,8 +576,11 @@ services:
       - TZ=Europe/Moscow
     volumes:
       - shinobi:/home/Shinobi
+      - shinobi_custom_auto_load:/customAutoLoad
+      - shinobi_plugins:/home/Shinobi/plugins
+      - shinobi_config:/config
       - shinobi_database:/var/lib/mysql
-      - H:\shinobi:/home/Shinobi/videos/hPxvnASOUn/home    
+      - H:\shinobi:/home/Shinobi/videos
     restart: unless-stopped
     labels:
       virtual.host: shinobi.${DOMAIN}
@@ -703,13 +706,17 @@ volumes:
 
   shinobi:
     external: true
+  shinobi_custom_auto_load:
+    external: true
+  shinobi_config:
+    external: true
+  shinobi_plugins:
+    external: true
   shinobi_database:
     external: true
     
   homeassistant:
     external: true
     
-  immich:
-    external: true
   immich-model-cache:
     external: true
