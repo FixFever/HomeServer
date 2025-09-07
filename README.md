@@ -47,6 +47,7 @@
     * [Preview generator](https://github.com/nextcloud/previewgenerator)
     * [Memories](https://github.com/pulsejet/memories)
   * [Immich](https://immich.app) - photo and video management solution
+  * [MediaCMS](https://github.com/mediacms-io/mediacms) - open source video and media CMS
   * [Home assistant](https://www.home-assistant.io/) - Home automation service
     * [Home Assistant Community Store](https://www.hacs.xyz/)
   * [Valheim](https://github.com/lloesche/valheim-server-docker) server
