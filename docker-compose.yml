@@ -50,6 +50,8 @@ services:
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_HTTP_API_METRICS: true
       WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_API_TOKEN} 
+      WATCHTOWER_NOTIFICATIONS: shoutrrr
+      WATCHTOWER_NOTIFICATION_URL: telegram://${TELEGRAM_BOT_TOKEN}@telegram?chats=${CHAT_ID}
     restart: unless-stopped
     labels:
       homepage.group: Containers
