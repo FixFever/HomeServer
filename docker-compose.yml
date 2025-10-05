@@ -41,14 +41,23 @@ services:
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
+    ports:
+      - 8090:8080  
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --cleanup
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_HTTP_API_METRICS: true
+      WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_API_TOKEN} 
     restart: unless-stopped
     labels:
       homepage.group: Containers
       homepage.name: Watchtower
       homepage.icon: watchtower.png
+      homepage.widget.type: watchtower
+      homepage.widget.url: http://host.docker.internal:8090
+      homepage.widget.key: ${WATCHTOWER_API_TOKEN} 
       
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -120,6 +129,7 @@ services:
       homepage.href: https://nextcloud.${DOMAIN}
       homepage.description: File-hosting service
       homepage.widget.type: nextcloud
+      homepage.widget.fields: '["numfiles", "numshares"]'
       homepage.widget.url: http://host.docker.internal:5000
       homepage.widget.username: ${NEXTCLOUD_ADMIN_USER}
       homepage.widget.password: ${NEXTCLOUD_ADMIN_PASSWORD}
@@ -228,6 +238,7 @@ services:
       homepage.href: https://immich.${DOMAIN}
       homepage.description: Photo and video management solution      
       homepage.widget.type: immich
+      homepage.widget.fields: '["photos", "videos", "storage"]'
       homepage.widget.url: http://host.docker.internal:2283
       homepage.widget.version: 2
       homepage.widget.key: ${IMMICH_API_KEY}
@@ -657,9 +668,6 @@ volumes:
     external: true
     
   pgadmin:
-    external: true
-    
-  photoprism:
     external: true
     
   mariadb:
