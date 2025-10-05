@@ -113,11 +113,17 @@ $winscpResult;
 
 for($i=1;$i -le 5;$i++)
 {
+    $folders = Get-ChildItem -Path "M:\" -Directory | Select-Object -ExpandProperty Name
+
+    $syncCommands = @()
+    foreach ($folder in $folders) {
+        $syncCommands += "synchronize remote M:\\$folder Media/$folder -delete -criteria=size"
+    }
+
 	winscp /log=$logs /ini=nul `
 	    /command `
 		"open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -timeout=60" `
-		"synchronize remote M:\\nextcloud nextcloud -delete -criteria=size" `
-		"synchronize remote M:\\Sleeplessness Sleeplessness -delete -criteria=size" `
+		$syncCommands `
 		"synchronize remote H:\\backups backups -delete -criteria=size" `
 		"synchronize remote H:\\docker-volumes\\prometheus prometheus -delete -criteria=size" `
 	    "exit"
