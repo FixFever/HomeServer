@@ -109,37 +109,54 @@ $logsPath = "%TEMP%";
 # Upload to storage
 $logs = $logsPath + "/WinSCP_" + (Get-Date).ToString("yyyyMMdd_HHmmss") + ".log";
 	
-$winscpResult;
-
-for($i=1;$i -le 5;$i++)
-{
-    $folders = Get-ChildItem -Path "M:\" -Directory | Select-Object -ExpandProperty Name
-
-    $syncCommands = @()
-    foreach ($folder in $folders) {
-        $syncCommands += "synchronize remote M:\\$folder Media/$folder -delete -criteria=size"
-    }
-
-	winscp /log=$logs /ini=nul `
-	    /command `
-		"open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -timeout=60" `
-		$syncCommands `
-		"synchronize remote H:\\backups backups -delete -criteria=size" `
-		"synchronize remote H:\\docker-volumes\\prometheus prometheus -delete -criteria=size" `
-	    "exit"
 	
-	$winscpResult = $LastExitCode
-	if ($winscpResult -eq 0)
-	{
-		break;
-	}
-	else
-	{
-		Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed, attempt "+ $i + ". See " + $logs)
-	}
+$syncFolders = @()
+
+$mediaFolders = Get-ChildItem -Path "M:\" -Directory | Select-Object -ExpandProperty Name
+foreach ($folder in $mediaFolders) {
+    $syncFolders += @{ Local = "M:\\$folder"; Remote = "Media/$folder"}
 }
 
-if ($winscpResult -eq 0)
+$syncFolders += @{ Local = "H:\\backups"; Remote = "backups"}
+$syncFolders += @{ Local = "H:\\docker-volumes\\prometheus"; Remote = "prometheus"}
+
+$backupSuccess = $true
+
+foreach ($folder in $syncFolders) {
+	
+	$winscpResult;
+	$syncFolderSuccess = $false
+
+	for($i=1;$i -le 5;$i++)
+	{
+		Write-Host "Sync $($folder.Local) to $($folder.Remote)"
+		winscp /log=$logs /ini=nul `
+			/command `
+			"open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -timeout=60" `
+			"synchronize remote $($folder.Local) $($folder.Remote) -delete -criteria=size" `
+			"exit"
+	
+		$winscpResult = $LastExitCode
+		if ($winscpResult -eq 0)
+		{
+			$syncFolderSuccess = $true
+			break;
+		}
+		else
+		{
+			Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed, attempt "+ $i + ". See " + $logs)
+		}
+	}
+	
+	if (-not $syncFolderSuccess) {
+        Write-Error "Failed to sync folder '$($folder.Remote)' after 5 attempts"
+		Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Failed to sync folder '$($folder.Remote)' after 5 attempts. See " + $logs)
+    }
+	
+	$backupSuccess = $backupSuccess -and $syncFolderSuccess
+}
+
+if ($backupSuccess)
 {
 	Write-Host "Success"
 	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup completed successfully")
@@ -148,5 +165,5 @@ if ($winscpResult -eq 0)
 else
 {
 	Write-Host "Error"
-	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed after "+ $i +" attempts. See " + $logs)
+	Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed. See " + $logs)
 }
