@@ -89,7 +89,7 @@ services:
     build:
       context: ./nextcloud/
       args:
-        NEXTCLOUD_IMAGE: nextcloud:31
+        NEXTCLOUD_IMAGE: nextcloud:32
     container_name: nextcloud
     ports:
       - 5000:80
@@ -114,14 +114,10 @@ services:
       - M:\\nextcloud\Elya:/var/www/html/data/Elya/files
       - M:\\nextcloud\Boris:/var/www/html/data/Boris/files
       - M:\\nextcloud\Marina:/var/www/html/data/Marina/files
-      - M:\\nextcloud\Alexey:/var/www/html/data/Alexey/files
-      - M:\\nextcloud\Lada:/var/www/html/data/Lada/files
       - M:\\nextcloud\trashbin\FixFever:/var/www/html/data/FixFever/files_trashbin/files
       - M:\\nextcloud\trashbin\Elya:/var/www/html/data/Elya/files_trashbin/files
       - M:\\nextcloud\trashbin\Boris:/var/www/html/data/Boris/files_trashbin/files
       - M:\\nextcloud\trashbin\Marina:/var/www/html/data/Marina/files_trashbin/files
-      - M:\\nextcloud\trashbin\Alexey:/var/www/html/data/Alexey/files_trashbin/files
-      - M:\\nextcloud\trashbin\Lada:/var/www/html/data/Lada/files_trashbin/files
     restart: unless-stopped
     labels:
       virtual.host: nextcloud.${DOMAIN}
@@ -168,7 +164,7 @@ services:
       homepage.icon: redis.png
     
   nextcloud_cron:
-    image: nextcloud:31
+    image: nextcloud:32
     container_name: nextcloud_cron
     volumes_from:
       - nextcloud:rw
