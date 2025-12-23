@@ -48,7 +48,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       WATCHTOWER_CLEANUP: true
-      WATCHTOWER_DISABLE_CONTAINERS: /nextcloud
+      WATCHTOWER_DISABLE_CONTAINERS: /nextcloud /nextcloud_cron /mediacms /celery /celery_beat /migrations
       WATCHTOWER_HTTP_API_METRICS: true
       WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_API_TOKEN} 
       WATCHTOWER_NOTIFICATIONS: shoutrrr
