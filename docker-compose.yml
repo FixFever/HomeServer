@@ -216,6 +216,7 @@ services:
       - M:\\immich:/data
       - C:\\docker-caches\immich\encoded-video:/data/encoded-video
       - C:\\docker-caches\immich\thumbs:/data/thumbs
+      - C:\\docker-caches\immich\upload:/data/upload
       - /etc/localtime:/etc/localtime:ro
     environment:
       TZ: Europe/Moscow
