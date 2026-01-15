@@ -122,6 +122,9 @@ $syncFolders += @{ Local = "H:\\docker-volumes\\prometheus"; Remote = "prometheu
 
 $backupSuccess = $true
 
+# Требуется для PowerShell 7.3 или новее
+$PSNativeCommandArgumentPassing = "Legacy"
+
 foreach ($folder in $syncFolders) {
 	
 	$winscpResult;
@@ -132,7 +135,8 @@ foreach ($folder in $syncFolders) {
 		Write-Host "Sync $($folder.Local) to $($folder.Remote)"
 		winscp /log=$logs /ini=nul `
 			/command `
-			"open davs://${Env:WEBDAV_USER}:${Env:WEBDAV_PASSWORD}@${Env:WEBDAV_HOST}/webdav/Backup -timeout=60" `
+	        "open sftp://${Env:SFTP_USER}:${Env:SFTP_PASSWORD}@${Env:SFTP_HOST}:${Env:SFTP_PORT}/ -hostkey=`"`"${Env:SFTP_HOSTKEY}`"`"" `
+			"cd D:/Backup" `
 			"synchronize remote $($folder.Local) $($folder.Remote) -delete -criteria=size" `
 			"exit"
 	
@@ -144,7 +148,8 @@ foreach ($folder in $syncFolders) {
 		}
 		else
 		{
-			Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed, attempt "+ $i + ". See " + $logs)
+			Write-Error "Failed to sync folder '$($folder.Remote)', attempt "+ $i
+			# Invoke-WebRequest -URI ($Env:TELEGRAM_REPORT_URL + "Backup failed, attempt "+ $i + ". See " + $logs)
 		}
 	}
 	

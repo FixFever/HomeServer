@@ -68,11 +68,13 @@
 
 ### Remote backup storage
 * Router: [Keenetic Giga KN-1010](https://keenetic.ru/ru/keenetic-giga-kn-1010)
-  * WebDAV server
   * [DDNS](https://help.keenetic.com/hc/ru/articles/360000400919-%D0%A1%D0%B5%D1%80%D0%B2%D0%B8%D1%81-%D0%B4%D0%BE%D0%BC%D0%B5%D0%BD%D0%BD%D1%8B%D1%85-%D0%B8%D0%BC%D0%B5%D0%BD-KeenDNS)
-* Storages:
-  * 4TB [Seagate Skyhawk ST4000VX013](https://www.seagate.com/files/www-content/datasheets/pdfs/skyhawk-ai-DS1960-14C-2204RU-ru_RU.pdf)
-  
+* Beelink S2 Mini PC ([review and specs](https://androidpctv.com/review-beelink-s2/))
+  * SFTP Server
+  * Storages:
+    * 4TB [Seagate Skyhawk ST4000VX013](https://www.seagate.com/files/www-content/datasheets/pdfs/skyhawk-ai-DS1960-14C-2204RU-ru_RU.pdf)
+* Mini DC UPS - [WGP SMART DC V1203W](https://www.wgpups.com/wgp-intelligent-30w-12v3a-smart-dc-ups-10400mah-backup-power-36w-ups-for-wifi-routers-cpe-product/)
+
 ### VPS
 * VPS in NL by [VDSka](https://vdska.ru/)
 * [Amnezia VPN](https://amnezia.org/)
