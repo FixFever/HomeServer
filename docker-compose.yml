@@ -565,7 +565,32 @@ services:
       homepage.icon: it-tools.png
       homepage.href: https://it-tools.${DOMAIN}
       homepage.description: Useful tools for developer and people working in IT
-      
+  
+  pdf:
+    image: frooodle/s-pdf:latest
+    container_name: pdf
+    ports:
+      - 8085:8080
+    environment:
+      - SECURITY_ENABLELOGIN=true
+      - LANGS=en,ru
+      - OCR_LANGS=eng,rus
+    volumes:
+      - stirling_tessdata:/usr/share/tessdata  # OCR language files
+      - stirling_configs:/configs               # Settings & database
+      - stirling_logs:/logs                     # Application logs
+      - stirling_pipeline:/pipeline             # Automation configs
+    restart: unless-stopped
+    labels:
+      virtual.host: pdf.${DOMAIN}
+      virtual.port: 8080
+      virtual.tls-email: ${TLS_EMAIL}
+      homepage.group: Utilities
+      homepage.name: Stirling PDF
+      homepage.icon: stirling-pdf
+      homepage.href: https://pdf.${DOMAIN}
+      homepage.description: PDF editing platform
+
   # https://learn.microsoft.com/ru-ru/windows/wsl/connect-usb#attach-a-usb-device
   co2-exporter:
     image: huhamhire/air-co2-exporter:latest
@@ -711,6 +736,15 @@ volumes:
   cobalt_api_cookies:
     external: true
   cobalt_api_services:
+    external: true
+    
+  stirling_tessdata:
+    external: true
+  stirling_configs:
+    external: true
+  stirling_logs:
+    external: true
+  stirling_pipeline:
     external: true
 
   shinobi:

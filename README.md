@@ -54,6 +54,7 @@
   * [Burn-after-reading](https://github.com/Tethik/burn-after-reading) - share short term messages stored in memory
   * [Vaultwarden](https://github.com/dani-garcia/vaultwarden) - password management
   * [Gokapi](https://github.com/Forceu/Gokapi) - share files
+  * [Stirling PDF](https://github.com/Stirling-Tools/Stirling-PDF) - PDF editing platform
   * [Shinobi](https://www.shinobi.video/) - NVR and CCTV
   * [Chromium with NoVNC](https://github.com/vital987/chrome-novnc) - Chrome in browser
   * [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app) - note-taking app
