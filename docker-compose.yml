@@ -53,8 +53,9 @@ services:
       WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_API_TOKEN} 
       WATCHTOWER_NOTIFICATIONS: shoutrrr
       WATCHTOWER_NOTIFICATION_URL: telegram://${TELEGRAM_BOT_TOKEN}@telegram?chats=${CHAT_ID}
+      DOCKER_API_VERSION: 1.49
       # WATCHTOWER_RUN_ONCE: true
-    restart: unless-stopped
+    # restart: unless-stopped
     labels:
       homepage.group: Containers
       homepage.name: Watchtower
