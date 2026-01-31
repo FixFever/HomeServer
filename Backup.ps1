@@ -14,7 +14,7 @@ if (!$SkipZip){
 			docker pause $container
 		}
 		
-		Get-ChildItem -Path \\wsl$\docker-desktop\mnt\docker-desktop-disk\data\docker\volumes -Directory | Foreach-Object { docker run --rm -v "${_}:/data" -v "H:\backups\docker-volumes:/docker-volumes" ubuntu tar cvzf "/docker-volumes/${_}.tar.gz" /data }
+		Get-ChildItem -Path \\wsl$\docker-desktop\mnt\docker-desktop-disk\data\docker\volumes -Directory -Name | Foreach-Object { docker run --rm -v "${_}:/data" -v "H:\backups\docker-volumes:/docker-volumes" ubuntu tar cvzf "/docker-volumes/${_}.tar.gz" /data }
 	}
 	catch {
 		Write-Host $_
