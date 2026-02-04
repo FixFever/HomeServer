@@ -109,7 +109,7 @@ services:
       - redis
     volumes:
       - nextcloud_html:/var/www/html
-      - nextcloud_php:/usr/local/etc/php
+      - C:\git\server\nextcloud\php.ini:/usr/local/etc/php/conf.d/php.ini
       - C:\\docker-caches\nextcloud\preview:/var/www/html/data/appdata_ocah283m7og5/preview
       - M:\\nextcloud\FixFever:/var/www/html/data/FixFever/files
       - M:\\nextcloud\Elya:/var/www/html/data/Elya/files
