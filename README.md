@@ -74,7 +74,3 @@
   * Storages:
     * 4TB [Seagate Skyhawk ST4000VX013](https://www.seagate.com/files/www-content/datasheets/pdfs/skyhawk-ai-DS1960-14C-2204RU-ru_RU.pdf)
 * Mini DC UPS - [WGP SMART DC V1203W](https://www.wgpups.com/wgp-intelligent-30w-12v3a-smart-dc-ups-10400mah-backup-power-36w-ups-for-wifi-routers-cpe-product/)
-
-### VPS
-* VPS in NL by [VDSka](https://vdska.ru/)
-* [Amnezia VPN](https://amnezia.org/)
