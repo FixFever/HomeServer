@@ -1,7 +1,7 @@
 services:
     
-  caddy_gen:
-    container_name: caddy_gen
+  caddy-gen:
+    container_name: caddy-gen
     image: wemakeservices/caddy-gen:master
     network_mode: host
     environment:
@@ -27,9 +27,9 @@ services:
       - opentracker
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
-      - caddy_data:/data
+      - caddy_data:/data/caddy
       - caddy_etc:/etc/caddy
-      - caddy_config:/config
+      - caddy_config:/config/caddy
     restart: unless-stopped
     labels:
       homepage.group: Containers
