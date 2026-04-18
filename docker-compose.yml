@@ -35,8 +35,8 @@ services:
       homepage.group: Containers
       homepage.name: Caddy
       homepage.icon: caddy.png
-      homepage.widget.type: caddy
-      homepage.widget.url: http://host.docker.internal:2019
+      # homepage.widget.type: caddy
+      # homepage.widget.url: http://host.docker.internal:2019
       
   watchtower:
     image: containrrr/watchtower:latest
@@ -55,7 +55,7 @@ services:
       WATCHTOWER_NOTIFICATION_URL: telegram://${TELEGRAM_BOT_TOKEN}@telegram?chats=${CHAT_ID}
       DOCKER_API_VERSION: 1.49
       # WATCHTOWER_RUN_ONCE: true
-    # restart: unless-stopped
+    restart: unless-stopped
     labels:
       homepage.group: Containers
       homepage.name: Watchtower
