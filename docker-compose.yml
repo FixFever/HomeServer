@@ -6,6 +6,7 @@ services:
     network_mode: host
     environment:
       CADDY_SNIPPET: /etc/caddy/caddy.snippet
+      CADDY_TEMPLATE: /etc/caddy/Caddyfile.tmpl
     depends_on:
       - homepage
       - nextcloud
