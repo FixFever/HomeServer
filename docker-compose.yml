@@ -36,22 +36,18 @@ services:
       homepage.group: Containers
       homepage.name: Caddy
       homepage.icon: caddy.png
-      # homepage.widget.type: caddy
-      # homepage.widget.url: http://host.docker.internal:2019
       
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
-    ports:
-      - 8090:8080  
+    networks:
+      - watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
     environment:
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_DISABLE_CONTAINERS: /nextcloud /nextcloud_cron /mediacms /celery /celery_beat /migrations
-      WATCHTOWER_HTTP_API_METRICS: true
-      WATCHTOWER_HTTP_API_TOKEN: ${WATCHTOWER_API_TOKEN} 
       WATCHTOWER_NOTIFICATIONS: shoutrrr
       WATCHTOWER_NOTIFICATION_URL: telegram://${TELEGRAM_BOT_TOKEN}@telegram?chats=${CHAT_ID}
       DOCKER_API_VERSION: 1.49
@@ -61,9 +57,6 @@ services:
       homepage.group: Containers
       homepage.name: Watchtower
       homepage.icon: watchtower.png
-      homepage.widget.type: watchtower
-      homepage.widget.url: http://host.docker.internal:8090
-      homepage.widget.key: ${WATCHTOWER_API_TOKEN} 
       
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
@@ -72,6 +65,9 @@ services:
       - 3005:3000    
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${DOMAIN},localhost:3005
+    networks:
+      - apps
+      - homepage
     volumes:
       - homepage:/app/config
       - homepage_images:/app/public/images
@@ -96,18 +92,20 @@ services:
     ports:
       - 5000:80
     environment:
-      - POSTGRES_HOST=host.docker.internal:5432
+      - POSTGRES_HOST=postgres:5432
       - POSTGRES_DB=${NEXTCLOUD_POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
       - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
-      - REDIS_HOST=host.docker.internal
+      - REDIS_HOST=redis
       - PHP_MEMORY_LIMIT=3072M
       - APACHE_BODY_LIMIT=0
     depends_on:
       - postgres
       - redis
+    networks:
+      - apps
     volumes:
       - nextcloud_html:/var/www/html
       - C:\git\server\nextcloud\php.ini:/usr/local/etc/php/conf.d/php.ini
@@ -139,6 +137,8 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - apps
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -152,6 +152,8 @@ services:
     container_name: redis
     ports:
       - 6379:6379
+    networks:
+      - apps
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -169,6 +171,8 @@ services:
     user: 0:0
     depends_on:
       - postgres
+    networks:
+      - apps
     restart: unless-stopped
     labels:
       homepage.group: Containers
@@ -188,6 +192,8 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       - postgres
+    networks:
+      - apps
     volumes:
       - pgadmin:/var/lib/pgadmin
     restart: unless-stopped
@@ -222,6 +228,8 @@ services:
       - redis
       - postgres
       - immich-machine-learning
+    networks:
+      - apps
     restart: unless-stopped
     labels:
       virtual.host: immich.${DOMAIN}
@@ -234,13 +242,15 @@ services:
       homepage.description: Photo and video management solution      
       homepage.widget.type: immich
       homepage.widget.fields: '["photos", "videos", "storage"]'
-      homepage.widget.url: http://host.docker.internal:2283
+      homepage.widget.url: http://immich:2283
       homepage.widget.version: 2
       homepage.widget.key: ${IMMICH_API_KEY}
 
   immich-machine-learning:
     container_name: immich-machine-learning
     image: ghcr.io/immich-app/immich-machine-learning:release
+    networks:
+      - apps
     volumes:
       - immich-model-cache:/cache
     restart: unless-stopped
@@ -263,7 +273,7 @@ services:
     environment:
       TZ: "Europe/Moscow"
     networks:
-      - default
+      - monitoring
     restart: unless-stopped
     labels:
       virtual.host: prometheus.${DOMAIN}
@@ -284,6 +294,8 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
+    networks:
+      - monitoring
     volumes:
       - grafana_lib:/var/lib/grafana
       - grafana_provisioning:/etc/grafana/provisioning/
@@ -293,8 +305,6 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
       GF_USERS_ALLOW_SIGN_UP: false
       GF_SERVER_ROOT_URL: https://grafana.${DOMAIN}
-    networks:
-      - default
     restart: unless-stopped
     labels:
       virtual.host: grafana.${DOMAIN}
@@ -305,10 +315,6 @@ services:
       homepage.icon: grafana.png
       homepage.href: https://grafana.${DOMAIN}
       homepage.description: Data visualization & Monitoring
-      # homepage.widget.type: grafana
-      # homepage.widget.url: http://host.docker.internal:3000
-      # homepage.widget.username: ${GRAFANA_ADMIN_USER}
-      # homepage.widget.password: ${GRAFANA_ADMIN_PASSWORD}
       
   secret:
     image: ghcr.io/tethik/burn-after-reading/burn-after-reading:1.5.1
@@ -317,6 +323,8 @@ services:
       - 5035:80
     volumes:
       - secret:/opt/data
+    networks:
+      - secret
     environment:     
       - MAX_CONTENT_LENGTH=134217728
       - BURN_DATA_PATH=/opt/data/
@@ -336,8 +344,10 @@ services:
     image: vaultwarden/server:latest
     container_name: vault
     ports:
-      - "3012:3012"
-      - "8282:80"
+      - 3012:3012
+      - 8282:80
+    networks:
+      - vault
     volumes:
       - vault:/data
     environment:
@@ -362,6 +372,8 @@ services:
     container_name: gokapi
     ports:
       - 8083:53842
+    networks:
+      - gokapi
     volumes:
       - gokapi_config:/app/config
       - gokapi_data:/app/data
@@ -384,6 +396,8 @@ services:
     environment:
       PORT: 9870
       VNC_PASS: ${CHROME_PASSWORD}
+    networks:
+      - chrome
     restart: unless-stopped
     labels:
       virtual.host: chrome.${DOMAIN}
@@ -398,10 +412,10 @@ services:
   notes:
     image: standardnotes/web:latest
     container_name: notes
-    depends_on:
-      - notes_api
     ports:
       - 3003:80
+    networks:
+      - notes
     volumes:
       - notes_html:/usr/share/nginx/html # Env var DEFAULT_SYNC_SERVER is not supported in web app docker image.
                                          # To change default url of standard notes api, in /usr/share/nginx/html/app.js:
@@ -429,15 +443,17 @@ services:
     ports:
       - 3002:3000
       - 3125:3104
+    networks:
+      - apps
     environment:
-      - DB_HOST=host.docker.internal
+      - DB_HOST=mysql
       - DB_PORT=3306
       - DB_USERNAME=${NOTES_DB_USERNAME}
       - DB_PASSWORD=${NOTES_DB_PASSWORD}
       - DB_DATABASE=${NOTES_DB_NAME}
       - DB_TYPE=mysql
       - REDIS_PORT=6379
-      - REDIS_HOST=host.docker.internal
+      - REDIS_HOST=redis
       - CACHE_TYPE=redis
       - AUTH_JWT_SECRET=${NOTES_AUTH_JWT_SECRET}
       - AUTH_SERVER_ENCRYPTION_SERVER_KEY=${NOTES_AUTH_SERVER_ENCRYPTION_SERVER_KEY}
@@ -465,10 +481,12 @@ services:
       - SERVICES=sns,sqs
       - HOSTNAME_EXTERNAL=localstack
       - LS_LOG=warn
-    restart: unless-stopped
     volumes:
       - localstack:/var/lib/localstack
       - localstack_etc:/etc/localstack/init/ready.d # chmod +x /etc/localstack/init/ready.d/localstack_bootstrap.sh
+    networks:
+      - apps
+    restart: unless-stopped
     labels:
       homepage.group: Containers
       homepage.name: Localstack
@@ -484,6 +502,8 @@ services:
       - MYSQL_PASSWORD=${NOTES_DB_PASSWORD}
     ports:
       - 3306:3306
+    networks:
+      - apps
     volumes:
       - mysql:/var/lib/mysql
     restart: unless-stopped
@@ -497,6 +517,8 @@ services:
     container_name: cobalt_api
     ports:
       - 9002:9000/tcp
+    networks:
+      - cobalt_api
     volumes: 
       # youtube download fix: 
       # Add cookie to the youtube_oauth array in cookies.json file
@@ -530,6 +552,8 @@ services:
     container_name: speedtest
     ports:
       - 5444:8080
+    networks:
+      - speedtest
     environment:
       - MODE=standalone
     restart: unless-stopped
@@ -548,6 +572,8 @@ services:
     container_name: it-tools
     ports:
       - 5445:80
+    networks:
+      - it-tools
     restart: unless-stopped
     labels:
       virtual.host: it-tools.${DOMAIN}
@@ -564,6 +590,8 @@ services:
     container_name: pdf
     ports:
       - 8085:8080
+    networks:
+      - pdf
     environment:
       - SECURITY_ENABLELOGIN=true
       - LANGS=en,ru
@@ -590,6 +618,8 @@ services:
     container_name: co2-exporter
     ports:
       - 9110:9110
+    networks:
+      - monitoring
     privileged: true
     restart: unless-stopped
     labels:
@@ -602,6 +632,8 @@ services:
     container_name: shinobi
     ports:
       - 5009:8080
+    networks:
+      - shinobi
     environment:
       - TZ=Europe/Moscow
     volumes:
@@ -650,6 +682,8 @@ services:
     ports:
       - 6969:6969
       - 6969:6969/udp
+    networks:
+      - opentracker
     restart: unless-stopped
     labels:
       virtual.host: tracker.${DOMAIN}
@@ -658,6 +692,38 @@ services:
       homepage.group: Containers
       homepage.name: OpenTracker
       homepage.icon: /icons/opentracker.png
+      
+networks:
+  apps:
+    internal: true
+  homepage:
+    internal: false
+  monitoring:
+    internal: true
+  watchtower:
+    internal: true
+  secret:
+    internal: true
+  vault:
+    internal: true
+  gokapi:
+    internal: true
+  chrome:
+    internal: true
+  notes:
+    internal: true
+  cobalt_api:
+    internal: true
+  speedtest:
+    internal: true
+  it-tools:
+    internal: true
+  pdf:
+    internal: true
+  shinobi:
+    internal: true
+  opentracker:
+    internal: true
       
 volumes:
 
