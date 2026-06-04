@@ -1,42 +1,39 @@
 services:
-    
-  caddy-gen:
-    container_name: caddy-gen
-    image: wemakeservices/caddy-gen:master
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
     network_mode: host
     environment:
-      CADDY_SNIPPET: /etc/caddy/caddy.snippet
-      CADDY_TEMPLATE: /etc/caddy/Caddyfile.tmpl
-    depends_on:
-      - homepage
-      - nextcloud
-      - immich
-      - pgadmin
-      - prometheus
-      - grafana
-      - secret
-      - vault
-      - gokapi
-      - chrome
-      - notes
-      - notes_api
-      - cobalt_api
-      - speedtest
-      - it-tools
-      - shinobi
-      - homeassistant
-      - opentracker
+      - TLS_EMAIL=${TLS_EMAIL}
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro # needs socket to read events
-      - caddy_data:/data/caddy
-      - caddy_etc:/etc/caddy
-      - caddy_config:/config/caddy
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_data:/etc/traefik
+      - traefik_certs:/letsencrypt
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=host
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --providers.file.filename=/etc/traefik/dynamic.yml
+      - --providers.file.watch=true
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.email=${TLS_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --log.level=INFO
+      - --accesslog=true      
+      # - --api.dashboard=true
+      # - --api.insecure=true
+      # - --entrypoints.dashboard.address=:8082
     restart: unless-stopped
     labels:
       homepage.group: Containers
-      homepage.name: Caddy
-      homepage.icon: caddy.png
-      
+      homepage.name: Traefik
+      homepage.icon: traefik.png
+
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
@@ -51,23 +48,21 @@ services:
       WATCHTOWER_NOTIFICATIONS: shoutrrr
       WATCHTOWER_NOTIFICATION_URL: telegram://${TELEGRAM_BOT_TOKEN}@telegram?chats=${CHAT_ID}
       DOCKER_API_VERSION: 1.49
-      # WATCHTOWER_RUN_ONCE: true
     restart: unless-stopped
     labels:
       homepage.group: Containers
       homepage.name: Watchtower
       homepage.icon: watchtower.png
-      
+
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
     ports:
-      - 3005:3000    
+      - 3005:3000
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${DOMAIN},localhost:3005
     networks:
       - apps
-      - homepage
     volumes:
       - homepage:/app/config
       - homepage_images:/app/public/images
@@ -75,9 +70,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     restart: unless-stopped
     labels:
-      virtual.host: ${DOMAIN}
-      virtual.port: 3000
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.homepage.rule: Host(`${DOMAIN}`)
+      traefik.http.routers.homepage.entrypoints: websecure
+      traefik.http.routers.homepage.tls.certresolver: letsencrypt
+      traefik.http.services.homepage.loadbalancer.server.port: 3000
       homepage.group: Containers
       homepage.name: Homepage
       homepage.icon: homepage.png
@@ -120,9 +117,11 @@ services:
       - M:\\nextcloud\trashbin\Marina:/var/www/html/data/Marina/files_trashbin/files
     restart: unless-stopped
     labels:
-      virtual.host: nextcloud.${DOMAIN}
-      virtual.port: 80
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.nextcloud.rule: Host(`nextcloud.${DOMAIN}`)
+      traefik.http.routers.nextcloud.entrypoints: websecure
+      traefik.http.routers.nextcloud.tls.certresolver: letsencrypt
+      traefik.http.services.nextcloud.loadbalancer.server.port: 80
       homepage.group: Cloud
       homepage.name: Nextcloud
       homepage.icon: nextcloud.png
@@ -161,7 +160,7 @@ services:
       homepage.group: Containers
       homepage.name: Redis
       homepage.icon: redis.png
-    
+
   nextcloud_cron:
     image: nextcloud:32
     container_name: nextcloud_cron
@@ -178,7 +177,7 @@ services:
       homepage.group: Containers
       homepage.name: Nextcloud cron
       homepage.icon: nextcloud.png
-    
+
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
@@ -198,15 +197,17 @@ services:
       - pgadmin:/var/lib/pgadmin
     restart: unless-stopped
     labels:
-      virtual.host: pgadmin.${DOMAIN}
-      virtual.port: 80
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.pgadmin.rule: Host(`pgadmin.${DOMAIN}`)
+      traefik.http.routers.pgadmin.entrypoints: websecure
+      traefik.http.routers.pgadmin.tls.certresolver: letsencrypt
+      traefik.http.services.pgadmin.loadbalancer.server.port: 80
       homepage.group: Utilities
       homepage.name: pgAdmin
       homepage.icon: pgadmin.png
       homepage.href: https://pgadmin.${DOMAIN}
       homepage.description: PostgreSQL management tool
-      
+
   immich:
     container_name: immich
     image: ghcr.io/immich-app/immich-server:release
@@ -232,14 +233,16 @@ services:
       - apps
     restart: unless-stopped
     labels:
-      virtual.host: immich.${DOMAIN}
-      virtual.port: 2283
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.immich.rule: Host(`immich.${DOMAIN}`)
+      traefik.http.routers.immich.entrypoints: websecure
+      traefik.http.routers.immich.tls.certresolver: letsencrypt
+      traefik.http.services.immich.loadbalancer.server.port: 2283
       homepage.group: Cloud
       homepage.name: Immich
       homepage.icon: immich.png
       homepage.href: https://immich.${DOMAIN}
-      homepage.description: Photo and video management solution      
+      homepage.description: Photo and video management solution
       homepage.widget.type: immich
       homepage.widget.fields: '["photos", "videos", "storage"]'
       homepage.widget.url: http://immich:2283
@@ -258,7 +261,7 @@ services:
       homepage.group: Containers
       homepage.name: Immich machine learning
       homepage.icon: immich.png
-      
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -276,17 +279,17 @@ services:
       - monitoring
     restart: unless-stopped
     labels:
-      virtual.host: prometheus.${DOMAIN}
-      virtual.port: 9090
-      virtual.tls-email: ${TLS_EMAIL}
-      virtual.auth.username: ${PROMETHEUS_USERNAME}
-      virtual.auth.password: ${PROMETHEUS_PASSWORD}
+      # traefik.http.routers.prometheus.rule: Host(`prometheus.${DOMAIN}`)
+      # traefik.http.routers.prometheus.entrypoints: websecure
+      # traefik.http.routers.prometheus.tls.certresolver: letsencrypt
+      # traefik.http.routers.prometheus.middlewares: prometheus-basic-auth
+      # traefik.http.services.prometheus.loadbalancer.server.port: 9090
       homepage.group: Monitoring
       homepage.name: Prometheus
       homepage.icon: prometheus.png
       homepage.href: https://prometheus.${DOMAIN}
       homepage.description: Monitoring
-      
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -307,15 +310,17 @@ services:
       GF_SERVER_ROOT_URL: https://grafana.${DOMAIN}
     restart: unless-stopped
     labels:
-      virtual.host: grafana.${DOMAIN}
-      virtual.port: 3000
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.grafana.rule: Host(`grafana.${DOMAIN}`)
+      traefik.http.routers.grafana.entrypoints: websecure
+      traefik.http.routers.grafana.tls.certresolver: letsencrypt
+      traefik.http.services.grafana.loadbalancer.server.port: 3000
       homepage.group: Monitoring
       homepage.name: Grafana
       homepage.icon: grafana.png
       homepage.href: https://grafana.${DOMAIN}
       homepage.description: Data visualization & Monitoring
-      
+
   secret:
     image: ghcr.io/tethik/burn-after-reading/burn-after-reading:1.5.1
     container_name: secret
@@ -325,21 +330,23 @@ services:
       - secret:/opt/data
     networks:
       - secret
-    environment:     
+    environment:
       - MAX_CONTENT_LENGTH=134217728
       - BURN_DATA_PATH=/opt/data/
       - BURN_MAX_STORAGE=1024
     restart: unless-stopped
     labels:
-      virtual.host: secret.${DOMAIN}
-      virtual.port: 80
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.secret.rule: Host(`secret.${DOMAIN}`)
+      traefik.http.routers.secret.entrypoints: websecure
+      traefik.http.routers.secret.tls.certresolver: letsencrypt
+      traefik.http.services.secret.loadbalancer.server.port: 80
       homepage.group: Utilities
       homepage.name: Burn after reading
       homepage.icon: /icons/secret.png
       homepage.href: https://secret.${DOMAIN}
       homepage.description: Share short term messages stored in memory
-      
+
   vault:
     image: vaultwarden/server:latest
     container_name: vault
@@ -358,15 +365,17 @@ services:
       - SIGNUPS_ALLOWED=true
     restart: unless-stopped
     labels:
-      virtual.host: vault.${DOMAIN}
-      virtual.port: 80
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.vault.rule: Host(`vault.${DOMAIN}`)
+      traefik.http.routers.vault.entrypoints: websecure
+      traefik.http.routers.vault.tls.certresolver: letsencrypt
+      traefik.http.services.vault.loadbalancer.server.port: 80
       homepage.group: Cloud
       homepage.name: Vaultwarden
       homepage.icon: vaultwarden.png
       homepage.href: https://vault.${DOMAIN}
       homepage.description: Password management
-      
+
   gokapi:
     image: f0rc3/gokapi:latest
     container_name: gokapi
@@ -379,15 +388,17 @@ services:
       - gokapi_data:/app/data
     restart: unless-stopped
     labels:
-      virtual.host: gokapi.${DOMAIN}
-      virtual.port: 53842
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.gokapi.rule: Host(`gokapi.${DOMAIN}`)
+      traefik.http.routers.gokapi.entrypoints: websecure
+      traefik.http.routers.gokapi.tls.certresolver: letsencrypt
+      traefik.http.services.gokapi.loadbalancer.server.port: 53842
       homepage.group: Utilities
       homepage.name: Gokapi
       homepage.icon: /icons/gokapi.png
       homepage.href: https://gokapi.${DOMAIN}
       homepage.description: Share files
-      
+
   chrome:
     image: vital987/chrome-novnc:latest
     container_name: chrome
@@ -400,9 +411,11 @@ services:
       - chrome
     restart: unless-stopped
     labels:
-      virtual.host: chrome.${DOMAIN}
-      virtual.port: 9870
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.chrome.rule: Host(`chrome.${DOMAIN}`)
+      traefik.http.routers.chrome.entrypoints: websecure
+      traefik.http.routers.chrome.tls.certresolver: letsencrypt
+      traefik.http.services.chrome.loadbalancer.server.port: 9870
       homepage.group: Utilities
       homepage.name: Chrome
       homepage.icon: chrome.png
@@ -425,15 +438,17 @@ services:
                                          # function(e){e.Api="https://your.notes.api.domain.com"
     restart: unless-stopped
     labels:
-      virtual.host: notes.${DOMAIN}
-      virtual.port: 80
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.notes.rule: Host(`notes.${DOMAIN}`)
+      traefik.http.routers.notes.entrypoints: websecure
+      traefik.http.routers.notes.tls.certresolver: letsencrypt
+      traefik.http.services.notes.loadbalancer.server.port: 80
       homepage.group: Cloud
       homepage.name: Standard notes
       homepage.icon: /icons/notes.png
       homepage.href: https://notes.${DOMAIN}
       homepage.description: Note-taking app
-      
+
   notes_api:
     image: standardnotes/server:latest
     container_name: notes_api
@@ -465,13 +480,15 @@ services:
       - notes_uploads:/opt/server/packages/files/dist/uploads
     restart: unless-stopped
     labels:
-      virtual.host: api.notes.${DOMAIN}
-      virtual.port: 3000
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.notes_api.rule: Host(`api.notes.${DOMAIN}`)
+      traefik.http.routers.notes_api.entrypoints: websecure
+      traefik.http.routers.notes_api.tls.certresolver: letsencrypt
+      traefik.http.services.notes_api.loadbalancer.server.port: 3000
       homepage.group: Containers
       homepage.name: Standard notes api
       homepage.icon: https://notes.${DOMAIN}/favicon/apple-touch-icon.png
-      
+
   localstack:
     image: localstack/localstack:3.0
     container_name: localstack
@@ -511,7 +528,7 @@ services:
       homepage.group: Containers
       homepage.name: MySQL
       homepage.icon: mysql.png
-      
+
   cobalt_api:
     image: ghcr.io/imputnet/cobalt:latest
     container_name: cobalt_api
@@ -531,7 +548,7 @@ services:
       # I dont know why, but it works
       # manual: https://github.com/imputnet/cobalt/blob/main/docs/configure-for-youtube.md
       - cobalt_api_cookies:/cookies
-      - cobalt_api_services:/app/src/modules/processing/services 
+      - cobalt_api_services:/app/src/modules/processing/services
     environment:
       - API_URL=https://api.cobalt.${DOMAIN}/
       - RATELIMIT_WINDOW=21600
@@ -540,9 +557,11 @@ services:
       - COOKIE_PATH=cookies/cookies.json
     restart: unless-stopped
     labels:
-      virtual.host: api.cobalt.${DOMAIN}
-      virtual.port: 9000
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.cobalt_api.rule: Host(`api.cobalt.${DOMAIN}`)
+      traefik.http.routers.cobalt_api.entrypoints: websecure
+      traefik.http.routers.cobalt_api.tls.certresolver: letsencrypt
+      traefik.http.services.cobalt_api.loadbalancer.server.port: 9000
       homepage.group: Containers
       homepage.name: Cobalt api
       homepage.icon: /icons/cobalt.png
@@ -558,15 +577,17 @@ services:
       - MODE=standalone
     restart: unless-stopped
     labels:
-      virtual.host: speedtest.${DOMAIN}
-      virtual.port: 8080
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.speedtest.rule: Host(`speedtest.${DOMAIN}`)
+      traefik.http.routers.speedtest.entrypoints: websecure
+      traefik.http.routers.speedtest.tls.certresolver: letsencrypt
+      traefik.http.services.speedtest.loadbalancer.server.port: 8080
       homepage.group: Utilities
       homepage.name: LibreSpeed
       homepage.icon: librespeed.png
       homepage.href: https://speedtest.${DOMAIN}
       homepage.description: Speed test
-      
+
   it-tools:
     image: corentinth/it-tools:latest
     container_name: it-tools
@@ -576,15 +597,17 @@ services:
       - it-tools
     restart: unless-stopped
     labels:
-      virtual.host: it-tools.${DOMAIN}
-      virtual.port: 80
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.it_tools.rule: Host(`it-tools.${DOMAIN}`)
+      traefik.http.routers.it_tools.entrypoints: websecure
+      traefik.http.routers.it_tools.tls.certresolver: letsencrypt
+      traefik.http.services.it_tools.loadbalancer.server.port: 80
       homepage.group: Utilities
       homepage.name: IT-tools
       homepage.icon: it-tools.png
       homepage.href: https://it-tools.${DOMAIN}
       homepage.description: Useful tools for developer and people working in IT
-  
+
   pdf:
     image: frooodle/s-pdf:latest
     container_name: pdf
@@ -603,9 +626,11 @@ services:
       - stirling_pipeline:/pipeline             # Automation configs
     restart: unless-stopped
     labels:
-      virtual.host: pdf.${DOMAIN}
-      virtual.port: 8080
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.pdf.rule: Host(`pdf.${DOMAIN}`)
+      traefik.http.routers.pdf.entrypoints: websecure
+      traefik.http.routers.pdf.tls.certresolver: letsencrypt
+      traefik.http.services.pdf.loadbalancer.server.port: 8080
       homepage.group: Utilities
       homepage.name: Stirling PDF
       homepage.icon: stirling-pdf
@@ -626,7 +651,7 @@ services:
       homepage.group: Containers
       homepage.name: CO2 meter exporter
       homepage.icon: docker
-      
+
   shinobi:
     image: shinobisystems/shinobi:latest
     container_name: shinobi
@@ -645,9 +670,11 @@ services:
       - H:\shinobi:/home/Shinobi/videos
     restart: unless-stopped
     labels:
-      virtual.host: shinobi.${DOMAIN}
-      virtual.port: 8080
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.shinobi.rule: Host(`shinobi.${DOMAIN}`)
+      traefik.http.routers.shinobi.entrypoints: websecure
+      traefik.http.routers.shinobi.tls.certresolver: letsencrypt
+      traefik.http.services.shinobi.loadbalancer.server.port: 8080
       homepage.group: Utilities
       homepage.name: Shinobi
       homepage.icon: shinobi
@@ -667,15 +694,17 @@ services:
     command: "/server/start_with_hacs.sh"
     restart: unless-stopped
     labels:
-      virtual.host: homeassistant.${DOMAIN}
-      virtual.port: 8123
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.homeassistant.rule: Host(`homeassistant.${DOMAIN}`)
+      traefik.http.routers.homeassistant.entrypoints: websecure
+      traefik.http.routers.homeassistant.tls.certresolver: letsencrypt
+      traefik.http.services.homeassistant.loadbalancer.server.port: 8123
       homepage.group: Utilities
       homepage.name: Home assistant
       homepage.icon: home-assistant
       homepage.href: https://homeassistant.${DOMAIN}
       homepage.description: Home automation service
-    
+
   opentracker:
     container_name: opentracker
     image: lednerb/opentracker-docker
@@ -686,17 +715,17 @@ services:
       - opentracker
     restart: unless-stopped
     labels:
-      virtual.host: tracker.${DOMAIN}
-      virtual.port: 6969
-      virtual.tls-email: ${TLS_EMAIL}
+      traefik.enable: true
+      traefik.http.routers.opentracker.rule: Host(`tracker.${DOMAIN}`)
+      traefik.http.routers.opentracker.entrypoints: websecure
+      traefik.http.routers.opentracker.tls.certresolver: letsencrypt
+      traefik.http.services.opentracker.loadbalancer.server.port: 6969
       homepage.group: Containers
       homepage.name: OpenTracker
       homepage.icon: /icons/opentracker.png
-      
+
 networks:
   apps:
-    internal: true
-  homepage:
     internal: false
   monitoring:
     internal: true
@@ -724,59 +753,56 @@ networks:
     internal: true
   opentracker:
     internal: true
-      
-volumes:
 
-  caddy_config:
+volumes:
+  traefik_data:
     external: true
-  caddy_data:
+  traefik_certs:
     external: true
-  caddy_etc:
-    external: true
-    
+
   homepage:
     external: true
   homepage_images:
     external: true
   homepage_icons:
     external: true
-    
+
   nextcloud_html:
     external: true
   nextcloud_php:
     external: true
-    
+
   postgres_data:
     external: true
-    
+
   redis_data:
     external: true
-    
+
   pgadmin:
     external: true
-    
+
   mariadb:
     external: true
-    
+
   prometheus_etc:
     external: true
-    
+
   grafana_lib:
     external: true
   grafana_provisioning:
     external: true
-    
+
   secret:
     external: true
-    
+
   vault:
     external: true
-    
+
   gokapi_config:
     external: true
   gokapi_data:
     external: true
-    
+
   notes_html:
     external: true
   notes_logs:
@@ -791,12 +817,12 @@ volumes:
     external: true
   mysql_import:
     external: true
-        
+
   cobalt_api_cookies:
     external: true
   cobalt_api_services:
     external: true
-    
+
   stirling_tessdata:
     external: true
   stirling_configs:
@@ -816,9 +842,9 @@ volumes:
     external: true
   shinobi_database:
     external: true
-    
+
   homeassistant:
     external: true
-    
+
   immich-model-cache:
     external: true
