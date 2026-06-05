@@ -37,8 +37,6 @@ services:
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
-    networks:
-      - watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
@@ -61,8 +59,6 @@ services:
       - 3005:3000
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${DOMAIN},localhost:3005
-    networks:
-      - apps
     volumes:
       - homepage:/app/config
       - homepage_images:/app/public/images
@@ -101,8 +97,6 @@ services:
     depends_on:
       - postgres
       - redis
-    networks:
-      - apps
     volumes:
       - nextcloud_html:/var/www/html
       - C:\git\server\nextcloud\php.ini:/usr/local/etc/php/conf.d/php.ini
@@ -136,8 +130,6 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    networks:
-      - apps
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
@@ -151,8 +143,6 @@ services:
     container_name: redis
     ports:
       - 6379:6379
-    networks:
-      - apps
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -170,8 +160,6 @@ services:
     user: 0:0
     depends_on:
       - postgres
-    networks:
-      - apps
     restart: unless-stopped
     labels:
       homepage.group: Containers
@@ -191,8 +179,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       - postgres
-    networks:
-      - apps
     volumes:
       - pgadmin:/var/lib/pgadmin
     restart: unless-stopped
@@ -229,8 +215,6 @@ services:
       - redis
       - postgres
       - immich-machine-learning
-    networks:
-      - apps
     restart: unless-stopped
     labels:
       traefik.enable: true
@@ -252,8 +236,6 @@ services:
   immich-machine-learning:
     container_name: immich-machine-learning
     image: ghcr.io/immich-app/immich-machine-learning:release
-    networks:
-      - apps
     volumes:
       - immich-model-cache:/cache
     restart: unless-stopped
@@ -275,8 +257,6 @@ services:
       - H:\docker-volumes\prometheus:/prometheus
     environment:
       TZ: "Europe/Moscow"
-    networks:
-      - monitoring
     restart: unless-stopped
     labels:
       # traefik.http.routers.prometheus.rule: Host(`prometheus.${DOMAIN}`)
@@ -297,8 +277,6 @@ services:
       - 3000:3000
     depends_on:
       - prometheus
-    networks:
-      - monitoring
     volumes:
       - grafana_lib:/var/lib/grafana
       - grafana_provisioning:/etc/grafana/provisioning/
@@ -328,8 +306,6 @@ services:
       - 5035:80
     volumes:
       - secret:/opt/data
-    networks:
-      - secret
     environment:
       - MAX_CONTENT_LENGTH=134217728
       - BURN_DATA_PATH=/opt/data/
@@ -353,8 +329,6 @@ services:
     ports:
       - 3012:3012
       - 8282:80
-    networks:
-      - vault
     volumes:
       - vault:/data
     environment:
@@ -381,8 +355,6 @@ services:
     container_name: gokapi
     ports:
       - 8083:53842
-    networks:
-      - gokapi
     volumes:
       - gokapi_config:/app/config
       - gokapi_data:/app/data
@@ -407,8 +379,6 @@ services:
     environment:
       PORT: 9870
       VNC_PASS: ${CHROME_PASSWORD}
-    networks:
-      - chrome
     restart: unless-stopped
     labels:
       traefik.enable: true
@@ -427,8 +397,6 @@ services:
     container_name: notes
     ports:
       - 3003:80
-    networks:
-      - notes
     volumes:
       - notes_html:/usr/share/nginx/html # Env var DEFAULT_SYNC_SERVER is not supported in web app docker image.
                                          # To change default url of standard notes api, in /usr/share/nginx/html/app.js:
@@ -458,8 +426,6 @@ services:
     ports:
       - 3002:3000
       - 3125:3104
-    networks:
-      - apps
     environment:
       - DB_HOST=mysql
       - DB_PORT=3306
@@ -501,8 +467,6 @@ services:
     volumes:
       - localstack:/var/lib/localstack
       - localstack_etc:/etc/localstack/init/ready.d # chmod +x /etc/localstack/init/ready.d/localstack_bootstrap.sh
-    networks:
-      - apps
     restart: unless-stopped
     labels:
       homepage.group: Containers
@@ -519,8 +483,6 @@ services:
       - MYSQL_PASSWORD=${NOTES_DB_PASSWORD}
     ports:
       - 3306:3306
-    networks:
-      - apps
     volumes:
       - mysql:/var/lib/mysql
     restart: unless-stopped
@@ -534,8 +496,6 @@ services:
     container_name: cobalt_api
     ports:
       - 9002:9000/tcp
-    networks:
-      - cobalt_api
     volumes: 
       # youtube download fix: 
       # Add cookie to the youtube_oauth array in cookies.json file
@@ -571,8 +531,6 @@ services:
     container_name: speedtest
     ports:
       - 5444:8080
-    networks:
-      - speedtest
     environment:
       - MODE=standalone
     restart: unless-stopped
@@ -593,8 +551,6 @@ services:
     container_name: it-tools
     ports:
       - 5445:80
-    networks:
-      - it-tools
     restart: unless-stopped
     labels:
       traefik.enable: true
@@ -613,8 +569,6 @@ services:
     container_name: pdf
     ports:
       - 8085:8080
-    networks:
-      - pdf
     environment:
       - SECURITY_ENABLELOGIN=true
       - LANGS=en,ru
@@ -643,8 +597,6 @@ services:
     container_name: co2-exporter
     ports:
       - 9110:9110
-    networks:
-      - monitoring
     privileged: true
     restart: unless-stopped
     labels:
@@ -657,8 +609,6 @@ services:
     container_name: shinobi
     ports:
       - 5009:8080
-    networks:
-      - shinobi
     environment:
       - TZ=Europe/Moscow
     volumes:
@@ -711,8 +661,6 @@ services:
     ports:
       - 6969:6969
       - 6969:6969/udp
-    networks:
-      - opentracker
     restart: unless-stopped
     labels:
       traefik.enable: true
@@ -723,36 +671,6 @@ services:
       homepage.group: Containers
       homepage.name: OpenTracker
       homepage.icon: /icons/opentracker.png
-
-networks:
-  apps:
-    internal: false
-  monitoring:
-    internal: true
-  watchtower:
-    internal: true
-  secret:
-    internal: true
-  vault:
-    internal: true
-  gokapi:
-    internal: true
-  chrome:
-    internal: true
-  notes:
-    internal: true
-  cobalt_api:
-    internal: true
-  speedtest:
-    internal: true
-  it-tools:
-    internal: true
-  pdf:
-    internal: true
-  shinobi:
-    internal: true
-  opentracker:
-    internal: true
 
 volumes:
   traefik_data:
