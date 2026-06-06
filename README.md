@@ -40,6 +40,7 @@
 * [WinSCP](https://winscp.net/eng/index.php) - FTP, FTPS, SCP, SFTP, WebDAV client for Windows
 * Docker Desktop
   * [Traefik](https://github.com/traefik/traefik) - reverse proxy
+  * [Authelia](https://github.com/authelia/authelia) - authentication and authorization server
   * [Watchtower](https://github.com/containrrr/watchtower) - a process for automating Docker container base image updates
   * [Homepage](https://github.com/gethomepage/homepage) - application dashboard
   * [Nextcloud](https://nextcloud.com/) - file storage

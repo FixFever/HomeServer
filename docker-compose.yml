@@ -4,6 +4,8 @@ services:
     image: traefik:latest
     container_name: traefik
     network_mode: host
+    depends_on:
+      - homepage
     environment:
       - TLS_EMAIL=${TLS_EMAIL}
     volumes:
@@ -11,29 +13,61 @@ services:
       - traefik_data:/etc/traefik
       - traefik_certs:/letsencrypt
     command:
+      # Провайдеры
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
       - --providers.docker.network=host
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
       - --providers.file.filename=/etc/traefik/dynamic.yml
       - --providers.file.watch=true
+      # Точки входа
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      # - --entrypoints.traefik.address=:8082
+      # Редирект HTTP → HTTPS
       - --entrypoints.web.http.redirections.entrypoint.to=websecure
       - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      # TLS и сертификаты
       - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
       - --certificatesresolvers.letsencrypt.acme.email=${TLS_EMAIL}
       - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      # Плагин для редиректа ошибок
+      - --experimental.plugins.redirectErrors.moduleName=github.com/indivisible/redirecterrors
+      - --experimental.plugins.redirectErrors.version=v0.1.0
+      # Логи
       - --log.level=INFO
-      - --accesslog=true      
-      # - --api.dashboard=true
-      # - --api.insecure=true
-      # - --entrypoints.dashboard.address=:8082
+      - --accesslog=true
+      # Дашборд API
+      - --api.dashboard=true
     restart: unless-stopped
     labels:
-      homepage.group: Containers
+      homepage.group: Utilities
       homepage.name: Traefik
       homepage.icon: traefik.png
-
+      homepage.href: https://traefik.${DOMAIN}
+      homepage.description: Reverse proxy
+      
+  authelia:
+    image: authelia/authelia:latest
+    container_name: authelia
+    network_mode: host
+    volumes:
+      - authelia_config:/config
+      - authelia_secrets:/secrets
+    environment:
+      - TZ=Europe/Moscow
+      - AUTHELIA_SESSION_SECRET_FILE=/secrets/SESSION_SECRET
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/secrets/STORAGE_ENCRYPTION_KEY
+      - AUTHELIA_IDENTITY_VALIDATION_RESET_PASSWORD_JWT_SECRET_FILE=/secrets/JWT_SECRET
+      - AUTHELIA_STORAGE_LOCAL_PASSWORD_FILE=/secrets/STORAGE_PASSWORD
+      - AUTHELIA_LOG_LEVEL=debug
+    restart: unless-stopped    
+    labels:
+      homepage.group: Utilities
+      homepage.name: Authelia
+      homepage.icon: authelia.png
+      homepage.href: https://auth.${DOMAIN}
+      homepage.description: Authentication and authorization server
+      
   watchtower:
     image: containrrr/watchtower:latest
     container_name: watchtower
@@ -55,8 +89,6 @@ services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
-    ports:
-      - 3005:3000
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${DOMAIN},localhost:3005
     volumes:
@@ -82,8 +114,6 @@ services:
       args:
         NEXTCLOUD_IMAGE: nextcloud:32
     container_name: nextcloud
-    ports:
-      - 5000:80
     environment:
       - POSTGRES_HOST=postgres:5432
       - POSTGRES_DB=${NEXTCLOUD_POSTGRES_DB}
@@ -141,8 +171,6 @@ services:
   redis:
     image: redis:alpine
     container_name: redis
-    ports:
-      - 6379:6379
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -169,8 +197,6 @@ services:
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
-    ports:
-      - 5050:80
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
@@ -187,6 +213,7 @@ services:
       traefik.http.routers.pgadmin.rule: Host(`pgadmin.${DOMAIN}`)
       traefik.http.routers.pgadmin.entrypoints: websecure
       traefik.http.routers.pgadmin.tls.certresolver: letsencrypt
+      traefik.http.routers.pgadmin.middlewares: authelia@file
       traefik.http.services.pgadmin.loadbalancer.server.port: 80
       homepage.group: Utilities
       homepage.name: pgAdmin
@@ -197,8 +224,6 @@ services:
   immich:
     container_name: immich
     image: ghcr.io/immich-app/immich-server:release
-    ports:
-      - 2283:2283
     volumes:
       - M:\\immich:/data
       - C:\\docker-caches\immich\encoded-video:/data/encoded-video
@@ -250,8 +275,6 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - '--storage.tsdb.retention.time=3y'
-    ports:
-      - 9090:9090
     volumes:
       - prometheus_etc:/etc/prometheus
       - H:\docker-volumes\prometheus:/prometheus
@@ -259,11 +282,12 @@ services:
       TZ: "Europe/Moscow"
     restart: unless-stopped
     labels:
-      # traefik.http.routers.prometheus.rule: Host(`prometheus.${DOMAIN}`)
-      # traefik.http.routers.prometheus.entrypoints: websecure
-      # traefik.http.routers.prometheus.tls.certresolver: letsencrypt
-      # traefik.http.routers.prometheus.middlewares: prometheus-basic-auth
-      # traefik.http.services.prometheus.loadbalancer.server.port: 9090
+      traefik.enable: true
+      traefik.http.routers.prometheus.rule: Host(`prometheus.${DOMAIN}`)
+      traefik.http.routers.prometheus.entrypoints: websecure
+      traefik.http.routers.prometheus.tls.certresolver: letsencrypt
+      traefik.http.routers.prometheus.middlewares: authelia@file
+      traefik.http.services.prometheus.loadbalancer.server.port: 9090
       homepage.group: Monitoring
       homepage.name: Prometheus
       homepage.icon: prometheus.png
@@ -273,8 +297,6 @@ services:
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
-    ports:
-      - 3000:3000
     depends_on:
       - prometheus
     volumes:
@@ -302,8 +324,6 @@ services:
   secret:
     image: ghcr.io/tethik/burn-after-reading/burn-after-reading:1.5.1
     container_name: secret
-    ports:
-      - 5035:80
     volumes:
       - secret:/opt/data
     environment:
@@ -326,9 +346,6 @@ services:
   vault:
     image: vaultwarden/server:latest
     container_name: vault
-    ports:
-      - 3012:3012
-      - 8282:80
     volumes:
       - vault:/data
     environment:
@@ -353,8 +370,6 @@ services:
   gokapi:
     image: f0rc3/gokapi:latest
     container_name: gokapi
-    ports:
-      - 8083:53842
     volumes:
       - gokapi_config:/app/config
       - gokapi_data:/app/data
@@ -364,6 +379,7 @@ services:
       traefik.http.routers.gokapi.rule: Host(`gokapi.${DOMAIN}`)
       traefik.http.routers.gokapi.entrypoints: websecure
       traefik.http.routers.gokapi.tls.certresolver: letsencrypt
+      traefik.http.routers.gokapi.middlewares: authelia@file
       traefik.http.services.gokapi.loadbalancer.server.port: 53842
       homepage.group: Utilities
       homepage.name: Gokapi
@@ -374,8 +390,6 @@ services:
   chrome:
     image: vital987/chrome-novnc:latest
     container_name: chrome
-    ports:
-      - 9870:9870
     environment:
       PORT: 9870
       VNC_PASS: ${CHROME_PASSWORD}
@@ -385,6 +399,7 @@ services:
       traefik.http.routers.chrome.rule: Host(`chrome.${DOMAIN}`)
       traefik.http.routers.chrome.entrypoints: websecure
       traefik.http.routers.chrome.tls.certresolver: letsencrypt
+      traefik.http.routers.chrome.middlewares: authelia@file
       traefik.http.services.chrome.loadbalancer.server.port: 9870
       homepage.group: Utilities
       homepage.name: Chrome
@@ -395,8 +410,6 @@ services:
   notes:
     image: standardnotes/web:latest
     container_name: notes
-    ports:
-      - 3003:80
     volumes:
       - notes_html:/usr/share/nginx/html # Env var DEFAULT_SYNC_SERVER is not supported in web app docker image.
                                          # To change default url of standard notes api, in /usr/share/nginx/html/app.js:
@@ -423,9 +436,6 @@ services:
     depends_on:
       - localstack
       - mysql
-    ports:
-      - 3002:3000
-      - 3125:3104
     environment:
       - DB_HOST=mysql
       - DB_PORT=3306
@@ -481,8 +491,6 @@ services:
       - MYSQL_USER=${NOTES_DB_USERNAME}
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PASSWORD=${NOTES_DB_PASSWORD}
-    ports:
-      - 3306:3306
     volumes:
       - mysql:/var/lib/mysql
     restart: unless-stopped
@@ -494,8 +502,6 @@ services:
   cobalt_api:
     image: ghcr.io/imputnet/cobalt:latest
     container_name: cobalt_api
-    ports:
-      - 9002:9000/tcp
     volumes: 
       # youtube download fix: 
       # Add cookie to the youtube_oauth array in cookies.json file
@@ -529,8 +535,6 @@ services:
   speedtest:
     image: ghcr.io/librespeed/speedtest:latest
     container_name: speedtest
-    ports:
-      - 5444:8080
     environment:
       - MODE=standalone
     restart: unless-stopped
@@ -549,8 +553,6 @@ services:
   it-tools:
     image: corentinth/it-tools:latest
     container_name: it-tools
-    ports:
-      - 5445:80
     restart: unless-stopped
     labels:
       traefik.enable: true
@@ -567,8 +569,6 @@ services:
   pdf:
     image: frooodle/s-pdf:latest
     container_name: pdf
-    ports:
-      - 8085:8080
     environment:
       - SECURITY_ENABLELOGIN=true
       - LANGS=en,ru
@@ -584,6 +584,7 @@ services:
       traefik.http.routers.pdf.rule: Host(`pdf.${DOMAIN}`)
       traefik.http.routers.pdf.entrypoints: websecure
       traefik.http.routers.pdf.tls.certresolver: letsencrypt
+      traefik.http.routers.pdf.middlewares: authelia@file
       traefik.http.services.pdf.loadbalancer.server.port: 8080
       homepage.group: Utilities
       homepage.name: Stirling PDF
@@ -595,8 +596,6 @@ services:
   co2-exporter:
     image: huhamhire/air-co2-exporter:latest
     container_name: co2-exporter
-    ports:
-      - 9110:9110
     privileged: true
     restart: unless-stopped
     labels:
@@ -607,8 +606,6 @@ services:
   shinobi:
     image: shinobisystems/shinobi:latest
     container_name: shinobi
-    ports:
-      - 5009:8080
     environment:
       - TZ=Europe/Moscow
     volumes:
@@ -624,6 +621,7 @@ services:
       traefik.http.routers.shinobi.rule: Host(`shinobi.${DOMAIN}`)
       traefik.http.routers.shinobi.entrypoints: websecure
       traefik.http.routers.shinobi.tls.certresolver: letsencrypt
+      traefik.http.routers.shinobi.middlewares: authelia@file
       traefik.http.services.shinobi.loadbalancer.server.port: 8080
       homepage.group: Utilities
       homepage.name: Shinobi
@@ -676,6 +674,11 @@ volumes:
   traefik_data:
     external: true
   traefik_certs:
+    external: true
+    
+  authelia_config:
+    external: true
+  authelia_secrets:
     external: true
 
   homepage:
