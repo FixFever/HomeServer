@@ -1,16 +1,20 @@
 services:
-
   quake:
     image: treyyoder/quakejs:latest
     container_name: quake
     ports:
-      - '8081:80'
-      - '27960:27960'
+      - 27960:27960
     environment:
-      - HTTP_PORT=8081
+      - HTTP_PORT=80
     volumes:
       - quake:/quakejs/base
-    restart: unless-stopped 
+    restart: unless-stopped
+    labels:
+       traefik.enable: true
+       traefik.http.routers.quake.rule: Host(`quake.${DOMAIN}`)
+       traefik.http.routers.quake.entrypoints: websecure
+       traefik.http.routers.quake.tls.certresolver: letsencrypt
+       traefik.http.services.quake.loadbalancer.server.port: 80
 
 volumes:
   quake:
