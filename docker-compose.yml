@@ -11,6 +11,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik_data:/etc/traefik
+      - traefik_logs:/var/log/traefik
       - traefik_certs:/letsencrypt
     command:
       # Провайдеры
@@ -20,12 +21,11 @@ services:
       - --providers.file.filename=/etc/traefik/dynamic.yml
       - --providers.file.watch=true
       # Точки входа
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      # - --entrypoints.traefik.address=:8082
-      # Редирект HTTP → HTTPS
-      - --entrypoints.web.http.redirections.entrypoint.to=websecure
-      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:444
+      - --entrypoints.websecure.http.middlewares=crowdsec@file
+      - --entrypoints.websecure.forwardedHeaders.trustedIPs=127.0.0.1/32,::1/128,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+      - --entrypoints.websecure.forwardedHeaders.insecure=true
+      - --entrypoints.websecure.proxyProtocol.trustedIPs=127.0.0.1/32,::1/128
       # TLS и сертификаты
       - --certificatesresolvers.letsencrypt.acme.tlschallenge=true
       - --certificatesresolvers.letsencrypt.acme.email=${TLS_EMAIL}
@@ -33,15 +33,21 @@ services:
       # Плагин для редиректа ошибок
       - --experimental.plugins.redirectErrors.moduleName=github.com/indivisible/redirecterrors
       - --experimental.plugins.redirectErrors.version=v0.1.0
+      # Плагин CrowdSec
+      - --experimental.plugins.crowdsec-bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      - --experimental.plugins.crowdsec-bouncer.version=v1.6.0
       # Логи
       - --log.level=INFO
       - --accesslog=true
+      - --accesslog.filepath=/var/log/traefik/access.log
+      - --accesslog.format=json
+      - --accesslog.fields.headers.defaultmode=keep
       # Дашборд API
       - --api.dashboard=true
     restart: unless-stopped
     labels:
-      homepage.group: Utilities
-      homepage.name: Traefik
+      homepage.group: Infrastructure
+      homepage.name: Traefik Docker
       homepage.icon: traefik.png
       homepage.href: https://traefik.${DOMAIN}
       homepage.description: Reverse proxy
@@ -62,11 +68,52 @@ services:
       - AUTHELIA_LOG_LEVEL=debug
     restart: unless-stopped    
     labels:
-      homepage.group: Utilities
+      homepage.group: Infrastructure
       homepage.name: Authelia
       homepage.icon: authelia.png
       homepage.href: https://auth.${DOMAIN}
       homepage.description: Authentication and authorization server
+      
+  crowdsec:
+    image: crowdsecurity/crowdsec:latest
+    container_name: crowdsec
+    network_mode: host
+    volumes:
+      - crowdsec_db:/var/lib/crowdsec/data
+      - crowdsec_config:/etc/crowdsec
+      - traefik_logs:/var/log/traefik:ro
+    environment:
+      - COLLECTIONS=crowdsecurity/traefik
+      - GID=1000
+      - UID=1000
+    restart: unless-stopped
+    labels:
+      homepage.group: Containers
+      homepage.name: CrowdSec
+      homepage.icon: crowdsec.png
+      
+  crowdsec-webui:
+    image: ghcr.io/theduffman85/crowdsec-web-ui:latest
+    container_name: crowdsec-webui
+    restart: unless-stopped
+    environment:
+      - CROWDSEC_URL=http://host.docker.internal:8082
+      - CROWDSEC_USER=${CROWDSEC_WEBUI_USER}
+      - CROWDSEC_PASSWORD=${CROWDSEC_WEBUI_PASSWORD}
+    volumes:
+      - crowdsec_webui:/app/data
+    labels:
+      traefik.enable: true
+      traefik.http.routers.crowdsec-webui.rule: Host(`crowdsec.${DOMAIN}`)
+      traefik.http.routers.crowdsec-webui.entrypoints: websecure
+      traefik.http.routers.crowdsec-webui.tls.certresolver: letsencrypt
+      traefik.http.routers.crowdsec-webui.middlewares: authelia@file
+      traefik.http.services.crowdsec-webui.loadbalancer.server.port: 3000
+      homepage.group: Infrastructure
+      homepage.name: CrowdSec
+      homepage.icon: crowdsec.png
+      homepage.href: https://crowdsec.${DOMAIN}
+      homepage.description: Firewall and IPS
       
   watchtower:
     image: containrrr/watchtower:latest
@@ -288,7 +335,7 @@ services:
       traefik.http.routers.prometheus.tls.certresolver: letsencrypt
       traefik.http.routers.prometheus.middlewares: authelia@file
       traefik.http.services.prometheus.loadbalancer.server.port: 9090
-      homepage.group: Monitoring
+      homepage.group: Infrastructure
       homepage.name: Prometheus
       homepage.icon: prometheus.png
       homepage.href: https://prometheus.${DOMAIN}
@@ -315,7 +362,7 @@ services:
       traefik.http.routers.grafana.entrypoints: websecure
       traefik.http.routers.grafana.tls.certresolver: letsencrypt
       traefik.http.services.grafana.loadbalancer.server.port: 3000
-      homepage.group: Monitoring
+      homepage.group: Infrastructure
       homepage.name: Grafana
       homepage.icon: grafana.png
       homepage.href: https://grafana.${DOMAIN}
@@ -675,12 +722,22 @@ volumes:
     external: true
   traefik_certs:
     external: true
+  traefik_logs:
+    external: true
     
   authelia_config:
     external: true
   authelia_secrets:
     external: true
-
+    
+  crowdsec_db:
+    external: true
+  crowdsec_config:
+    external: true
+    
+  crowdsec_webui:
+    external: true
+  
   homepage:
     external: true
   homepage_images:

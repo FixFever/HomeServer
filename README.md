@@ -38,9 +38,11 @@
 * [Windows reporter](https://github.com/prometheus-community/windows_exporter) - a Prometheus exporter for Windows machines
 * [Glances](https://github.com/nicolargo/glances) - system monitoring tool
 * [WinSCP](https://winscp.net/eng/index.php) - FTP, FTPS, SCP, SFTP, WebDAV client for Windows
+* [Traefik](https://github.com/traefik/traefik) - reverse proxy
 * Docker Desktop
   * [Traefik](https://github.com/traefik/traefik) - reverse proxy
   * [Authelia](https://github.com/authelia/authelia) - authentication and authorization server
+  * [CrowdSec](https://github.com/crowdsecurity/crowdsec) - firewall and IPS
   * [Watchtower](https://github.com/containrrr/watchtower) - a process for automating Docker container base image updates
   * [Homepage](https://github.com/gethomepage/homepage) - application dashboard
   * [Nextcloud](https://nextcloud.com/) - file storage
