@@ -123,7 +123,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       WATCHTOWER_CLEANUP: true
-      WATCHTOWER_DISABLE_CONTAINERS: /nextcloud /nextcloud_cron /mediacms /celery /celery_beat /migrations
+      WATCHTOWER_DISABLE_CONTAINERS: /nextcloud /nextcloud_cron /mediacms /celery-beat /celery /migrations
       WATCHTOWER_NOTIFICATIONS: shoutrrr
       WATCHTOWER_NOTIFICATION_URL: telegram://${TELEGRAM_BOT_TOKEN}@telegram?chats=${CHAT_ID}
       DOCKER_API_VERSION: 1.49
@@ -470,7 +470,6 @@ services:
       traefik.http.routers.gokapi.rule: Host(`gokapi.${DOMAIN}`)
       traefik.http.routers.gokapi.entrypoints: websecure
       traefik.http.routers.gokapi.tls.certresolver: letsencrypt
-      traefik.http.routers.gokapi.middlewares: authelia@file
       traefik.http.services.gokapi.loadbalancer.server.port: 53842
       homepage.group: Utilities
       homepage.name: Gokapi
