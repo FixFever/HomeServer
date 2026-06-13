@@ -315,7 +315,51 @@ services:
       homepage.group: Containers
       homepage.name: Immich machine learning
       homepage.icon: immich.png
+      
+  immich-deduper:
+    container_name: immich-deduper
+    image: razgrizhsu/immich-deduper:latest
+    volumes:
+      - immich-deduper-data:/app/data
+      - immich-deduper-cache:/root/.cache/torch/
+      - M:\\immich:/immich:ro
+      - C:\\docker-caches\immich\thumbs:/thumbs:ro
+    environment:
+      PSQL_HOST: postgres
+      PSQL_PORT: 5432
+      PSQL_DB: immich
+      PSQL_USER: ${POSTGRES_USER}
+      PSQL_PASS: ${POSTGRES_PASSWORD}
+      QDRANT_URL: http://qdrant:6333
+      IMMICH_THUMB: C:\\docker-caches\immich\thumb
+    depends_on:
+      - qdrant
+      - postgres
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.immich-deduper.rule: Host(`immich-deduper.${DOMAIN}`)
+      traefik.http.routers.immich-deduper.entrypoints: websecure
+      traefik.http.routers.immich-deduper.tls.certresolver: letsencrypt
+      traefik.http.routers.immich-deduper.middlewares: authelia@file
+      traefik.http.services.immich-deduper.loadbalancer.server.port: 8086
+      homepage.group: Utilities
+      homepage.name: Immich-deduper
+      homepage.icon: immich.png
+      homepage.href: https://immich-deduper.${DOMAIN}
+      homepage.description: Duplicate photo finder and remover
 
+  qdrant:
+    container_name: qdrant
+    image: qdrant/qdrant:v1.17.1
+    volumes:
+      - qdrant:/qdrant/storage
+    restart: unless-stopped
+    labels:
+      homepage.group: Containers
+      homepage.name: Qdrant
+      homepage.icon: qdrant.png
+      
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -825,4 +869,12 @@ volumes:
     external: true
 
   immich-model-cache:
+    external: true
+    
+  immich-deduper-data:
+    external: true
+  immich-deduper-cache:
+    external: true
+    
+  qdrant:
     external: true

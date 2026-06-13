@@ -48,6 +48,7 @@
   * [Nextcloud](https://nextcloud.com/) - file storage
     * [Preview generator](https://github.com/nextcloud/previewgenerator)
   * [Immich](https://immich.app) - photo and video management solution
+    * [Immich-deduper](https://github.com/RazgrizHsu/immich-deduper) - duplicate photo finder and remover for Immich
   * [MediaCMS](https://github.com/mediacms-io/mediacms) - open source video and media CMS
   * [Home assistant](https://www.home-assistant.io/) - Home automation service
     * [Home Assistant Community Store](https://www.hacs.xyz/)
