@@ -1,8 +1,8 @@
 # script for qbittorrent:
 # on add:
-# pwsh -file "C:\git\server\qbittorrent\qbittorrent-telegram-notifier.ps1" -EventType add -TorrentName "%N" -TorrentSize "%S" -SavePath "%F"
+# pwsh -file "C:\git\server\qbittorrent\qbittorrent-telegram-notifier.ps1" -EventType add -TorrentName "%N" -TorrentSize "%Z" -SavePath "%F"
 # on complete:
-# pwsh -file "C:\git\server\qbittorrent\qbittorrent-telegram-notifier.ps1" -EventType complete -TorrentName "%N" -TorrentSize "%S" -SavePath "%F"
+# pwsh -file "C:\git\server\qbittorrent\qbittorrent-telegram-notifier.ps1" -EventType complete -TorrentName "%N" -TorrentSize "%Z" -SavePath "%F"
 
 
 param(
