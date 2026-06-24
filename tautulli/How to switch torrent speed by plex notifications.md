@@ -21,14 +21,13 @@ Playback Error
 ```
 Conditions:
 ```
-{1} Actions is play or resume or pause
-{2} Actions is stop or error
+{1} Actions is play or resume
+{2} Actions is stop or error or pause
 {3} Streams is 0
-{4} Streams is 1
 ```
 Condition Logic:
 ```
-{1} and {4} or {2} and {3}
+{1} or {2} and {3}
 ```
 Arguments:
 Playback Start: `TRUE`
