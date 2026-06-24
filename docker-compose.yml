@@ -271,6 +271,8 @@ services:
   immich:
     container_name: immich
     image: ghcr.io/immich-app/immich-server:release
+    ports:
+      - 2283:2283
     volumes:
       - M:\\immich:/data
       - C:\\docker-caches\immich\encoded-video:/data/encoded-video
@@ -322,8 +324,8 @@ services:
     volumes:
       - immich-deduper-data:/app/data
       - immich-deduper-cache:/root/.cache/torch/
-      - M:\\immich:/immich:ro
-      - C:\\docker-caches\immich\thumbs:/thumbs:ro
+      - M:\\immich:/immich
+      - C:\\docker-caches\immich\thumbs:/thumbs
     environment:
       PSQL_HOST: postgres
       PSQL_PORT: 5432
