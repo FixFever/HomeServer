@@ -69,6 +69,7 @@
   * [Grafana](https://github.com/grafana/grafana) - data visualization & Monitoring
   * [Air-co2-exporter](https://github.com/huhamhire/air-co2-exporter) - Prometheus exporter for CO2 meter
   * [TorrUpd](https://github.com/konkere/TorrUpd) - tool for automatically checking the relevance of torrents and updating them in the torrent client
+    * [FlareSolverr](https://github.com/FlareSolverr/FlareSolverr) - proxy server to bypass Cloudflare and DDoS-GUARD protection
 
 ### Remote backup storage
 * Router: [Keenetic Giga KN-1010](https://keenetic.ru/ru/keenetic-giga-kn-1010)

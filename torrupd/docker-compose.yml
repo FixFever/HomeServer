@@ -1,10 +1,39 @@
 services:
+
   torrupd:
     image: ghcr.io/konkere/torrupd:latest
     container_name: torrupd
+    environment:
+      - TZ=Europe/Moscow
     volumes:
       - torrupd:/config
-      
+    networks:
+      - torrupd-net
+    depends_on:
+      flaresolverr:
+        condition: service_healthy
+    restart: no
+    
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Moscow
+    networks:
+      - torrupd-net
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8191/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+    
 volumes:
   torrupd:
     external: true
+    
+networks:
+  torrupd-net:
+    name: torrupd-net
