@@ -556,7 +556,32 @@ services:
       homepage.group: Containers
       homepage.name: Standard notes api
       homepage.icon: https://notes.${DOMAIN}/favicon/apple-touch-icon.png
-
+      
+  joplin_server:
+    container_name: joplin_server
+    image: joplin/server:latest
+    depends_on:
+      - postgres
+    environment:
+      APP_PORT: 22300
+      APP_BASE_URL: https://joplin.${DOMAIN}
+      DB_CLIENT: pg
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DATABASE: joplin
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: postgres
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.joplin.rule: Host(`joplin.${DOMAIN}`)
+      traefik.http.routers.joplin.entrypoints: websecure
+      traefik.http.routers.joplin.tls.certresolver: letsencrypt
+      traefik.http.services.joplin.loadbalancer.server.port: 22300
+      homepage.group: Containers
+      homepage.name: Joplin server
+      homepage.icon: joplin
+      
   localstack:
     image: localstack/localstack:3.0
     container_name: localstack
@@ -839,6 +864,9 @@ volumes:
   mysql:
     external: true
   mysql_import:
+    external: true
+    
+  joplin:
     external: true
 
   cobalt_api_cookies:
