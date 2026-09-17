@@ -5,10 +5,16 @@
     Скрипт распаковывает архивы и копирует содержимое папки /data в соответствующий volume.
 .EXAMPLE
     .\Restore-DockerVolumes.ps1 -BackupDir "H:\backups\docker-volumes"
+.EXAMPLE
+    .\Restore-DockerVolumes.ps1 -BackupDir "H:\backups\docker-volumes" -VolumeName "nextcloud_html"
+.EXAMPLE
+    .\Restore-DockerVolumes.ps1 -BackupDir "H:\backups\docker-volumes" -ApplyPermissions
 #>
 
 param (
-    [string]$BackupDir = "H:\backups\docker-volumes"
+    [string]$BackupDir = "H:\backups\docker-volumes",
+    [string]$VolumeName,
+    [switch]$ApplyPermissions
 )
 
 # Проверяем, установлен ли Docker
@@ -24,7 +30,17 @@ if (-not (Test-Path $BackupDir)) {
 }
 
 # Получаем список архивов .tar.gz
-$backupFiles = Get-ChildItem -Path $BackupDir -Filter *.tar.gz
+if ($VolumeName) {
+    $backupFiles = Get-ChildItem -Path $BackupDir -Filter *.tar.gz | Where-Object {
+        ($_.BaseName -replace '\.(tar|gz)$','' -replace '\.tar$','') -eq $VolumeName
+    }
+    if ($backupFiles.Count -eq 0) {
+        Write-Error "Архив для volume '$VolumeName' не найден в папке $BackupDir"
+        exit 1
+    }
+} else {
+    $backupFiles = Get-ChildItem -Path $BackupDir -Filter *.tar.gz
+}
 
 if ($backupFiles.Count -eq 0) {
     Write-Host "Нет архивов .tar.gz в папке $BackupDir" -ForegroundColor Yellow
@@ -79,14 +95,16 @@ foreach ($file in $backupFiles) {
 
 Write-Host "Все volumes восстановлены!" -ForegroundColor Green
 
-Write-Host "Применяю права доступа к файлам..."
+if ($ApplyPermissions) {
+    Write-Host "Применяю права доступа к файлам..."
 
-docker run --rm --privileged -v pgadmin:/var/lib/pgadmin alpine chown -R 5050:5050 /var/lib/pgadmin
-docker run --rm --privileged -v pgadmin:/var/lib/pgadmin alpine chown -R 775 /var/lib/pgadmin
+    docker run --rm --privileged -v pgadmin:/var/lib/pgadmin alpine chown -R 5050:5050 /var/lib/pgadmin
+    docker run --rm --privileged -v pgadmin:/var/lib/pgadmin alpine chown -R 775 /var/lib/pgadmin
 
-docker run --rm --privileged -v nextcloud_html:/var/www/html alpine chown -R 33:33 /var/www/html
-docker run --rm --privileged -v nextcloud_php:/usr/local/etc/php alpine chown -R 33:33 /usr/local/etc/php
+    docker run --rm --privileged -v nextcloud_html:/var/www/html alpine chown -R 33:33 /var/www/html
+    docker run --rm --privileged -v nextcloud_php:/usr/local/etc/php alpine chown -R 33:33 /usr/local/etc/php
 
-docker run --rm --privileged -v homeassistant:/config alpine chown -R root:root /config
+    docker run --rm --privileged -v homeassistant:/config alpine chown -R root:root /config
 
-Write-Host "Права доступа установлены!" -ForegroundColor Green
+    Write-Host "Права доступа установлены!" -ForegroundColor Green
+}
