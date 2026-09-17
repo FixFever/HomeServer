@@ -21,7 +21,9 @@ services:
       - LOG_LEVEL=info
       - TZ=Europe/Moscow
     networks:
-      - torrupd-net
+      - torrupd-net    
+    volumes:
+      - flaresolverr:/config
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:8191/health"]
       interval: 5s
@@ -32,6 +34,8 @@ services:
     
 volumes:
   torrupd:
+    external: true
+  flaresolverr:
     external: true
     
 networks:
