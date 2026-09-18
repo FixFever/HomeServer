@@ -161,6 +161,8 @@ services:
       args:
         NEXTCLOUD_IMAGE: nextcloud:32
     container_name: nextcloud
+    ports:
+      - 5000:80
     environment:
       - POSTGRES_HOST=postgres:5432
       - POSTGRES_DB=${NEXTCLOUD_POSTGRES_DB}
