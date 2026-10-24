@@ -500,64 +500,6 @@ services:
       homepage.icon: chrome.png
       homepage.href: https://chrome.${DOMAIN}
       homepage.description: Chrome noVNC
-
-  notes:
-    image: standardnotes/web:latest
-    container_name: notes
-    volumes:
-      - notes_html:/usr/share/nginx/html # Env var DEFAULT_SYNC_SERVER is not supported in web app docker image.
-                                         # To change default url of standard notes api, in /usr/share/nginx/html/app.js:
-                                         # replace
-                                         # function(e){e.Api="https://api.standardnotes.com"
-                                         # to
-                                         # function(e){e.Api="https://your.notes.api.domain.com"
-    restart: unless-stopped
-    labels:
-      traefik.enable: true
-      traefik.http.routers.notes.rule: Host(`notes.${DOMAIN}`)
-      traefik.http.routers.notes.entrypoints: websecure
-      traefik.http.routers.notes.tls.certresolver: letsencrypt
-      traefik.http.services.notes.loadbalancer.server.port: 80
-      homepage.group: Cloud
-      homepage.name: Standard notes
-      homepage.icon: /icons/notes.png
-      homepage.href: https://notes.${DOMAIN}
-      homepage.description: Note-taking app
-
-  notes_api:
-    image: standardnotes/server:latest
-    container_name: notes_api
-    depends_on:
-      - localstack
-      - mysql
-    environment:
-      - DB_HOST=mysql
-      - DB_PORT=3306
-      - DB_USERNAME=${NOTES_DB_USERNAME}
-      - DB_PASSWORD=${NOTES_DB_PASSWORD}
-      - DB_DATABASE=${NOTES_DB_NAME}
-      - DB_TYPE=mysql
-      - REDIS_PORT=6379
-      - REDIS_HOST=redis
-      - CACHE_TYPE=redis
-      - AUTH_JWT_SECRET=${NOTES_AUTH_JWT_SECRET}
-      - AUTH_SERVER_ENCRYPTION_SERVER_KEY=${NOTES_AUTH_SERVER_ENCRYPTION_SERVER_KEY}
-      - VALET_TOKEN_SECRET=${NOTES_VALET_TOKEN_SECRET}
-      - DISABLE_USER_REGISTRATION=true
-      - COOKIE_DOMAIN=api.notes.${DOMAIN}
-    volumes:
-      - notes_logs:/var/lib/server/logs
-      - notes_uploads:/opt/server/packages/files/dist/uploads
-    restart: unless-stopped
-    labels:
-      traefik.enable: true
-      traefik.http.routers.notes_api.rule: Host(`api.notes.${DOMAIN}`)
-      traefik.http.routers.notes_api.entrypoints: websecure
-      traefik.http.routers.notes_api.tls.certresolver: letsencrypt
-      traefik.http.services.notes_api.loadbalancer.server.port: 3000
-      homepage.group: Containers
-      homepage.name: Standard notes api
-      homepage.icon: https://notes.${DOMAIN}/favicon/apple-touch-icon.png
       
   joplin_server:
     container_name: joplin_server
@@ -583,40 +525,6 @@ services:
       homepage.group: Containers
       homepage.name: Joplin server
       homepage.icon: joplin
-      
-  localstack:
-    image: localstack/localstack:3.0
-    container_name: localstack
-    expose:
-      - 4566
-    environment:
-      - SERVICES=sns,sqs
-      - HOSTNAME_EXTERNAL=localstack
-      - LS_LOG=warn
-    volumes:
-      - localstack:/var/lib/localstack
-      - localstack_etc:/etc/localstack/init/ready.d # chmod +x /etc/localstack/init/ready.d/localstack_bootstrap.sh
-    restart: unless-stopped
-    labels:
-      homepage.group: Containers
-      homepage.name: Localstack
-      homepage.icon: /icons/localstack.png
-
-  mysql:
-    image: mysql
-    container_name: mysql
-    environment:
-      - MYSQL_DATABASE=${NOTES_DB_NAME}
-      - MYSQL_USER=${NOTES_DB_USERNAME}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_PASSWORD=${NOTES_DB_PASSWORD}
-    volumes:
-      - mysql:/var/lib/mysql
-    restart: unless-stopped
-    labels:
-      homepage.group: Containers
-      homepage.name: MySQL
-      homepage.icon: mysql.png
 
   cobalt_api:
     image: ghcr.io/imputnet/cobalt:latest
@@ -851,21 +759,6 @@ volumes:
   gokapi_config:
     external: true
   gokapi_data:
-    external: true
-
-  notes_html:
-    external: true
-  notes_logs:
-    external: true
-  notes_uploads:
-    external: true
-  localstack:
-    external: true
-  localstack_etc:
-    external: true
-  mysql:
-    external: true
-  mysql_import:
     external: true
     
   joplin:

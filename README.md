@@ -60,7 +60,6 @@
   * [Stirling PDF](https://github.com/Stirling-Tools/Stirling-PDF) - PDF editing platform
   * [Shinobi](https://www.shinobi.video/) - NVR and CCTV
   * [Chromium with NoVNC](https://github.com/vital987/chrome-novnc) - Chrome in browser
-  * [Standard notes server](https://github.com/standardnotes/server) + [web app](https://github.com/standardnotes/app) - note-taking app
   * [Joplin server](https://github.com/DavideRutigliano/joplin-server) - note-taking app
   * [Cobalt](https://github.com/imputnet/cobalt) - media downloader
   * [LibreSpeed](https://github.com/librespeed/speedtest) - speedtest
