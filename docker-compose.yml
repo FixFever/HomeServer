@@ -322,7 +322,7 @@ services:
       
   immich-deduper:
     container_name: immich-deduper
-    image: razgrizhsu/immich-deduper:latest
+    image: razgrizhsu/immich-deduper:latest-cpu
     volumes:
       - immich-deduper-data:/app/data
       - immich-deduper-cache:/root/.cache/torch/
