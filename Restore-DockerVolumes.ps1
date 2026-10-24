@@ -99,7 +99,6 @@ if ($ApplyPermissions) {
     Write-Host "Применяю права доступа к файлам..."
 
     docker run --rm --privileged -v pgadmin:/var/lib/pgadmin alpine chown -R 5050:5050 /var/lib/pgadmin
-    docker run --rm --privileged -v pgadmin:/var/lib/pgadmin alpine chown -R 775 /var/lib/pgadmin
 
     docker run --rm --privileged -v nextcloud_html:/var/www/html alpine chown -R 33:33 /var/www/html
     docker run --rm --privileged -v nextcloud_php:/usr/local/etc/php alpine chown -R 33:33 /usr/local/etc/php
