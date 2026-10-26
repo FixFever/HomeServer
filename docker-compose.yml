@@ -229,7 +229,7 @@ services:
       homepage.icon: redis.png
 
   nextcloud_cron:
-    image: nextcloud:32
+    image: nextcloud:35
     container_name: nextcloud_cron
     volumes_from:
       - nextcloud:rw
