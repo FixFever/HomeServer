@@ -159,7 +159,7 @@ services:
     build:
       context: ./nextcloud/
       args:
-        NEXTCLOUD_IMAGE: nextcloud:32
+        NEXTCLOUD_IMAGE: nextcloud:35
     container_name: nextcloud
     ports:
       - 5000:80
