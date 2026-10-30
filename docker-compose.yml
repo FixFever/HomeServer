@@ -696,6 +696,28 @@ services:
       homepage.group: Containers
       homepage.name: OpenTracker
       homepage.icon: /icons/opentracker.png
+    
+  flaresolverr:
+    container_name: flaresolverr
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    ports:
+      - 8191:8191
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Moscow
+    volumes:
+      - flaresolverr:/config
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8191/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+    labels:
+      homepage.group: Containers
+      homepage.name: Flaresolverr
+      homepage.icon: flaresolverr.png
 
 volumes:
   traefik_data:
@@ -801,4 +823,7 @@ volumes:
     external: true
     
   qdrant:
+    external: true
+    
+  flaresolverr:
     external: true
