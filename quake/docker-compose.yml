@@ -2,12 +2,13 @@ services:
   quake:
     image: treyyoder/quakejs:latest
     container_name: quake
+    environment:
+      ADMIN_PASSWORD: ${QUAKE_ADMIN_PASSWORD}
     ports:
       - 27960:27960
-    environment:
-      - HTTP_PORT=80
     volumes:
-      - quake:/quakejs/base
+      - quakejs-assets:/var/www/html/assets
+      - quakejs-state:/var/lib/quakejs
     restart: unless-stopped
     labels:
        traefik.enable: true
@@ -15,7 +16,30 @@ services:
        traefik.http.routers.quake.entrypoints: websecure
        traefik.http.routers.quake.tls.certresolver: letsencrypt
        traefik.http.services.quake.loadbalancer.server.port: 80
+       homepage.group: Utilities
+       homepage.name: Quake III Arena
+       homepage.icon: /icons/quake.png
+       homepage.href: https://quake.${DOMAIN}
+       homepage.description: Quake III Arena in the browser
+      
+  quake-bot-controller:
+    image: python:3.12-alpine
+    container_name: quake-bot-controller
+    depends_on:
+      quake:
+        condition: service_healthy
+    environment:
+      QUAKE_API_URL: http://quake/admin/api
+      ADMIN_PASSWORD: ${QUAKE_ADMIN_PASSWORD}
+      BOT_MIN_PLAYERS: "5"
+      POLL_SECONDS: "5"
+    volumes:
+      - ./bot-controller.py:/app/bot-controller.py:ro
+    command: ["python", "-u", "/app/bot-controller.py"]
+    restart: unless-stopped
 
 volumes:
-  quake:
+  quakejs-assets:
+    external: true
+  quakejs-state:
     external: true
