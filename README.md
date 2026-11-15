@@ -46,6 +46,7 @@
   * [CrowdSec](https://github.com/crowdsecurity/crowdsec) - firewall and IPS
   * [Watchtower](https://github.com/containrrr/watchtower) - a process for automating Docker container base image updates
   * [Homepage](https://github.com/gethomepage/homepage) - application dashboard
+  * [Homarr](https://github.com/homarr-labs/homarr) - application dashboard
   * [Nextcloud](https://nextcloud.com/) - file storage
     * [Preview generator](https://github.com/nextcloud/previewgenerator)
   * [Immich](https://immich.app) - photo and video management solution

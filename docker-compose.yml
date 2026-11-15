@@ -153,7 +153,29 @@ services:
       homepage.group: Containers
       homepage.name: Homepage
       homepage.icon: homepage.png
-      
+
+  homarr:
+    image: ghcr.io/homarr-labs/homarr:latest
+    container_name: homarr
+    environment:
+      SECRET_ENCRYPTION_KEY: ${HOMARR_SECRET_ENCRYPTION_KEY}
+      BASE_URL: https://homarr.${DOMAIN}
+    volumes:
+      - homarr:/appdata
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    labels:
+      traefik.enable: true
+      traefik.http.routers.homarr.rule: Host(`homarr.${DOMAIN}`)
+      traefik.http.routers.homarr.entrypoints: websecure
+      traefik.http.routers.homarr.tls.certresolver: letsencrypt
+      traefik.http.services.homarr.loadbalancer.server.port: 7575
+      homepage.group: Utilities
+      homepage.name: Homarr
+      homepage.icon: homarr.png
+      homepage.href: https://homarr.${DOMAIN}
+      homepage.description: Application dashboard
+
 # For update: docker-compose build nextcloud
   nextcloud:
     build:
@@ -745,6 +767,9 @@ volumes:
   homepage_images:
     external: true
   homepage_icons:
+    external: true
+
+  homarr:
     external: true
 
   nextcloud_html:
