@@ -103,6 +103,8 @@ catch {
 
 # Export env vars
 regedit /e "H:\backups\env_vars.reg" "HKEY_CURRENT_USER\Environment"
+Copy-Item -Path "C:\git\server\.env" -Destination "H:\backups\server.env" -Force
+Copy-Item -Path "C:\git\server\quake\.env" -Destination "H:\backups\quake.env" -Force
 
 $logsPath = "%TEMP%";
 
